@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "902059687771",
+    "project_id": "story-685e6",
+    "storage_bucket": "story-685e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902059687771:android:1a97161c77376c6b7f247e",
+        "android_client_info": {
+          "package_name": "com.smarttech.story"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902059687771-leenpu6qcpqedv01rvbo0mgs41h06tcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA85tWZL7IJo8qB9H7hn9YhLh6ePn_awrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902059687771-leenpu6qcpqedv01rvbo0mgs41h06tcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
