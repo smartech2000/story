@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_home">Thể loại</string>
+    <string name="title_dashboard">Kệ sách</string>
+    <string name="title_notifications">Tìm kiếm</string>
+    <string name="title_setting">Cài đặt</string>
+</resources>
