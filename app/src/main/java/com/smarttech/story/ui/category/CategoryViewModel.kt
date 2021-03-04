@@ -9,18 +9,24 @@ import com.smarttech.story.model.Category
 
 class CategoryViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<ArrayList<Category>>().apply {
+    private val _categories = MutableLiveData<ArrayList<Category>>().apply {
         // Access a Cloud Firestore instance from your Activity
         val db = Firebase.firestore
         val categories = db.collection("category")
         categories.get().addOnSuccessListener { docs ->
             var categories = ArrayList<Category>()
             for (doc in docs) {
-                var category = Category(doc.data.getValue("name") as String)
+                var id = (doc.data.getValue("id").toString()).toLong();
+                var category = Category(id,doc.data.getValue("name") as String)
                 categories!!.add(category)
             }
             value = categories
         }
     }
-    var text: LiveData<ArrayList<Category>> = _text
+    var categories: LiveData<ArrayList<Category>> = _categories
+
+    private val _categoryDetail = MutableLiveData<Long>()
+    fun onCategoryClicked(id: Long) {
+        _categoryDetail.value = id
+    }
 }

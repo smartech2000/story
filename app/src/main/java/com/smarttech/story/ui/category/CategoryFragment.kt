@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smarttech.story.R
+import com.smarttech.story.databinding.FragmentCategoryBinding
+import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.ui.category.dummy.DummyContent
 import com.smarttech.story.ui.home.HomeViewModel
 
@@ -33,24 +37,34 @@ class CategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Get a reference to the binding object and inflate the fragment views.
+        val binding: FragmentCategoryListBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_category_list, container, false
+        )
         categoryViewModel =
             ViewModelProvider(this).get(CategoryViewModel::class.java)
-        val view = inflater.inflate(R.layout.fragment_category_list, container, false)
+        // To use the View Model with data binding, you have to explicitly
+        // give the binding object a reference to it.
+        binding.categoryViewModel = categoryViewModel
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-               // adapter = CategoryRecyclerViewAdapter(DummyContent.ITEMS)
-                categoryViewModel.text.observe(viewLifecycleOwner, Observer {
-                    adapter = CategoryRecyclerViewAdapter(it)
-                })
+        val adapter = CategoryRecyclerViewAdapter(CategoryListener { categoryId ->
+            Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+            categoryViewModel.onCategoryClicked(categoryId)
+        })
+        binding.categoryList.adapter = adapter
+        ///binding.categoryList.adapter = adapter
+        categoryViewModel.categories.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+                //binding.categoryList.adapter = adapter
+
             }
-        }
-        return view
+        })
+
+        val manager = GridLayoutManager(activity, 2)
+        binding.categoryList.layoutManager = manager
+
+        return binding.root
     }
 
     companion object {
