@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryBinding
 import com.smarttech.story.databinding.FragmentCategoryListBinding
@@ -48,7 +49,7 @@ class CategoryFragment : Fragment() {
         binding.categoryViewModel = categoryViewModel
 
         val adapter = CategoryRecyclerViewAdapter(CategoryListener { categoryId ->
-            Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             categoryViewModel.onCategoryClicked(categoryId)
         })
         binding.categoryList.adapter = adapter
@@ -60,7 +61,15 @@ class CategoryFragment : Fragment() {
 
             }
         })
+        categoryViewModel.navigateToSleepDetail.observe(viewLifecycleOwner, Observer { night ->
+            night?.let {
+                this.findNavController().navigate(
+                    CategoryFragmentDirections
+                        .actionCategoryFragmentToStoryFragment())
 
+                categoryViewModel.onCategoryNavigated()
+            }
+        })
         val manager = GridLayoutManager(activity, 2)
         binding.categoryList.layoutManager = manager
 

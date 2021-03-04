@@ -25,8 +25,18 @@ class CategoryViewModel : ViewModel() {
     }
     var categories: LiveData<ArrayList<Category>> = _categories
 
-    private val _categoryDetail = MutableLiveData<Long>()
+    /**
+     * Navigation for the SleepDetail fragment.
+     */
+    private val _navigateToCategoryetail = MutableLiveData<Long?>()
+    val navigateToSleepDetail
+        get() = _navigateToCategoryetail
+
     fun onCategoryClicked(id: Long) {
-        _categoryDetail.value = id
+        _navigateToCategoryetail.value = id
+    }
+
+    fun onCategoryNavigated() {
+        _navigateToCategoryetail.value = null
     }
 }
