@@ -36,5 +36,12 @@
         android:id="@+id/story_fragment"
         android:name="com.smarttech.story.ui.story.StoryFragment"
         android:label="fragment_story_list"
-        tools:layout="@layout/fragment_story_list" />
+        tools:layout="@layout/fragment_story_list" >
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_story_fragment_to_category_fragment"
+            app:destination="@id/category_fragment" />
+    </fragment>
 </navigation>

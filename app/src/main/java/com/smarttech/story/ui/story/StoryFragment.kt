@@ -8,21 +8,32 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.smarttech.story.R
+import com.smarttech.story.databinding.FragmentCategoryListBinding
+import com.smarttech.story.databinding.FragmentStoryListBinding
+import com.smarttech.story.ui.category.CategoryListener
+import com.smarttech.story.ui.category.CategoryRecyclerViewAdapter
+import com.smarttech.story.ui.category.CategoryViewModel
 import com.smarttech.story.ui.story.dummy.DummyContent
 
 /**
  * A fragment representing a list of Items.
  */
 class StoryFragment : Fragment() {
-
+    private lateinit var storyViewModel: StoryViewModel
     private var columnCount = 1
-
+    val args: StoryFragmentArgs by navArgs()
+    var categoryId: Long = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
+            categoryId = args.categoryId
         }
     }
 
@@ -30,19 +41,31 @@ class StoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_story_list, container, false)
+        // Get a reference to the binding object and inflate the fragment views.
+        val binding: FragmentStoryListBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_story_list, container, false
+        )
 
+        val viewModelFactory = StoryViewModelFactory(categoryId)
+        storyViewModel =
+            ViewModelProvider(this, viewModelFactory).get(StoryViewModel::class.java)
+
+        binding.storyViewModel = storyViewModel
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = StoryRecyclerViewAdapter(DummyContent.ITEMS)
+        val adapter = StoryRecyclerViewAdapter(StoryListener { categoryId ->
+            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+            storyViewModel.onCategoryClicked(categoryId)
+        })
+        binding.storyList.adapter = adapter
+        storyViewModel.stories.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+                //binding.categoryList.adapter = adapter
             }
-        }
-        return view
+        })
+        val manager = GridLayoutManager(activity, 2)
+        binding.storyList.layoutManager = manager
+        return binding.root
     }
 
     companion object {

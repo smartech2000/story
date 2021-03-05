@@ -61,12 +61,11 @@ class CategoryFragment : Fragment() {
 
             }
         })
-        categoryViewModel.navigateToSleepDetail.observe(viewLifecycleOwner, Observer { night ->
-            night?.let {
-                this.findNavController().navigate(
-                    CategoryFragmentDirections
-                        .actionCategoryFragmentToStoryFragment())
-
+        categoryViewModel.navigateToSleepDetail.observe(viewLifecycleOwner, Observer { categoryId ->
+            categoryId?.let {
+                val action = CategoryFragmentDirections
+                    .actionCategoryFragmentToStoryFragment(categoryId)
+                this.findNavController().navigate(action)
                 categoryViewModel.onCategoryNavigated()
             }
         })
