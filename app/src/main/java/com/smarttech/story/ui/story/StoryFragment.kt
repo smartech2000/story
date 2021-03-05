@@ -45,7 +45,6 @@ class StoryFragment : Fragment() {
         val binding: FragmentStoryListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_story_list, container, false
         )
-
         val viewModelFactory = StoryViewModelFactory(categoryId)
         storyViewModel =
             ViewModelProvider(this, viewModelFactory).get(StoryViewModel::class.java)
@@ -60,6 +59,7 @@ class StoryFragment : Fragment() {
         storyViewModel.stories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+
                 //binding.categoryList.adapter = adapter
             }
         })

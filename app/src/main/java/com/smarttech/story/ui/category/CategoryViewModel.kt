@@ -8,10 +8,9 @@ import com.google.firebase.ktx.Firebase
 import com.smarttech.story.model.Category
 
 class CategoryViewModel : ViewModel() {
-
+    val db = Firebase.firestore
     private val _categories = MutableLiveData<ArrayList<Category>>().apply {
         // Access a Cloud Firestore instance from your Activity
-        val db = Firebase.firestore
         val categories = db.collection("category")
         categories.get().addOnSuccessListener { docs ->
             var categories = ArrayList<Category>()
@@ -26,15 +25,18 @@ class CategoryViewModel : ViewModel() {
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _navigateToCategoryetail = MutableLiveData<Long?>()
-    val navigateToSleepDetail
-        get() = _navigateToCategoryetail
+    private val _category = MutableLiveData<Category?>()
+    val navigateToCategory
+        get() = _category
 
     fun onCategoryClicked(id: Long) {
-        _navigateToCategoryetail.value = id
+        db.collection("category").whereEqualTo("id", id).get()
+            .addOnSuccessListener { docs ->
+                _category.value = docs.documents.get(0).toObject(Category::class.java)
+            }
     }
 
     fun onCategoryNavigated() {
-        _navigateToCategoryetail.value = null
+        _category.value = null
     }
 }
