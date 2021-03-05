@@ -3,11 +3,11 @@ package com.smarttech.story
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,5 +24,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.category_fragment, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    @Override
+    override fun onSupportNavigateUp(): Boolean {
+        return this.findNavController( R.id.nav_host_fragment)
+            .navigateUp()
     }
 }
