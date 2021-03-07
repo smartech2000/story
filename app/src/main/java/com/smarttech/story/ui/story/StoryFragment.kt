@@ -28,12 +28,14 @@ class StoryFragment : Fragment() {
     private var columnCount = 1
     val args: StoryFragmentArgs by navArgs()
     var categoryId: Long = 0L
+    var categoryName : String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
             categoryId = args.categoryId
+            categoryName = args.categoryName
         }
     }
 
@@ -45,7 +47,7 @@ class StoryFragment : Fragment() {
         val binding: FragmentStoryListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_story_list, container, false
         )
-        val viewModelFactory = StoryViewModelFactory(categoryId)
+        val viewModelFactory = StoryViewModelFactory(categoryId, categoryName)
         storyViewModel =
             ViewModelProvider(this, viewModelFactory).get(StoryViewModel::class.java)
 

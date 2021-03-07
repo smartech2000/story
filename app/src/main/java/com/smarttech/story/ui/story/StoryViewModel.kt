@@ -8,21 +8,36 @@ import com.google.firebase.ktx.Firebase
 import com.smarttech.story.model.Category
 import com.smarttech.story.model.Story
 
-class StoryViewModel ( private val categoryId: Long): ViewModel() {
+class StoryViewModel(private val categoryId: Long, private val categoryName: String) : ViewModel() {
 
     private val _stories = MutableLiveData<ArrayList<Story>>().apply {
         // Access a Cloud Firestore instance from your Activity
         val db = Firebase.firestore
-        val storiesRef = db.collection("story").whereEqualTo("category_id", categoryId)
-        storiesRef.get().addOnSuccessListener { docs ->
-            var stories = ArrayList<Story>()
-            for (doc in docs) {
-                stories!!.add(doc.toObject(Story::class.java))
+        var stories = ArrayList<Story>()
+        if (categoryId != -1L) {
+            val storiesRef = db.collection("story").whereEqualTo("category_id", categoryId)
+            storiesRef.get().addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    stories!!.add(doc.toObject(Story::class.java))
+                    value = stories
+                }
             }
-            value = stories
+        } else {
+            val storiesRef = db.collection("story");
+            storiesRef.get().addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    var   story = doc.toObject(Story::class.java)
+                    if (story.name.contains(categoryName, true) || story.author.contains(categoryName, true))  {
+                        stories.add(story)
+                    }
+                    value = stories
+                }
+            }
         }
+
     }
     var stories: LiveData<ArrayList<Story>> = _stories
+
     /**
      * Navigation for the SleepDetail fragment.
      */
