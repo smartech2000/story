@@ -14,13 +14,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.ui.category.CategoryFragmentDirections
 import com.smarttech.story.ui.story.StoryFragment
+import com.smarttech.story.utils.InitData
 
 class MainActivity : AppCompatActivity() {
     lateinit var adapter: ArrayAdapter<*>
     lateinit var navController: NavController
     lateinit var navHostFragment: NavHostFragment
+    private lateinit var db: AppDatabase;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +47,12 @@ class MainActivity : AppCompatActivity() {
             this, android.R.layout.simple_list_item_1,
             resources.getStringArray(R.array.months_array)
         )
+
+        db = AppDatabase(this);
+        val storyDao = db.storyDao();
+        InitData().InitData(storyDao)
+        val historyLocals = storyDao.getAllHistoryLocal();
+
     }
 
     @Override
