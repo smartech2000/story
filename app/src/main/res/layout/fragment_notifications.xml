@@ -4,13 +4,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.notifications.NotificationsFragment">
-
-
-    <SearchView
-        style="@android:style/Widget.Material.SearchView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="-236dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".ui.notifications.NotificationsFragment"/>

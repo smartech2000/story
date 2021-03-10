@@ -16,9 +16,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.smarttech.story.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"/>
+        android:id="@+id/navigation_bookself"
+        android:name="com.smarttech.story.ui.bookself.BookSelfFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_bookself_list"
+        />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -30,8 +32,8 @@
     <fragment
         android:id="@+id/navigation_setting"
         android:name="com.smarttech.story.ui.setting.SettingFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/story_fragment"
         android:name="com.smarttech.story.ui.story.StoryFragment"

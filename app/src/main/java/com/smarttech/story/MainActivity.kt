@@ -19,7 +19,6 @@ import com.smarttech.story.ui.story.StoryFragment
 
 class MainActivity : AppCompatActivity() {
     lateinit var adapter: ArrayAdapter<*>
-    private lateinit var listView: ListView
     lateinit var navController: NavController
     lateinit var navHostFragment: NavHostFragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.category_fragment, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.category_fragment, R.id.navigation_bookself, R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
             this, android.R.layout.simple_list_item_1,
             resources.getStringArray(R.array.months_array)
         )
-        listView = findViewById(R.id.listView)
     }
 
     @Override
