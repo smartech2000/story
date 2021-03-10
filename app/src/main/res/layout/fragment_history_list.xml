@@ -2,20 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="viewModel"
-            type="com.smarttech.story.ui.bookself.BookSelfViewModel" />
+            type="com.smarttech.story.ui.bookself.history.HistoryViewModel" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bookself_list"
-        android:name="com.smarttech.story.ui.BookSelf.BookSelfFragment"
+        android:id="@+id/history_list"
+        android:name="com.smarttech.story.ui.bookself.history.HistoryFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.bookself.BookSelfFragment"
-        tools:listitem="@layout/fragment_bookself" />
+        tools:context=".ui.bookself.history.HistoryFragment"
+        tools:listitem="@layout/fragment_history" />
 </layout>

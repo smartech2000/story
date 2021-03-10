@@ -20,7 +20,11 @@
         android:name="com.smarttech.story.ui.bookself.BookSelfFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_bookself_list"
-        />
+        >
+        <action
+            android:id="@+id/action_navigation_bookself_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -49,4 +53,9 @@
             android:name="categoryName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.smarttech.story.ui.bookself.history.HistoryFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_history"/>
 </navigation>

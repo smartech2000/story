@@ -1,4 +1,4 @@
-package com.smarttech.story.ui.bookself
+package com.smarttech.story.ui.bookself.history
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,26 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
-import com.smarttech.story.databinding.FragmentBookselfBinding
-import com.smarttech.story.databinding.FragmentBookselfListBinding
+import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentHistoryListBinding
-import com.smarttech.story.ui.bookself.dummy.DummyContent
-import com.smarttech.story.ui.bookself.history.HistoryListener
-import com.smarttech.story.ui.bookself.history.HistoryRecyclerViewAdapter
-import com.smarttech.story.ui.bookself.history.HistoryViewModel
-import com.smarttech.story.ui.category.CategoryFragmentDirections
+import com.smarttech.story.ui.bookself.history.dummy.DummyContent
+import com.smarttech.story.ui.category.*
 
 /**
  * A fragment representing a list of Items.
  */
-class BookSelfFragment : Fragment() {
-    private lateinit var viewModel: BookSelfViewModel
+class HistoryFragment : Fragment() {
+    private lateinit var viewModel: HistoryViewModel
     private var columnCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,33 +38,24 @@ class BookSelfFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentBookselfListBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_bookself_list, container, false
+        val binding: FragmentHistoryListBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_history_list, container, false
         )
         viewModel =
-            ViewModelProvider(this).get(BookSelfViewModel::class.java)
+            ViewModelProvider(this).get(HistoryViewModel::class.java)
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = BookSelfRecyclerViewAdapter(FunctionListener { itemId ->
-            //Toast.makeText(context, "${itemId}", Toast.LENGTH_LONG).show()
-            viewModel.onFunctionClicked(itemId)
+        val adapter = HistoryRecyclerViewAdapter(HistoryListener { itemId ->
+            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+            viewModel.onHistoryClicked(itemId)
         })
-        binding.bookselfList.adapter = adapter
+        binding.historyList.adapter = adapter
         ///binding.categoryList.adapter = adapter
-        viewModel.functions.observe(viewLifecycleOwner, Observer {
+        viewModel.histories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-            }
-        })
-
-        viewModel.navigateToFunction.observe(viewLifecycleOwner, Observer { function ->
-            function?.let {
-                val action = BookSelfFragmentDirections
-                    .actionNavigationBookselfToHistoryFragment()
-                this.findNavController().navigate(action)
-                viewModel.onFunctionNavigated()
             }
         })
         return binding.root
@@ -83,7 +69,7 @@ class BookSelfFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            BookSelfFragment().apply {
+            HistoryFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
