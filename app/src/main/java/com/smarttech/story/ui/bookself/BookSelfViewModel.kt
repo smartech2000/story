@@ -1,16 +1,11 @@
 package com.smarttech.story.ui.bookself
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.smarttech.story.R
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.Function
-import com.smarttech.story.model.local.HistoryLocal
 
 class BookSelfViewModel() : ViewModel() {
     private lateinit var db: AppDatabase;
@@ -31,7 +26,7 @@ class BookSelfViewModel() : ViewModel() {
         get() = _function
 
     fun onFunctionClicked(id: Int) {
-        _function.value =Function(1, "Lịch sử", "Lịch sử đọc truyện", R.drawable.ic_baseline_history_24)
+        _function.value =this.functions.value?.get(index = id-1)
     }
 
     fun onFunctionNavigated() {

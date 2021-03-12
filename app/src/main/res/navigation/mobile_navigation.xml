@@ -24,6 +24,12 @@
         <action
             android:id="@+id/action_navigation_bookself_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_navigation_bookself_to_downloadFragment"
+            app:destination="@id/downloadFragment" />
+        <action
+            android:id="@+id/action_navigation_bookself_to_bookmarkFragment"
+            app:destination="@id/bookmarkFragment" />
     </fragment>
 
     <fragment
@@ -58,4 +64,14 @@
         android:name="com.smarttech.story.ui.bookself.history.HistoryFragment"
         android:label="HistoryFragment"
         tools:layout="@layout/fragment_history"/>
+    <fragment
+        android:id="@+id/downloadFragment"
+        android:name="com.smarttech.story.ui.bookself.download.DownloadFragment"
+        android:label="DownloadFragment"
+        tools:layout="@layout/fragment_download"/>
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="com.smarttech.story.ui.bookself.bookmark.BookmarkFragment"
+        android:label="BookmarkFragment"
+        tools:layout="@layout/fragment_bookmark"/>/>
 </navigation>

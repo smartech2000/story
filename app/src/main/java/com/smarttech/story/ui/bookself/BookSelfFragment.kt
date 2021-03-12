@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentBookselfBinding
@@ -65,8 +66,19 @@ class BookSelfFragment : Fragment() {
 
         viewModel.navigateToFunction.observe(viewLifecycleOwner, Observer { function ->
             function?.let {
-                val action = BookSelfFragmentDirections
+                var action:NavDirections = BookSelfFragmentDirections
                     .actionNavigationBookselfToHistoryFragment()
+                when (function.id) {
+                    1->action = BookSelfFragmentDirections
+                        .actionNavigationBookselfToHistoryFragment()
+                    2-> action = BookSelfFragmentDirections
+                        .actionNavigationBookselfToDownloadFragment()
+                    3-> action = BookSelfFragmentDirections
+                        .actionNavigationBookselfToBookmarkFragment()
+                }
+
+
+
                 this.findNavController().navigate(action)
                 viewModel.onFunctionNavigated()
             }
