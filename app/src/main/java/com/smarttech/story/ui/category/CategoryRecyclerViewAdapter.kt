@@ -11,9 +11,6 @@ import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryBinding
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.model.Category
-
-import com.smarttech.story.ui.category.dummy.DummyContent.DummyItem
-
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.

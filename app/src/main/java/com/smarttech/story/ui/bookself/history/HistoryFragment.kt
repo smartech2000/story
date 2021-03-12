@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentHistoryListBinding
-import com.smarttech.story.ui.bookself.history.dummy.DummyContent
 import com.smarttech.story.ui.category.*
 
 /**

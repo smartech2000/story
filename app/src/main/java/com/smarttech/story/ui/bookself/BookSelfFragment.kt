@@ -17,7 +17,6 @@ import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentBookselfBinding
 import com.smarttech.story.databinding.FragmentBookselfListBinding
 import com.smarttech.story.databinding.FragmentHistoryListBinding
-import com.smarttech.story.ui.bookself.dummy.DummyContent
 import com.smarttech.story.ui.bookself.history.HistoryListener
 import com.smarttech.story.ui.bookself.history.HistoryRecyclerViewAdapter
 import com.smarttech.story.ui.bookself.history.HistoryViewModel

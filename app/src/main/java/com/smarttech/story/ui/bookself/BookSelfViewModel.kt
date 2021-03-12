@@ -11,7 +11,6 @@ import com.smarttech.story.R
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.Function
 import com.smarttech.story.model.local.HistoryLocal
-import com.smarttech.story.ui.bookself.dummy.DummyContent
 
 class BookSelfViewModel() : ViewModel() {
     private lateinit var db: AppDatabase;
