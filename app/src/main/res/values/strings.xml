@@ -20,4 +20,47 @@
         <item>December</item>
     </string-array>
 
+    <string-array name="category">
+        <item>Thể loại</item>
+        <item>Ngôn tình</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string-array name="status">
+        <item>Trạng thái</item>
+        <item>Hoàn thành</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string-array name="sort">
+        <item>Sắp xếp</item>
+        <item>Lượt đọc</item>
+        <item>Mới cập nhật</item>
+        <item>A-Z</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 </resources>

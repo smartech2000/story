@@ -33,10 +33,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.smarttech.story.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_search"
+        android:name="com.smarttech.story.ui.search.SearchFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/search_fragment" />
 
 
     <fragment
@@ -73,5 +73,6 @@
         android:id="@+id/bookmarkFragment"
         android:name="com.smarttech.story.ui.bookself.bookmark.BookmarkFragment"
         android:label="BookmarkFragment"
-        tools:layout="@layout/fragment_bookmark"/>/>
+        tools:layout="@layout/fragment_bookmark"/>
+
 </navigation>

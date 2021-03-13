@@ -4,4 +4,4 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Category(@PrimaryKey var id: Long =0, var title:String ="")
+data class CategoryStories(@PrimaryKey var categoryId: Long, var storyId: Long)

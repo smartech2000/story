@@ -2,14 +2,10 @@ package com.smarttech.story.ui.category
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryBinding
-import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.model.Category
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -56,7 +52,7 @@ class CategoryDiffCallback : DiffUtil.ItemCallback<Category>() {
     }
 
     override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.title == newItem.title
     }
 }
 

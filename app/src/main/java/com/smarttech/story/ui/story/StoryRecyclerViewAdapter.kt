@@ -59,7 +59,7 @@ class StoryDiffCallback : DiffUtil.ItemCallback<Story>() {
     }
 
     override fun areContentsTheSame(oldItem: Story, newItem: Story): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.title == newItem.title
     }
 }
 
