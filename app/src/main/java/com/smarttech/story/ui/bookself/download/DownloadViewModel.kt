@@ -13,9 +13,9 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     private lateinit var db: AppDatabase;
     private val _downloads = MutableLiveData<List<DownloadLocal>>().apply {
         // Access a Cloud Firestore instance from your Activity
-        db = AppDatabase(application)
+/*        db = AppDatabase(application)
         val downloads =  db.storyDao().getAllDownloadLocal()
-        value = downloads
+        value = downloads*/
     }
     var downloads: LiveData<List<DownloadLocal>> = _downloads
 

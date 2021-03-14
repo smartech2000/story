@@ -1,5 +1,6 @@
 package com.smarttech.story.ui.story
 
+import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,7 +28,7 @@ class StoryFragment : Fragment() {
     private lateinit var storyViewModel: StoryViewModel
     private var columnCount = 1
     val args: StoryFragmentArgs by navArgs()
-    var categoryId: Long = 0L
+    var categoryId: Int = 0
     var categoryName : String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +48,7 @@ class StoryFragment : Fragment() {
         val binding: FragmentStoryListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_story_list, container, false
         )
-        val viewModelFactory = StoryViewModelFactory(categoryId, categoryName)
+        val viewModelFactory = StoryViewModelFactory(Application(),categoryId, categoryName)
         storyViewModel =
             ViewModelProvider(this, viewModelFactory).get(StoryViewModel::class.java)
 

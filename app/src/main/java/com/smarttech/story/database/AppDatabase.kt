@@ -5,12 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.smarttech.story.dao.StoryDao
+import com.smarttech.story.model.Category
+import com.smarttech.story.model.CategoryStories
+import com.smarttech.story.model.Story
 import com.smarttech.story.model.local.BookmarkLocal
 import com.smarttech.story.model.local.DownloadLocal
 import com.smarttech.story.model.local.HistoryLocal
 
 @Database(
-    entities = arrayOf(HistoryLocal::class, DownloadLocal::class, BookmarkLocal::class),
+    entities = arrayOf(Category::class,
+        Story::class,
+        CategoryStories::class,HistoryLocal::class, DownloadLocal::class, BookmarkLocal::class),
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {

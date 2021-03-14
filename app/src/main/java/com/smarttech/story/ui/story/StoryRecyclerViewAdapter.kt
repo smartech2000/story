@@ -63,6 +63,6 @@ class StoryDiffCallback : DiffUtil.ItemCallback<Story>() {
     }
 }
 
-class StoryListener(val clickListener: (categoryId: Long) -> Unit) {
+class StoryListener(val clickListener: (categoryId: Int) -> Unit) {
     fun onClick(story: Story) = clickListener(story.id)
 }

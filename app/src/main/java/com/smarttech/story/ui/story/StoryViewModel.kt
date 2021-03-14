@@ -1,22 +1,27 @@
 package com.smarttech.story.ui.story
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.Category
 import com.smarttech.story.model.CategoryStories
 import com.smarttech.story.model.Story
 import kotlin.system.measureTimeMillis
 
-class StoryViewModel(private val categoryId: Long, private val categoryName: String) : ViewModel() {
+class StoryViewModel(application: Application, private val categoryId: Int, private val categoryName: String) : AndroidViewModel(application)  {
     private lateinit var database: DatabaseReference
-    private val _stories = MutableLiveData<ArrayList<Story>>().apply {
-
+    private lateinit var db: AppDatabase
+    private val _stories = MutableLiveData<List<Story>>().apply {
+        val storyDao = AppDatabase(application).storyDao()
+        value = storyDao.getStoryByCategoryId(categoryId)
         // Access a Cloud Firestore instance from your Activity
-        database = Firebase.database.reference
+/*        database = Firebase.database.reference
         var categoryStoriesList = ArrayList<CategoryStories>()
         // call your function here
         val categoryStoriesDbRef = database.child("data").child("categoryStories")
@@ -30,7 +35,7 @@ class StoryViewModel(private val categoryId: Long, private val categoryName: Str
             }
             var x = 0
         }
-        var x = 0
+        var x = 0*/
         // Access a Cloud Firestore instance from your Activity
 /*        val db = Firebase.firestore
         var stories = ArrayList<Story>()
@@ -56,16 +61,16 @@ class StoryViewModel(private val categoryId: Long, private val categoryName: Str
         }*/
 
     }
-    var stories: LiveData<ArrayList<Story>> = _stories
+    var stories: LiveData<List<Story>> = _stories
 
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _navigateToCategoryetail = MutableLiveData<Long?>()
+    private val _navigateToCategoryetail = MutableLiveData<Int?>()
     val navigateToSleepDetail
         get() = _navigateToCategoryetail
 
-    fun onCategoryClicked(id: Long) {
+    fun onCategoryClicked(id: Int) {
         _navigateToCategoryetail.value = id
     }
 

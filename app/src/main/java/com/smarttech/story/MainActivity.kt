@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
             resources.getStringArray(R.array.months_array)
         )
 
-        db = AppDatabase(this);
-        val storyDao = db.storyDao();
-        InitData().InitData(storyDao)
-        val historyLocals = storyDao.getAllHistoryLocal();
+        //db = AppDatabase(this);
+       // val storyDao = db.storyDao();
+        //InitData().InitData(storyDao)
+       // val historyLocals = storyDao.getAllHistoryLocal();
 
     }
 

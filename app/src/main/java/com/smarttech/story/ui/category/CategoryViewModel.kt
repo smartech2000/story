@@ -1,31 +1,25 @@
 package com.smarttech.story.ui.category
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.Category
 
-class CategoryViewModel : ViewModel() {
-    private lateinit var database: DatabaseReference
-    private val _categories = MutableLiveData<ArrayList<Category>>().apply {
-        // Access a Cloud Firestore instance from your Activity
-        database = Firebase.database.reference
-        val categories = database.child("data").child("categories")
-        categories.get().addOnSuccessListener { docs ->
-            var categories = ArrayList<Category>()
-            for (doc in docs.children) {
-                var  catetory = Category()
-                catetory.id = doc.child("id").value.toString().toLong()
-                catetory.title = doc.child("title").value.toString()
-                categories!!.add(catetory)
-            }
-            value = categories
-        }
+class CategoryViewModel(application: Application) : AndroidViewModel(application) {
+    private lateinit var db: AppDatabase
+    private val _categories = MutableLiveData<List<Category>>().apply {
+        val storyDao = AppDatabase(application).storyDao()
+        value = storyDao.getAllCategory()
     }
-    var categories: LiveData<ArrayList<Category>> = _categories
+    var categories: LiveData<List<Category>> = _categories
 
     /**
      * Navigation for the SleepDetail fragment.
@@ -34,7 +28,7 @@ class CategoryViewModel : ViewModel() {
     val navigateToCategory
         get() = _category
 
-    fun onCategoryClicked(id: Long) {
+    fun onCategoryClicked(id: Int) {
         _category.value = _categories.value?.filter { category -> category.id == id }?.last()
 /*        db.collection("category").whereEqualTo("id", id).get()
             .addOnSuccessListener { docs ->

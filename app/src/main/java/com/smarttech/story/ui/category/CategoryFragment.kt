@@ -58,7 +58,7 @@ class CategoryFragment : Fragment() {
         categoryViewModel.navigateToCategory.observe(viewLifecycleOwner, Observer { category ->
             category?.let {
                 val action = CategoryFragmentDirections
-                    .actionCategoryFragmentToStoryFragment(category.id, category.title)
+                    .actionCategoryFragmentToStoryFragment(category.id, category.title!!)
                 this.findNavController().navigate(action)
                 categoryViewModel.onCategoryNavigated()
             }

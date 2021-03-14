@@ -1,16 +1,22 @@
 package com.smarttech.story.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-@Entity
+@Entity(tableName = "story")
 data class Story(
-    @PrimaryKey var id: Long = 0,
-    var authorId: Long = 0,
-    var avatar: String = "",
-    var description: String = "",
-    var rate: Double,
-    var source: String,
-    var status: Int,
-    var title: String,
-    var view: Long
+    @PrimaryKey var id: Int,
+    @ColumnInfo(name = "source") var source: String?,
+    @ColumnInfo(name = "avatar") var avatar: String?,
+    @ColumnInfo(name = "title") var title: String?,
+    @ColumnInfo(name = "dataDir") var dataDir: String?,
+    @ColumnInfo(name = "md5Key") var md5key: String?,
+    @ColumnInfo(name = "href") var href: String?,
+    @ColumnInfo(name = "description") var description: String?,
+
+    @ColumnInfo(name = "view") var view: String?,
+
+    @ColumnInfo(name = "rate") var rate: Double?,
+    @ColumnInfo(name = "author_id") var authorId: Int?,
+    @ColumnInfo(name = "status") var status: Int?
 )

@@ -13,9 +13,9 @@ class BookmarkViewModel(application: Application) : AndroidViewModel(application
     private lateinit var db: AppDatabase;
     private val _bookmarks = MutableLiveData<List<BookmarkLocal>>().apply {
         // Access a Cloud Firestore instance from your Activity
-        db = AppDatabase(application)
+/*        db = AppDatabase(application)
         val bookmarks =  db.storyDao().getAllBookmarkLocal()
-        value = bookmarks
+        value = bookmarks*/
     }
     var bookmarks: LiveData<List<BookmarkLocal>> = _bookmarks
 

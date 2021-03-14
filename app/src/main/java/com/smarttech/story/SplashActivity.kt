@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
+import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.UnzipUtility
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -37,7 +39,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
                 //Switch to the main thread operation UI
 
                 //Switch back to the IO thread to create the downloaded file
-                val url = "https://www.dropbox.com/s/wn4mordayhqc6av/story.db.zip?dl=1"
+                val url = "https://www.dropbox.com/s/3fn1oe9e1fy7gfe/story_text.db.zip?dl=1"
 /*                val file =
                     File("${Environment.getStorageDirectory().path}/download/story.zip")
 
@@ -91,15 +93,19 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
                     } finally {
                         inStream?.close()
                         outStream?.close()
-
+                        val  unzip = UnzipUtility()
+                        applicationContext.deleteDatabase("story.db")
+                        UnzipUtility.unzip(getFileStreamPath("story.zip").path,getFileStreamPath("story.zip").parentFile.parent + File.separator +"databases")
+                        getFileStreamPath("story.zip").delete()
+                        var intent = Intent(this@SplashActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
                 }
 
             }
 
-            var intent = Intent(this@SplashActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+
         }
     }
 

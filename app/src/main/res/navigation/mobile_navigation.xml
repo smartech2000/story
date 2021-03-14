@@ -51,7 +51,7 @@
         tools:layout="@layout/fragment_story_list">
         <argument
             android:name="categoryId"
-            app:argType="long" />
+            app:argType="integer" />
         <action
             android:id="@+id/action_story_fragment_to_category_fragment"
             app:destination="@id/category_fragment" />
