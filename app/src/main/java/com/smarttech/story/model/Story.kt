@@ -1,11 +1,12 @@
 package com.smarttech.story.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 @Entity(tableName = "story")
 data class Story(
-    @PrimaryKey var id: Int,
+    @PrimaryKey   @ColumnInfo(name = "id") var storyId: Int,
     @ColumnInfo(name = "source") var source: String?,
     @ColumnInfo(name = "avatar") var avatar: String?,
     @ColumnInfo(name = "title") var title: String?,
@@ -19,4 +20,5 @@ data class Story(
     @ColumnInfo(name = "rate") var rate: Double?,
     @ColumnInfo(name = "author_id") var authorId: Int?,
     @ColumnInfo(name = "status") var status: Int?
+
 )

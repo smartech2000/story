@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="story"
-            type="com.smarttech.story.model.Story" />
+            name="storyViewInfo"
+            type="com.smarttech.story.model.StoryViewInfo" />
 
         <variable
             name="clickListener"
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!--android:text="@{story.title}"--><![CDATA[
+            <!--android:text="@{storyViewInfo.story.title}"--><![CDATA[
                 android:textAppearance="?attr/textAppearanceListItem"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -37,13 +37,15 @@
 
             <TextView
                 android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="31dp"
+                android:layout_height="19dp"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="1dp"
-                android:text="@{story.view.toString()}"
+                android:text="@{storyViewInfo.story.view.toString()}"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView4"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
                 tools:text="1000" />
 
             <ImageView
@@ -62,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{story.rate.toString()}"
+                android:text="@{storyViewInfo.story.rate.toString()}"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView7"
                 tools:text="9" />
@@ -71,9 +73,10 @@
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
                 app:srcCompat="@drawable/ic_baseline_preview_24" />
 
             <TextView
@@ -82,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@{story.title}"
+                android:text="@{storyViewInfo.story.title}"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Tên truyện" />
@@ -112,7 +115,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="23dp"
+                android:layout_marginEnd="8dp"
                 android:text="Trạng thái"
                 app:layout_constraintEnd_toStartOf="@+id/textView8"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
@@ -122,8 +125,8 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="92dp"
-                android:text="@{story.status.toString()}"
+                android:layout_marginEnd="8dp"
+                android:text="@{storyViewInfo.statusTitle.toString()}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Full" />
@@ -133,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
-                android:text="@{story.authorId.toString()}"
+                android:text="@{storyViewInfo.authorTitle.toString()}"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
                 app:layout_constraintStart_toEndOf="@+id/textView6"
                 tools:text="Kim Dung" />
