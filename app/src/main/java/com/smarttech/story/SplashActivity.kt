@@ -18,9 +18,9 @@ import kotlin.coroutines.CoroutineContext
 class SplashActivity : AppCompatActivity(), CoroutineScope {
     val activityScope = CoroutineScope(Dispatchers.Main)
 
+    //https://www.programmersought.com/article/37335883860/
     //job is used to control the coroutine
     private lateinit var job: Job
-
     //Inheriting CoroutineScope must initialize the coroutineContext variable
     // This is the standard way of writing, + is actually the plus method, which means job in the front, used to control the coroutine, and Dispatchers in the back, specifying the thread to start
     override val coroutineContext: CoroutineContext
@@ -28,6 +28,8 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Initialize job in onCreate
+        job = Job()
         hideSystemUI();
         setContentView(R.layout.activity_splash)
 
@@ -109,6 +111,10 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
+    }
     override fun onPause() {
         activityScope.cancel()
         super.onPause()
