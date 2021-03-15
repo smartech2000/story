@@ -14,9 +14,9 @@ interface StoryDao {
     @Query("SELECT * FROM Category")
     fun getAllCategory(): List<Category>
 
-    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
+//    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
+    @Query("SELECT s.* FROM Story s INNER JOIN CATEGORY_STORY cs ON cs.category_id =:categoryId AND cs.story_id = s.id")
     fun getStoryByCategoryId(categoryId : Int): List<Story>
-
     @Query("SELECT * FROM HistoryLocal")
     fun getAllHistoryLocal(): List<HistoryLocal>
 
