@@ -66,8 +66,8 @@ class StoryFragment : Fragment() {
                 //binding.categoryList.adapter = adapter
             }
         })
-        val manager = GridLayoutManager(activity, 2)
-        binding.storyList.layoutManager = manager
+/*        val manager = GridLayoutManager(activity, 2)
+        binding.storyList.layoutManager = manager*/
         return binding.root
     }
 
