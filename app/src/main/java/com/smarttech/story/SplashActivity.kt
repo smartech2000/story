@@ -9,6 +9,7 @@ import android.view.View
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.networking.DropboxService
 import com.smarttech.story.utils.UnzipUtility
+import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.InputStream
@@ -32,6 +33,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         job = Job()
         hideSystemUI();
         setContentView(R.layout.activity_splash)
+
         if (!databaseFileExists()) {
 
             activityScope.launch {
@@ -104,6 +106,10 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
                                 getFileStreamPath("story.zip").parentFile.parent + File.separator + "databases"
                             )
                             getFileStreamPath("story.zip").delete()
+/*                            //After the download is complete, switch to the main thread to update the UI
+                            withContext(Dispatchers.Main) {
+                                progressBar.visibility =View.GONE
+                            }*/
                             var intent = Intent(this@SplashActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
