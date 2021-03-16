@@ -1,4 +1,5 @@
-package com.smarttech.story.ui.story
+package com.smarttech.story.ui.story.detail
+
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.databinding.FragmentStoryBinding
+import com.smarttech.story.databinding.FragmentStorydetailBinding
+import com.smarttech.story.model.Chapter
 import com.smarttech.story.model.Story
 import com.smarttech.story.model.StoryViewInfo
 
@@ -14,9 +17,9 @@ import com.smarttech.story.model.StoryViewInfo
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class StoryRecyclerViewAdapter(
-    val clickListener: StoryListener
-) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
+class StoryDetailRecyclerViewAdapter(
+    val clickListener: ChapterListener
+) : ListAdapter<Chapter, StoryDetailRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -28,11 +31,11 @@ class StoryRecyclerViewAdapter(
 
     // override fun getItemCount(): Int = values.size
 
-    class ViewHolder private constructor(val binding: FragmentStoryBinding) :
+    class ViewHolder private constructor(val binding: FragmentStorydetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: StoryViewInfo, clickListener: StoryListener) {
-            binding.storyViewInfo = item
+        fun bind(item: Chapter, clickListener: ChapterListener) {
+            binding.chapter = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -40,7 +43,7 @@ class StoryRecyclerViewAdapter(
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = FragmentStoryBinding.inflate(layoutInflater, parent, false)
+                val binding = FragmentStorydetailBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
@@ -48,17 +51,17 @@ class StoryRecyclerViewAdapter(
 
 }
 
-class StoryDiffCallback : DiffUtil.ItemCallback<StoryViewInfo>() {
+class StoryDiffCallback : DiffUtil.ItemCallback<Chapter>() {
 
-    override fun areItemsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
-        return oldItem.story.storyId == newItem.story.storyId
+    override fun areItemsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
-        return oldItem.story.title == newItem.story.title
+    override fun areContentsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+        return oldItem.title == newItem.title
     }
 }
 
-class StoryListener(val clickListener: (storyViewInfo: StoryViewInfo) -> Unit) {
-    fun onClick(storyViewInfo: StoryViewInfo) = clickListener(storyViewInfo)
+class ChapterListener(val clickListener: (chapterId: Int) -> Unit) {
+    fun onClick(chapter: Chapter) = clickListener(chapter.id)
 }
