@@ -89,5 +89,10 @@
             android:name="storyName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.smarttech.story.ui.account.AccountFragment"
+        android:label="Cài đặt"
+        tools:layout="@layout/fragment_account_list"/>
 
 </navigation>

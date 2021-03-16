@@ -16,7 +16,7 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="@string/title_notifications" />
     <item
-        android:id="@+id/navigation_setting"
+        android:id="@+id/navigation_account"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/title_setting" />
 
