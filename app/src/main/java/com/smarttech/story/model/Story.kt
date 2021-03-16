@@ -20,5 +20,6 @@ data class Story(
     @ColumnInfo(name = "rate") var rate: Double?,
     @ColumnInfo(name = "author_id") var authorId: Int?,
     @ColumnInfo(name = "status") var status: Int?
+    //@ColumnInfo(name = "total_chap") var totalChap: Int?
 
 )

@@ -1,9 +1,8 @@
 package com.smarttech.story.utils
 
 import java.io.*
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
-import java.util.zip.ZipOutputStream
+import java.util.zip.*
+import kotlin.text.Charsets.UTF_8
 
 
 /**
@@ -17,6 +16,9 @@ class UnzipUtility {
 
     companion object {
         private val BUFFER_SIZE = 6 * 1024
+
+        fun ungzip(content: ByteArray): String =
+            GZIPInputStream(content.inputStream()).bufferedReader(UTF_8).use { it.readText() }
 
         @Throws(IOException::class)
         fun zip(files: Array<String>, zipFile: String?) {

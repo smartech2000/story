@@ -20,7 +20,12 @@ class StoryViewModel(application: Application, private val categoryId: Int, priv
     private lateinit var db: AppDatabase
     private val _stories = MutableLiveData<List<StoryViewInfo>>().apply {
         val storyDao = AppDatabase(application).storyDao()
-        value = storyDao.getStoryByCategoryId(categoryId)
+        if (categoryId != -1) {
+            value = storyDao.getStoryByCategoryId(categoryId)
+        } else {
+            val keySearch = "%"+categoryName+"%"
+            value = storyDao.searchStory(keySearch)
+        }
     }
     var stories: LiveData<List<StoryViewInfo>> = _stories
     /**

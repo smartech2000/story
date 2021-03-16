@@ -15,6 +15,15 @@ interface StoryDao {
     @Query("SELECT * FROM Category")
     fun getAllCategory(): List<Category>
 
+    @Query(
+        "SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle FROM Story , Status, Author" +
+                " where Story.author_id = Author.id and Story.status = Status.id and " +
+                "( lower(story.title) like lower(:keySearch) or lower((select author.name from author where story.author_id =  author.id)) like lower(:keySearch))"
+    )
+    fun searchStory(keySearch: String): List<StoryViewInfo>
+
+/*    @Query("UPDATE story SET order_price=:price WHERE order_id = :id")
+    fun updateStory(storyId:Int, totalChap:Int);*/
 
 /*    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
     fun getStoryByCategoryIdOld(categoryId: Int): List<Story>*/
@@ -25,8 +34,10 @@ interface StoryDao {
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle FROM Story , Status, Author where Story.author_id = Author.id and Story.status = Status.id and  Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
     fun getStoryByCategoryId(categoryId: Int): List<StoryViewInfo>
 
-    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
-            "FROM Story , Status, Author where Story.id=:storyId and  Story.author_id = Author.id and Story.status = Status.id")
+    @Query(
+        "SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
+                "FROM Story , Status, Author where Story.id=:storyId and  Story.author_id = Author.id and Story.status = Status.id"
+    )
     fun getStoryById(storyId: Int): StoryViewInfo
 
     //    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")

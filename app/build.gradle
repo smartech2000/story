@@ -21,6 +21,13 @@ android {
         multiDexEnabled true
 
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation":
+                                      "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -42,7 +49,10 @@ android {
 }
 
 dependencies {
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.7.0')

@@ -10,6 +10,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.*
+import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.UnzipUtility
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.system.measureTimeMillis
 
 class StoryDetailViewModel(application: Application, private val storyId: Int, private val storyName: String) : AndroidViewModel(application)  {
@@ -26,6 +30,8 @@ class StoryDetailViewModel(application: Application, private val storyId: Int, p
 
     private val _chapters = MutableLiveData<List<Chapter>>().apply {
         val storyDao = AppDatabase(application).storyDao()
+
+
     }
     var chapters: LiveData<List<Chapter>> = _chapters
     /**
