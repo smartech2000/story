@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu, menu)
         val search = menu.findItem(R.id.appSearchBar)
         val searchView = search.actionView as SearchView
+        searchView.setMaxWidth(Integer.MAX_VALUE)
         searchView.queryHint = "Tìm theo tên hoặc tác giả"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
