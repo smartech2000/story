@@ -60,13 +60,13 @@ class StoryDetailFragment : Fragment() {
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
-        val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { categoryId ->
+        val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            storyDetailViewModel.onCategoryClicked(categoryId)
+            storyDetailViewModel.onCategoryClicked(chapterDto)
         })
         binding.chapterList.adapter = adapter
         ///binding.categoryList.adapter = adapter
-        storyDetailViewModel.chapters.observe(viewLifecycleOwner, Observer {
+        storyDetailViewModel.chapterDtos.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
                 //binding.categoryList.adapter = adapter

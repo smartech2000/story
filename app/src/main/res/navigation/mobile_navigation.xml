@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/storyDetailFragment"
         android:name="com.smarttech.story.ui.story.detail.StoryDetailFragment"
-        android:label="StoryDetailFragment"
+        android:label="Chi tiết truyện"
         tools:layout="@layout/fragment_storydetail_list">
         <argument
             android:name="storyId"

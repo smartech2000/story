@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.model.Chapter
+import com.smarttech.story.model.dto.ChapterDto
 
 
 /**
@@ -16,7 +17,7 @@ import com.smarttech.story.model.Chapter
  */
 class StoryDetailRecyclerViewAdapter(
     val clickListener: ChapterListener
-) : ListAdapter<Chapter, StoryDetailRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
+) : ListAdapter<ChapterDto, StoryDetailRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -31,8 +32,8 @@ class StoryDetailRecyclerViewAdapter(
     class ViewHolder private constructor(val binding: FragmentStorydetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Chapter, clickListener: ChapterListener) {
-            binding.chapter = item
+        fun bind(item: ChapterDto, clickListener: ChapterListener) {
+            binding.chapterDto = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -48,17 +49,17 @@ class StoryDetailRecyclerViewAdapter(
 
 }
 
-class StoryDiffCallback : DiffUtil.ItemCallback<Chapter>() {
+class StoryDiffCallback : DiffUtil.ItemCallback<ChapterDto>() {
 
-    override fun areItemsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+    override fun areItemsTheSame(oldItem: ChapterDto, newItem: ChapterDto): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
+    override fun areContentsTheSame(oldItem: ChapterDto, newItem: ChapterDto): Boolean {
         return oldItem.title == newItem.title
     }
 }
 
-class ChapterListener(val clickListener: (chapterId: Int) -> Unit) {
-    fun onClick(chapter: Chapter) = clickListener(chapter.id)
+class ChapterListener(val clickListener: (chapterDto: ChapterDto) -> Unit) {
+    fun onClick(chapterDto: ChapterDto) = clickListener(chapterDto)
 }

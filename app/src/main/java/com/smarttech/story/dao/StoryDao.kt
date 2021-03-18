@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.smarttech.story.model.Category
+import com.smarttech.story.model.Story
 import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.model.local.Bookmark
 import com.smarttech.story.model.local.Download
@@ -30,6 +31,10 @@ interface StoryDao {
                 "FROM Story , Status, Author where Story.id=:storyId and  Story.author_id = Author.id and Story.status = Status.id"
     )
     fun getStoryById(storyId: Int): StoryViewInfo
+
+
+    @Query("SELECT * FROM story  where id =:storyId")
+    fun findStoryById(storyId: Int): Story
 
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
             "FROM Story , History, Status, Author " +
