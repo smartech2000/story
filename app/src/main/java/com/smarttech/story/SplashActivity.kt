@@ -42,7 +42,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
                 //Start directly from the IO thread here
                 launch(Dispatchers.IO) {
                     //Switch back to the IO thread to create the downloaded file
-                    val url = "https://www.dropbox.com/s/sllm6yg1efssu9j/story.db.zip?dl=1 "
+                    val url = "https://www.dropbox.com/s/fb5m5sdillbs4my/story.db.zip?dl=1"
                     val response = DropboxService.getInstance().downlload(url).execute()
                     val body = response.body()
                     if (response.isSuccessful && body != null) {

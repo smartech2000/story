@@ -12,12 +12,11 @@ data class Story(
     @ColumnInfo(name = "title") var title: String?,
     @ColumnInfo(name = "dataDir") var dataDir: String?,
     @ColumnInfo(name = "dropbox_uri") var dropboxUri: String?,
-    @ColumnInfo(name = "description") var description: String?,
     @ColumnInfo(name = "view") var view: String?,
     @ColumnInfo(name = "rate") var rate: Double?,
     @ColumnInfo(name = "chap_num") var chapNum: Int?,
     @ColumnInfo(name = "updated_date") var updateDate: String?,
     @ColumnInfo(name = "author_id") var authorId: Int?,
-
+    @ColumnInfo(name = "uploaded_by") var uploadedBy: Int?,
     @ColumnInfo(name = "status") var status: Int?
 )

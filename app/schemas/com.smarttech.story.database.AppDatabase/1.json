@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c529c725ada0b1bbe2294849c609c64b",
+    "identityHash": "ab9c714c21252fd162a86fdb004c1cc0",
     "entities": [
       {
         "tableName": "category",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "story",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `source` TEXT, `avatar` TEXT, `title` TEXT, `dataDir` TEXT, `dropbox_uri` TEXT, `description` TEXT, `view` TEXT, `rate` REAL, `chap_num` INTEGER, `updated_date` TEXT, `author_id` INTEGER, `status` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `source` TEXT, `avatar` TEXT, `title` TEXT, `dataDir` TEXT, `dropbox_uri` TEXT, `view` TEXT, `rate` REAL, `chap_num` INTEGER, `updated_date` TEXT, `author_id` INTEGER, `uploaded_by` INTEGER, `status` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -77,12 +77,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "description",
-            "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "view",
             "columnName": "view",
             "affinity": "TEXT",
@@ -109,6 +103,12 @@
           {
             "fieldPath": "authorId",
             "columnName": "author_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "uploadedBy",
+            "columnName": "uploaded_by",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -318,7 +318,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c529c725ada0b1bbe2294849c609c64b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ab9c714c21252fd162a86fdb004c1cc0')"
     ]
   }
 }
