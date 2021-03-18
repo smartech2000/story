@@ -4,29 +4,27 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.firebase.ktx.Firebase
 import com.smarttech.story.database.AppDatabase
-import com.smarttech.story.model.local.BookmarkLocal
+import com.smarttech.story.model.dto.StoryViewInfo
 
 class BookmarkViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var db: AppDatabase;
-    private val _bookmarks = MutableLiveData<List<BookmarkLocal>>().apply {
+    private val _bookmarks = MutableLiveData<List<StoryViewInfo>>().apply {
         // Access a Cloud Firestore instance from your Activity
 /*        db = AppDatabase(application)
         val bookmarks =  db.storyDao().getAllBookmarkLocal()
         value = bookmarks*/
     }
-    var bookmarks: LiveData<List<BookmarkLocal>> = _bookmarks
+    var bookmarks: LiveData<List<StoryViewInfo>> = _bookmarks
 
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _bookmark = MutableLiveData<BookmarkLocal?>()
+    private val _bookmark = MutableLiveData<StoryViewInfo?>()
     val navigateToBookmark
         get() = _bookmark
 
-    fun onBookmarkClicked(id: Long) {
+    fun onBookmarkClicked(storyViewInfo: StoryViewInfo) {
     }
 
     fun onBookmarkNavigated() {

@@ -40,9 +40,9 @@ class BookmarkFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = BookmarkRecyclerViewAdapter(BookmarkListener { itemId ->
+        val adapter = BookmarkRecyclerViewAdapter(BookmarkListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            viewModel.onBookmarkClicked(itemId)
+            viewModel.onBookmarkClicked(storyViewInfo)
         })
         binding.bookmarkList.adapter = adapter
         ///binding.categoryList.adapter = adapter

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1bfcb2c99e00e46887ac37bc933a4999",
+    "identityHash": "c529c725ada0b1bbe2294849c609c64b",
     "entities": [
       {
         "tableName": "category",
@@ -38,10 +38,10 @@
       },
       {
         "tableName": "story",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `source` TEXT, `avatar` TEXT, `title` TEXT, `dataDir` TEXT, `md5Key` TEXT, `href` TEXT, `description` TEXT, `view` TEXT, `rate` REAL, `author_id` INTEGER, `status` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `source` TEXT, `avatar` TEXT, `title` TEXT, `dataDir` TEXT, `dropbox_uri` TEXT, `description` TEXT, `view` TEXT, `rate` REAL, `chap_num` INTEGER, `updated_date` TEXT, `author_id` INTEGER, `status` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "storyId",
+            "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
@@ -71,14 +71,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "md5key",
-            "columnName": "md5Key",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "href",
-            "columnName": "href",
+            "fieldPath": "dropboxUri",
+            "columnName": "dropbox_uri",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -98,6 +92,18 @@
             "fieldPath": "rate",
             "columnName": "rate",
             "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chapNum",
+            "columnName": "chap_num",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updateDate",
+            "columnName": "updated_date",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -213,8 +219,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "HistoryLocal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `cloudId` INTEGER NOT NULL, `name` TEXT NOT NULL, `author` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -223,22 +229,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "cloudId",
-            "columnName": "cloudId",
+            "fieldPath": "story_id",
+            "columnName": "story_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "create_time",
+            "columnName": "create_time",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "author",
-            "columnName": "author",
-            "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -251,8 +251,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "DownloadLocal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `cloudId` INTEGER NOT NULL, `name` TEXT NOT NULL, `author` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "download",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -261,22 +261,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "cloudId",
-            "columnName": "cloudId",
+            "fieldPath": "story_id",
+            "columnName": "story_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "create_time",
+            "columnName": "create_time",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "author",
-            "columnName": "author",
-            "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -289,8 +283,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "BookmarkLocal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `cloudId` INTEGER NOT NULL, `name` TEXT NOT NULL, `author` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "bookmark",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -299,22 +293,16 @@
             "notNull": true
           },
           {
-            "fieldPath": "cloudId",
-            "columnName": "cloudId",
+            "fieldPath": "story_id",
+            "columnName": "story_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "create_time",
+            "columnName": "create_time",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "author",
-            "columnName": "author",
-            "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -330,7 +318,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1bfcb2c99e00e46887ac37bc933a4999')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c529c725ada0b1bbe2294849c609c64b')"
     ]
   }
 }

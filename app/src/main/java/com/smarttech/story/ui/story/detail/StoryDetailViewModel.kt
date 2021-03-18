@@ -4,17 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.*
-import com.smarttech.story.networking.DropboxService
-import com.smarttech.story.utils.UnzipUtility
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.system.measureTimeMillis
+import com.smarttech.story.model.dto.StoryViewInfo
 
 class StoryDetailViewModel(application: Application, private val storyId: Int, private val storyName: String) : AndroidViewModel(application)  {
     private lateinit var database: DatabaseReference

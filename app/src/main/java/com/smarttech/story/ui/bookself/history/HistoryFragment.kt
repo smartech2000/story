@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentHistoryListBinding
+import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.ui.category.*
 
 /**
@@ -46,9 +47,9 @@ class HistoryFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = HistoryRecyclerViewAdapter(HistoryListener { itemId ->
+        val adapter = HistoryRecyclerViewAdapter(HistoryListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            viewModel.onHistoryClicked(itemId)
+            viewModel.onHistoryClicked(storyViewInfo)
         })
         binding.historyList.adapter = adapter
         ///binding.categoryList.adapter = adapter

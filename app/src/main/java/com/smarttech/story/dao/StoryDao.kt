@@ -4,11 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.smarttech.story.model.Category
-import com.smarttech.story.model.Story
-import com.smarttech.story.model.StoryViewInfo
-import com.smarttech.story.model.local.BookmarkLocal
-import com.smarttech.story.model.local.DownloadLocal
-import com.smarttech.story.model.local.HistoryLocal
+import com.smarttech.story.model.dto.StoryViewInfo
+import com.smarttech.story.model.local.Bookmark
+import com.smarttech.story.model.local.Download
+import com.smarttech.story.model.local.History
 
 @Dao
 interface StoryDao {
@@ -22,16 +21,8 @@ interface StoryDao {
     )
     fun searchStory(keySearch: String): List<StoryViewInfo>
 
-/*    @Query("UPDATE story SET order_price=:price WHERE order_id = :id")
-    fun updateStory(storyId:Int, totalChap:Int);*/
-
-/*    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
-    fun getStoryByCategoryIdOld(categoryId: Int): List<Story>*/
-
-    /*    @Transaction
-        @Query("SELECT * FROM Story where Story.storyId in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
-        fun getStoryByCategoryId(categoryId : Int): List<StoryViewInfo>*/
-    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle FROM Story , Status, Author where Story.author_id = Author.id and Story.status = Status.id and  Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
+    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle FROM Story , Status, Author " +
+            "where Story.author_id = Author.id and Story.status = Status.id and  Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
     fun getStoryByCategoryId(categoryId: Int): List<StoryViewInfo>
 
     @Query(
@@ -40,23 +31,26 @@ interface StoryDao {
     )
     fun getStoryById(storyId: Int): StoryViewInfo
 
-    //    @Query("SELECT Story.* FROM Story where Story.id in (select story_id from CATEGORY_STORY where category_id=:categoryId)")
-    // @Query("SELECT s.* FROM Story s INNER JOIN CATEGORY_STORY cs ON cs.category_id =:categoryId AND cs.story_id = s.id")
-    @Query("SELECT * FROM HistoryLocal")
-    fun getAllHistoryLocal(): List<HistoryLocal>
+    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
+            "FROM Story , History, Status, Author " +
+            "where Story.id = History.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+    fun findAllHistory(): List<StoryViewInfo>
 
-    @Query("SELECT * FROM DownloadLocal")
-    fun getAllDownloadLocal(): List<DownloadLocal>
+    @Query("SELECT * FROM History")
+    fun getAllHistoryLocal(): List<History>
 
-    @Query("SELECT * FROM BookmarkLocal")
-    fun getAllBookmarkLocal(): List<BookmarkLocal>
+    @Query("SELECT * FROM Download")
+    fun getAllDownloadLocal(): List<Download>
 
-    @Insert
-    fun insertHistoryLocal(vararg historyLocal: HistoryLocal)
-
-    @Insert
-    fun insertDownloadLocal(vararg downloadLocal: DownloadLocal)
+    @Query("SELECT * FROM Bookmark")
+    fun getAllBookmarkLocal(): List<Bookmark>
 
     @Insert
-    fun insertBookmarkLocal(vararg bookmarkLocal: BookmarkLocal)
+    fun insertHistoryLocal(vararg historyLocal: History)
+
+    @Insert
+    fun insertDownloadLocal(vararg downloadLocal: Download)
+
+    @Insert
+    fun insertBookmarkLocal(vararg bookmarkLocal: Bookmark)
 }

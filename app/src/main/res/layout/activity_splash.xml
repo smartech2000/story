@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:text="Đang tải dữ liệu lần đầu,  vui lòng chờ ít giây..."
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />

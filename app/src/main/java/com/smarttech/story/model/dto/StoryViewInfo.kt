@@ -1,6 +1,7 @@
-package com.smarttech.story.model
+package com.smarttech.story.model.dto
 
 import androidx.room.Embedded
+import com.smarttech.story.model.Story
 
 class StoryViewInfo(
     @Embedded val story: Story,

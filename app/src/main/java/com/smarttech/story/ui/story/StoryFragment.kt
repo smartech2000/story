@@ -3,9 +3,6 @@ package com.smarttech.story.ui.story
 import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.smarttech.story.R
-import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentStoryListBinding
-import com.smarttech.story.ui.category.CategoryFragmentDirections
-import com.smarttech.story.ui.category.CategoryListener
-import com.smarttech.story.ui.category.CategoryRecyclerViewAdapter
-import com.smarttech.story.ui.category.CategoryViewModel
 
 /**
  * A fragment representing a list of Items.
@@ -70,7 +62,7 @@ class StoryFragment : Fragment() {
         storyViewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
             storyViewInfo?.let {
                 val action = StoryFragmentDirections
-                    .actionStoryFragmentToStoryDetailFragment(storyViewInfo.story.storyId, storyViewInfo.story.title!!)
+                    .actionStoryFragmentToStoryDetailFragment(storyViewInfo.story.id, storyViewInfo.story.title!!)
                 this.findNavController().navigate(action)
                 storyViewModel.onStoryNavigated()
             }

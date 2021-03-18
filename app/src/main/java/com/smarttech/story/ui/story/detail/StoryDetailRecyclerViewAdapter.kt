@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.smarttech.story.databinding.FragmentStoryBinding
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.model.Chapter
-import com.smarttech.story.model.Story
-import com.smarttech.story.model.StoryViewInfo
 
 
 /**

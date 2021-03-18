@@ -4,29 +4,28 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.firebase.ktx.Firebase
 import com.smarttech.story.database.AppDatabase
-import com.smarttech.story.model.local.HistoryLocal
+import com.smarttech.story.model.dto.StoryViewInfo
+import com.smarttech.story.model.local.History
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var db: AppDatabase;
-    private val _histories = MutableLiveData<List<HistoryLocal>>().apply {
+    private val _histories = MutableLiveData<List<StoryViewInfo>>().apply {
         // Access a Cloud Firestore instance from your Activity
         db = AppDatabase(application)
-        val histories =  db.storyDao().getAllHistoryLocal()
+        val histories =  db.storyDao().findAllHistory()
         value = histories
     }
-    var histories: LiveData<List<HistoryLocal>> = _histories
+    var histories: LiveData<List<StoryViewInfo>> = _histories
 
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _history = MutableLiveData<HistoryLocal?>()
+    private val _history = MutableLiveData<History?>()
     val navigateToHistory
         get() = _history
 
-    fun onHistoryClicked(id: Long) {
+    fun onHistoryClicked(storyViewInfo: StoryViewInfo) {
     }
 
     fun onHistoryNavigated() {

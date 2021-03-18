@@ -33,7 +33,7 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
 
 
         GlobalScope.launch (Dispatchers.IO){
-            launch { // chapter count
+/*            launch { // chapter count
                 val url = "https://www.dropbox.com/s/ztw2jimk6duitv4/story_chapter?dl=1"
                 var stringResponse:String?
                 val response = DropboxService.getInstance().downlload(url).execute()
@@ -46,18 +46,23 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 val adapter = moshi.adapter<List<ChapterCountDto>>(type);
                 val chapterCountDtos = adapter.fromJson(stringResponse)
 
-          /*      chapterCountDtos.forEach {
+          *//*      chapterCountDtos.forEach {
 
-                }*/
+                }*//*
                 val x = 0;
 
-            }
+            }*/
             launch {//story desc
                 val url = "https://www.dropbox.com/s/adk0s9vgcznfch0/story_desc?dl=1 "
                 var stringResponse:String?
                 val response = DropboxService.getInstance().downlload(url).execute()
                 val body = response.body()
                 stringResponse = body?.bytes()?.let { UnzipUtility.ungzip(it) }
+                val moshi = Moshi.Builder()
+                    .add(KotlinJsonAdapterFactory())
+                    .build()
+
+
             }
 
         }

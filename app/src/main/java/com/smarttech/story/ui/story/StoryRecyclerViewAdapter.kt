@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.databinding.FragmentStoryBinding
-import com.smarttech.story.model.Story
-import com.smarttech.story.model.StoryViewInfo
+import com.smarttech.story.model.dto.StoryViewInfo
 
 
 /**
@@ -51,7 +50,7 @@ class StoryRecyclerViewAdapter(
 class StoryDiffCallback : DiffUtil.ItemCallback<StoryViewInfo>() {
 
     override fun areItemsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
-        return oldItem.story.storyId == newItem.story.storyId
+        return oldItem.story.id == newItem.story.id
     }
 
     override fun areContentsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {

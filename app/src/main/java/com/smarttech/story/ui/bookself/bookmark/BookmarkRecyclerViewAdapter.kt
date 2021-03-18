@@ -3,15 +3,11 @@ package com.smarttech.story.ui.bookself.bookmark
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentBookmarkBinding
-import com.smarttech.story.databinding.FragmentBookmarkListBinding
-import com.smarttech.story.model.local.BookmarkLocal
+import com.smarttech.story.model.dto.StoryViewInfo
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -19,7 +15,7 @@ import com.smarttech.story.model.local.BookmarkLocal
  */
 class BookmarkRecyclerViewAdapter(
     val clickListener: BookmarkListener
-) : ListAdapter<BookmarkLocal, BookmarkRecyclerViewAdapter.ViewHolder>(BookmarkDiffCallback()) {
+) : ListAdapter<StoryViewInfo, BookmarkRecyclerViewAdapter.ViewHolder>(BookmarkDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -34,8 +30,8 @@ class BookmarkRecyclerViewAdapter(
     class ViewHolder private constructor(val binding: FragmentBookmarkBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: BookmarkLocal, clickListener: BookmarkListener) {
-            binding.bookmarkLocal = item
+        fun bind(item: StoryViewInfo, clickListener: BookmarkListener) {
+            binding.storyViewInfo = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -50,18 +46,18 @@ class BookmarkRecyclerViewAdapter(
     }
 
 }
+class BookmarkDiffCallback : DiffUtil.ItemCallback<StoryViewInfo>() {
 
-class BookmarkDiffCallback : DiffUtil.ItemCallback<BookmarkLocal>() {
-
-    override fun areItemsTheSame(oldItem: BookmarkLocal, newItem: BookmarkLocal): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.id == newItem.story.id
     }
 
-    override fun areContentsTheSame(oldItem: BookmarkLocal, newItem: BookmarkLocal): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.title == newItem.story.title
     }
 }
 
-class BookmarkListener(val clickListener: (categoryId: Long) -> Unit) {
-    fun onClick(bookmark: BookmarkLocal) = clickListener(bookmark.id)
+class BookmarkListener(val clickListener: (storyViewInfo: StoryViewInfo) -> Unit) {
+    fun onClick(storyViewInfo: StoryViewInfo) = clickListener(storyViewInfo)
 }
+

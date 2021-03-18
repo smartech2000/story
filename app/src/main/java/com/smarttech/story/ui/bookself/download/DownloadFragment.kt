@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentDownloadListBinding
+import com.smarttech.story.model.dto.StoryViewInfo
 
 /**
  * A fragment representing a list of Items.
@@ -40,9 +41,9 @@ class DownloadFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = DownloadRecyclerViewAdapter(DownloadListener { itemId ->
+        val adapter = DownloadRecyclerViewAdapter(DownloadListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            viewModel.onDownloadClicked(itemId)
+            viewModel.onDownloadClicked(storyViewInfo)
         })
         binding.downloadList.adapter = adapter
         ///binding.categoryList.adapter = adapter

@@ -41,15 +41,8 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
 
                 //Start directly from the IO thread here
                 launch(Dispatchers.IO) {
-                    //Switch to the main thread operation UI
-
                     //Switch back to the IO thread to create the downloaded file
-                    val url = "https://www.dropbox.com/s/3fn1oe9e1fy7gfe/story_text.db.zip?dl=1"
-/*                val file =
-                    File("${Environment.getStorageDirectory().path}/download/story.zip")
-
-                file.createNewFile()*/
-                    //The GitHubService object can be directly obtained through GitHubService.getInstance()
+                    val url = "https://www.dropbox.com/s/sllm6yg1efssu9j/story.db.zip?dl=1 "
                     val response = DropboxService.getInstance().downlload(url).execute()
                     val body = response.body()
                     if (response.isSuccessful && body != null) {

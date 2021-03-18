@@ -3,15 +3,11 @@ package com.smarttech.story.ui.bookself.history
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentHistoryBinding
-import com.smarttech.story.databinding.FragmentHistoryListBinding
-import com.smarttech.story.model.local.HistoryLocal
+import com.smarttech.story.model.dto.StoryViewInfo
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -19,7 +15,7 @@ import com.smarttech.story.model.local.HistoryLocal
  */
 class HistoryRecyclerViewAdapter(
     val clickListener: HistoryListener
-) : ListAdapter<HistoryLocal, HistoryRecyclerViewAdapter.ViewHolder>(HistoryDiffCallback()) {
+) : ListAdapter<StoryViewInfo, HistoryRecyclerViewAdapter.ViewHolder>(HistoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -34,8 +30,8 @@ class HistoryRecyclerViewAdapter(
     class ViewHolder private constructor(val binding: FragmentHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: HistoryLocal, clickListener: HistoryListener) {
-            binding.historyLocal = item
+        fun bind(item: StoryViewInfo, clickListener: HistoryListener) {
+            binding.storyViewInfo = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -51,17 +47,18 @@ class HistoryRecyclerViewAdapter(
 
 }
 
-class HistoryDiffCallback : DiffUtil.ItemCallback<HistoryLocal>() {
 
-    override fun areItemsTheSame(oldItem: HistoryLocal, newItem: HistoryLocal): Boolean {
-        return oldItem.id == newItem.id
+class HistoryDiffCallback : DiffUtil.ItemCallback<StoryViewInfo>() {
+
+    override fun areItemsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.id == newItem.story.id
     }
 
-    override fun areContentsTheSame(oldItem: HistoryLocal, newItem: HistoryLocal): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.title == newItem.story.title
     }
 }
 
-class HistoryListener(val clickListener: (categoryId: Long) -> Unit) {
-    fun onClick(history: HistoryLocal) = clickListener(history.id)
+class HistoryListener(val clickListener: (storyViewInfo: StoryViewInfo) -> Unit) {
+    fun onClick(storyViewInfo: StoryViewInfo) = clickListener(storyViewInfo)
 }

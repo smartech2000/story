@@ -3,15 +3,11 @@ package com.smarttech.story.ui.bookself.download
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentDownloadBinding
-import com.smarttech.story.databinding.FragmentDownloadListBinding
-import com.smarttech.story.model.local.DownloadLocal
+import com.smarttech.story.model.dto.StoryViewInfo
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -19,7 +15,7 @@ import com.smarttech.story.model.local.DownloadLocal
  */
 class DownloadRecyclerViewAdapter(
     val clickListener: DownloadListener
-) : ListAdapter<DownloadLocal, DownloadRecyclerViewAdapter.ViewHolder>(DownloadDiffCallback()) {
+) : ListAdapter<StoryViewInfo, DownloadRecyclerViewAdapter.ViewHolder>(DownloadDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
@@ -34,8 +30,8 @@ class DownloadRecyclerViewAdapter(
     class ViewHolder private constructor(val binding: FragmentDownloadBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DownloadLocal, clickListener: DownloadListener) {
-            binding.downloadLocal = item
+        fun bind(item: StoryViewInfo, clickListener: DownloadListener) {
+            binding.storyViewInfo = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -51,17 +47,17 @@ class DownloadRecyclerViewAdapter(
 
 }
 
-class DownloadDiffCallback : DiffUtil.ItemCallback<DownloadLocal>() {
+class DownloadDiffCallback : DiffUtil.ItemCallback<StoryViewInfo>() {
 
-    override fun areItemsTheSame(oldItem: DownloadLocal, newItem: DownloadLocal): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.id == newItem.story.id
     }
 
-    override fun areContentsTheSame(oldItem: DownloadLocal, newItem: DownloadLocal): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: StoryViewInfo, newItem: StoryViewInfo): Boolean {
+        return oldItem.story.title == newItem.story.title
     }
 }
 
-class DownloadListener(val clickListener: (categoryId: Long) -> Unit) {
-    fun onClick(download: DownloadLocal) = clickListener(download.id)
+class DownloadListener(val clickListener: (storyViewInfo: StoryViewInfo) -> Unit) {
+    fun onClick(storyViewInfo: StoryViewInfo) = clickListener(storyViewInfo)
 }

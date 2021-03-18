@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:text="@{category.title}"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 </layout>
