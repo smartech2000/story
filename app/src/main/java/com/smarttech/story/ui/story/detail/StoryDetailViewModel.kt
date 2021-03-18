@@ -49,7 +49,8 @@ class StoryDetailViewModel(
                     .build()
                 val type = Types.newParameterizedType(List::class.java, ChapterDto::class.java)
                 val adapter = moshi.adapter<List<ChapterDto>>(type);
-                val chapterCountDtos = adapter.fromJson(stringResponse)
+                var chapterCountDtos = adapter.fromJson(stringResponse)
+                chapterCountDtos=  chapterCountDtos?.sortedBy { it.index }
                 withContext(Dispatchers.Main) {
                     value = chapterCountDtos
                 }
@@ -68,16 +69,16 @@ class StoryDetailViewModel(
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _navigateToCategoryetail = MutableLiveData<ChapterDto?>()
-    val navigateToSleepDetail
-        get() = _navigateToCategoryetail
+    private val _navigateToChapter = MutableLiveData<ChapterDto?>()
+    val navigateToChapter
+        get() = _navigateToChapter
 
-    fun onCategoryClicked(chapterDto: ChapterDto) {
-        _navigateToCategoryetail.value = chapterDto
+    fun onChapterClicked(chapterDto: ChapterDto) {
+        _navigateToChapter.value = chapterDto
 
     }
 
-    fun onCategoryNavigated() {
-        _navigateToCategoryetail.value = null
+    fun onChapterNavigated() {
+        _navigateToChapter.value = null
     }
 }

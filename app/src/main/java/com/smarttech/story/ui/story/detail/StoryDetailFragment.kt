@@ -62,7 +62,7 @@ class StoryDetailFragment : Fragment() {
 
         val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            storyDetailViewModel.onCategoryClicked(chapterDto)
+            storyDetailViewModel.onChapterClicked(chapterDto)
         })
         binding.chapterList.adapter = adapter
         ///binding.categoryList.adapter = adapter
@@ -73,15 +73,15 @@ class StoryDetailFragment : Fragment() {
 
             }
         })
-/*        categoryViewModel.navigateToCategory.observe(viewLifecycleOwner, Observer { category ->
-            category?.let {
-                val action = CategoryFragmentDirections
-                    .actionCategoryFragmentToStoryFragment(category.id, category.title!!)
+        storyDetailViewModel.navigateToChapter.observe(viewLifecycleOwner, Observer { chapterDto ->
+            chapterDto?.let {
+                val action = StoryDetailFragmentDirections
+                    .actionStoryDetailFragmentToChapterFragment(chapterDto.key, chapterDto.index)
                 this.findNavController().navigate(action)
-                categoryViewModel.onCategoryNavigated()
+                storyDetailViewModel.onChapterNavigated()
             }
         })
-        val manager = GridLayoutManager(activity, 2)
+ /*       val manager = GridLayoutManager(activity, 2)
         binding.categoryList.layoutManager = manager*/
 
         return binding.root

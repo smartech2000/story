@@ -88,11 +88,26 @@
         <argument
             android:name="storyName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_storyDetailFragment_to_chapterFragment"
+            app:destination="@id/chapterFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.smarttech.story.ui.account.AccountFragment"
         android:label="Cài đặt"
         tools:layout="@layout/fragment_account_list"/>
+    <fragment
+        android:id="@+id/chapterFragment"
+        android:name="com.smarttech.story.ui.story.chapter.ChapterFragment"
+        android:label="chapter_fragment"
+        tools:layout="@layout/chapter_fragment" >
+        <argument
+            android:name="chapterKey"
+            app:argType="string" />
+        <argument
+            android:name="chapterIndex"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
