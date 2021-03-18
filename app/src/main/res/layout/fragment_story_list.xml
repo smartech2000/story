@@ -19,5 +19,6 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.story.StoryFragment"
-        tools:listitem="@layout/fragment_story" />
+        tools:listitem="@layout/fragment_story"
+        android:layout_marginBottom="@dimen/height_of_app_bar"/>
 </layout>

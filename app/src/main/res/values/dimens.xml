@@ -6,4 +6,5 @@
 
     <!-- custom screen margins, per the Android Design guidelines. -->
     <dimen name="value_margin">4dp</dimen>
+    <dimen name="height_of_app_bar">64dp</dimen>
 </resources>
