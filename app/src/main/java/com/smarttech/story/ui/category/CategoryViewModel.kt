@@ -58,10 +58,16 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 val response = DropboxService.getInstance().downlload(url).execute()
                 val body = response.body()
                 stringResponse = body?.bytes()?.let { UnzipUtility.ungzip(it) }
+                var type = Types.newParameterizedType(MutableMap::class.java, String::class.java, String::class.java)
+
                 val moshi = Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
+                    //.add(JsonAdapter<t>)
                     .build()
 
+                val adapter = moshi.adapter<MutableMap<String, String>>(type);
+
+                var map = adapter.fromJson(stringResponse);
+                val x = 0
 
             }
 
