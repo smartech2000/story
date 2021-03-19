@@ -7,6 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.databinding.FragmentStoryBinding
 import com.smarttech.story.model.dto.StoryViewInfo
+import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.UnzipUtility
+import kotlinx.android.synthetic.main.fragment_story.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -18,7 +25,25 @@ class StoryRecyclerViewAdapter(
 ) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, clickListener)
+        var storyViewInfo = getItem(position)
+        holder.bind(storyViewInfo!!, clickListener)
+         // Load avatar
+        GlobalScope.launch(Dispatchers.IO) {
+            val url =
+                "https://www.dropbox.com/s/${storyViewInfo.story.avatar}/${storyViewInfo.story.id}?dl=1"
+            var stringResponse: String?
+            val response = DropboxService.getInstance().downlload(url).execute()
+            val body = response.body()
+            stringResponse = body?.string()
+            if (stringResponse != null) {
+                withContext(Dispatchers.Main) {
+                    //holder.itemView.textView10.text = stringResponse
+                }
+
+            }
+
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,6 +59,8 @@ class StoryRecyclerViewAdapter(
             binding.storyViewInfo = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
+
+
         }
 
         companion object {
