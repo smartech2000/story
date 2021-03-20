@@ -48,7 +48,7 @@ class StoryDetailFragment : Fragment() {
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO Add your menu entries here
-        menu?.findItem(R.id.download_menu)?.isVisible = true
+       // menu?.findItem(R.id.download_menu)?.isVisible = true
         menu?.findItem(R.id.bookmark_menu)?.isVisible = true
         super.onCreateOptionsMenu(menu, inflater)
     }
