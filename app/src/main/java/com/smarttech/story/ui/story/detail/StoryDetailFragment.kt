@@ -2,18 +2,18 @@ package com.smarttech.story.ui.story.detail
 
 import android.app.Application
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentStorydetailBinding
@@ -42,13 +42,21 @@ class StoryDetailFragment : Fragment() {
             storyId = args.storyId
             storyName = args.storyName
         }
-    }
 
+        //notify the fragment that it should participate in options menu handling.
+        setHasOptionsMenu(true)
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // TODO Add your menu entries here
+        menu?.findItem(R.id.download_menu)?.isVisible = true
+        menu?.findItem(R.id.bookmark_menu)?.isVisible = true
+        super.onCreateOptionsMenu(menu, inflater)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        this.requireActivity().invalidateOptionsMenu()
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentStorydetailListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_storydetail_list, container, false
@@ -59,6 +67,8 @@ class StoryDetailFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
+
+
 
         val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()

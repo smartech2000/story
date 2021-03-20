@@ -11,8 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentStoryListBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 /**
  * A fragment representing a list of Items.
@@ -37,6 +40,7 @@ class StoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Get a reference to the binding object and inflate the fragment views.
         val binding: FragmentStoryListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_story_list, container, false
@@ -69,6 +73,7 @@ class StoryFragment : Fragment() {
         })
 /*        val manager = GridLayoutManager(activity, 2)
         binding.storyList.layoutManager = manager*/
+
         return binding.root
     }
 
