@@ -77,7 +77,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).supportActionBar!!.hide()
         (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val viewModelFactory = ChapterViewModelFactory(Application(), chapterKey, chapterIndex)
+        val viewModelFactory = ChapterViewModelFactory(Application(), context!!, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
             tvBookContent.setup(it, 0.65)

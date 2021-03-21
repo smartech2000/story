@@ -44,7 +44,7 @@ class FileCache(private val context: Context, private val repo: Repo) {
 
     fun loadFromInternet(key: String, id: Int, onCompleted: (ByteArray?) -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
-            val url = repo.getUri(key, id)
+            val url = repo.getUri(key, "$id")
             val b = LoadFromUrl(url)
             if (b != null) {
                 val dataFile = File(dataDir, "$id")

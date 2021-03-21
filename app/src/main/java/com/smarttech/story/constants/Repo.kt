@@ -15,7 +15,7 @@ enum class Repo(name: String) {
         return dir
     }
 
-    fun getUri(key: String, id: Int): String {
+    fun getUri(key: String, id: String): String {
         return Constants.DROPBOX_URL.replace("{shareKey}", key)
             .replace(
                 "{fileName}",

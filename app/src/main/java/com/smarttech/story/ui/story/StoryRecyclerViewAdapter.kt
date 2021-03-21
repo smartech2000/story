@@ -63,7 +63,7 @@ class StoryRecyclerViewAdapter(
             if (storyAvatarFile.exists()) {
                 b = storyAvatarFile.readBytes()
             } else {
-                val url = repo.getUri("${storyViewInfo.story.avatar}", storyViewInfo.story.id)
+                val url = repo.getUri("${storyViewInfo.story.avatar}", "${storyViewInfo.story.id}")
                 b = LoadFromUrl(url)
                 if (b != null) {
                     storyAvatarFile.writeBytes(b)

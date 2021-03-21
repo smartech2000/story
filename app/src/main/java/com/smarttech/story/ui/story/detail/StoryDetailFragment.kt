@@ -61,7 +61,7 @@ class StoryDetailFragment : Fragment() {
         val binding: FragmentStorydetailListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_storydetail_list, container, false
         )
-        val viewModelFactory = StoryDetailViewModelFactory(Application(),storyId, storyName)
+        val viewModelFactory = StoryDetailViewModelFactory(Application() , context!! ,storyId, storyName)
         storyDetailViewModel =
             ViewModelProvider(this,viewModelFactory).get(StoryDetailViewModel::class.java)
         // To use the View Model with data binding, you have to explicitly
