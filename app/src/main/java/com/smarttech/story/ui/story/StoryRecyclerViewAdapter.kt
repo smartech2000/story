@@ -2,7 +2,6 @@ package com.smarttech.story.ui.story
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -19,8 +18,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.smarttech.story.R
+import com.smarttech.story.cache.FileCache
 import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Constants
+import com.smarttech.story.constants.Repo
 import com.smarttech.story.databinding.FragmentStoryBinding
 import com.smarttech.story.databinding.FragmentStoryListBinding
 import com.smarttech.story.model.dto.StoryViewInfo
@@ -30,7 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import java.io.*
 
 
@@ -42,19 +42,13 @@ class StoryRecyclerViewAdapter(
     val ctx: Context,
     val clickListener: StoryListener
 ) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
-    val cacheDir: File = File(ctx.cacheDir, "avatars")
-
-    companion object {
-        val bmps: MemoryCache = MemoryCache()
-    }
+    val repo: Repo = Repo.AVATAR
+    val bmps: MemoryCache = MemoryCache()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var storyViewInfo = getItem(position)
         holder.bind(storyViewInfo!!, clickListener)
-        if (!cacheDir.exists()) {
-            cacheDir.mkdirs()
-        }
-        Log.d("AAAAAAAAAAAAAA", cacheDir.absolutePath)
+
         if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0) {
             return
         }
@@ -63,24 +57,24 @@ class StoryRecyclerViewAdapter(
             return
         }
         // Load avatar
-        GlobalScope.launch(Dispatchers.IO) {
-            val storyAvatarFile = File(cacheDir, "${storyViewInfo.story.avatar}")
-            var b : ByteArray?
+        GlobalScope.launch (Dispatchers.IO) {
+            val storyAvatarFile = File(repo.getRepo(ctx.cacheDir), "${storyViewInfo.story.avatar}")
+            var b: ByteArray?
             if (storyAvatarFile.exists()) {
                 b = storyAvatarFile.readBytes()
-            }else {
-                val url = Constants.DROPBOX_URL.replace("{shareKey}", "${storyViewInfo.story.avatar}")
-                    .replace(
-                        "{fileName}",
-                        "${storyViewInfo.story.id}"
-                    )
+            } else {
+                val url =
+                    Constants.DROPBOX_URL.replace("{shareKey}", "${storyViewInfo.story.avatar}")
+                        .replace(
+                            "{fileName}",
+                            "${storyViewInfo.story.id}"
+                        )
                 b = LoadFromUrl(url)
                 if (b != null) {
                     storyAvatarFile.writeBytes(b)
                 }
             }
-            if (b != null){
-                storyAvatarFile.writeBytes(b)
+            if (b != null) {
                 val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
                 bmps.put(storyViewInfo.story.id, bmp)
                 withContext(Dispatchers.Main) {
@@ -90,7 +84,7 @@ class StoryRecyclerViewAdapter(
         }
     }
 
-    fun LoadFromUrl(url : String): ByteArray? {
+    fun LoadFromUrl(url: String): ByteArray? {
         val response = DropboxService.getInstance().downlload(url).execute()
         val body = response.body()
         if (body == null) {
