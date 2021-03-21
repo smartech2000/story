@@ -1,5 +1,6 @@
 package com.smarttech.story.model.dto
 
+import android.graphics.Bitmap
 import androidx.room.Embedded
 import com.smarttech.story.model.Story
 

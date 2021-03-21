@@ -5,6 +5,7 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.RequiresApi
+
 @RequiresApi(Build.VERSION_CODES.M)
 @Suppress("DEPRECATION")
 class Paginator(
@@ -63,11 +64,26 @@ class Paginator(
         for (i in 0 until layout.lineCount) {
             if (lastBottomLineHeight < layout.getLineBottom(i)) {
                 var endLineIndex = layout.getLineStart(i)
-//                val tagStart = endLineIndex - 5
-//                val endTag = endLineIndex + 5
-//                val tag = text.subSequence(tagStart, endTag)
-//                val matcher = regex.matches(tag)
-                var page = text.subSequence(startOffset, endLineIndex)
+                var page = text.subSequence(startOffset, endLineIndex).trim()
+                if (page.endsWith("<")) {
+                    page = "${page}/p>"
+                } else if (page.endsWith("</")) {
+                    page = "${page}p>"
+                } else if (page.endsWith("</p") || page.endsWith("<br/") || page.endsWith("<br /")) {
+                    page = "${page}>"
+                } else if (page.endsWith("<br")) {
+                    page = "${page} />"
+                }
+                if (page.startsWith("p>") || page.startsWith("br>") || page.startsWith("br >") || page.startsWith(
+                        "br />"
+                    )
+                ) {
+                    page = "<${page}"
+                } else if (page.startsWith(">")) {
+                    page = "<p${page}"
+                } else if (page.startsWith("/p>") || page.startsWith("/>")) {
+                    page = page.substring(2)
+                }
                 parsedPages.add(page)
                 startOffset = endLineIndex
                 lastBottomLineHeight = layout.getLineTop(i) + height

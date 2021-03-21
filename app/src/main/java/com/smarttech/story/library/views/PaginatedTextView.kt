@@ -78,7 +78,7 @@ class PaginatedTextView @JvmOverloads constructor(
 
     private fun loadFirstPage(text: CharSequence) {
         val effectWidth = width - (paddingLeft + paddingRight)
-        val effectHeight = (0.7 * (height - (paddingTop + paddingBottom))).toInt()
+        val effectHeight = (0.65 * (height - (paddingTop + paddingBottom))).toInt()
         controller = PaginationController(
             text,
             effectWidth,

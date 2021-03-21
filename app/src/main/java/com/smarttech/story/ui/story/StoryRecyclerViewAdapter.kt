@@ -1,8 +1,11 @@
 package com.smarttech.story.ui.story
 
 import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,51 +38,81 @@ import java.io.*
  * TODO: Replace the implementation with code for your data type.
  */
 class StoryRecyclerViewAdapter(
+    val ctx: Context,
     val clickListener: StoryListener
 ) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
+    val cacheDir: File = File(ctx.cacheDir, "avatars")
+
+    companion object {
+        val bmps: MutableMap<Int, Bitmap> = HashMap()
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var storyViewInfo = getItem(position)
         holder.bind(storyViewInfo!!, clickListener)
-        if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0 ){
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs()
+        }
+        Log.d("AAAAAAAAAAAAAA", cacheDir.absolutePath)
+        if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0) {
             return
         }
-         // Load avatar
+        if (bmps.get(storyViewInfo.story.id) != null) {
+            holder.binding.imageView2.setImageBitmap(bmps.get(storyViewInfo.story.id))
+            return
+        }
+        // Load avatar
         GlobalScope.launch(Dispatchers.IO) {
-            val url = Constants.DROPBOX_URL.replace("{shareKey}", "${storyViewInfo.story.avatar}").replace(
-                "{fileName}",
-                "${storyViewInfo.story.id}"
-            )
-            var stringResponse: String?
-            val response = DropboxService.getInstance().downlload(url).execute()
-            val body = response.body()
-            if(body != null) {
-                val ins: InputStream = body.byteStream()
-                val input = BufferedInputStream(ins)
-                val output: ByteArrayOutputStream = ByteArrayOutputStream()
-
-                val data = ByteArray(1024)
-
-                var total: Long = 0
-                var count = 0
-
-                while (input.read(data).also({ count = it }) !== -1) {
-                    total += count
-                    output.write(data, 0, count)
-                }
-
-                output.flush()
-                output.close()
-                input.close()
-                val b = output.toByteArray()
-                val bm = BitmapFactory.decodeByteArray(b, 0, b.size)
-                withContext(Dispatchers.Main){
-                    holder.binding.imageView2.setImageBitmap(bm)
+            val storyAvatarFile = File(cacheDir, "${storyViewInfo.story.avatar}")
+            var b : ByteArray?
+            if (storyAvatarFile.exists()) {
+                b = storyAvatarFile.readBytes()
+            }else {
+                val url = Constants.DROPBOX_URL.replace("{shareKey}", "${storyViewInfo.story.avatar}")
+                    .replace(
+                        "{fileName}",
+                        "${storyViewInfo.story.id}"
+                    )
+                b = LoadFromUrl(url)
+                if (b != null) {
+                    storyAvatarFile.writeBytes(b)
                 }
             }
-
+            if (b != null){
+                storyAvatarFile.writeBytes(b)
+                val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+                bmps.set(storyViewInfo.story.id, bmp)
+                withContext(Dispatchers.Main) {
+                    holder.binding.imageView2.setImageBitmap(bmp)
+                }
+            }
         }
     }
+
+    fun LoadFromUrl(url : String): ByteArray? {
+        val response = DropboxService.getInstance().downlload(url).execute()
+        val body = response.body()
+        if (body == null) {
+            return null
+        }
+        val ins: InputStream = body.byteStream()
+        val input = BufferedInputStream(ins)
+        val output: ByteArrayOutputStream = ByteArrayOutputStream()
+
+        val data = ByteArray(1024)
+
+        var count = 0
+        while (input.read(data).also({ count = it }) !== -1) {
+            output.write(data, 0, count)
+        }
+
+        output.flush()
+        output.close()
+        input.close()
+
+        return output.toByteArray()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -132,7 +165,7 @@ class StoryFragment : Fragment() {
     private var columnCount = 1
     val args: StoryFragmentArgs by navArgs()
     var categoryId: Int = 0
-    var categoryName : String=""
+    var categoryName: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -158,14 +191,16 @@ class StoryFragment : Fragment() {
 
         binding.storyViewModel = storyViewModel
         // Set the adapter
-        val adapter = StoryRecyclerViewAdapter(StoryListener { storyViewInfo ->
-            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            storyViewModel.onStoryClicked(storyViewInfo)
-        })
+        val adapter = this.context?.let {
+            StoryRecyclerViewAdapter(it, StoryListener { storyViewInfo ->
+                //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+                storyViewModel.onStoryClicked(storyViewInfo)
+            })
+        }
         binding.storyList.adapter = adapter
         storyViewModel.stories.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.submitList(it)
+                adapter!!.submitList(it)
 
                 //binding.categoryList.adapter = adapter
             }
