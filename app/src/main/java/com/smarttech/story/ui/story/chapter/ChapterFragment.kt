@@ -63,7 +63,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
     ): View? {
         val view = inflater.inflate(R.layout.chapter_fragment, container, false)
         tvBookContent = view.findViewById<View>(R.id.tv_book_text) as PaginatedTextView
-        tvBookContent.setup("")
+        tvBookContent.setup("", 0.65)
         tvBookContent.setOnActionListener(this)
         linearBook = view.findViewById(R.id.linearBook)
         tvPageNum = view.findViewById(R.id.tvPageNum)
@@ -80,7 +80,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         val viewModelFactory = ChapterViewModelFactory(Application(), chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
-            tvBookContent.setup(it)
+            tvBookContent.setup(it, 0.65)
             pProgressBar.visibility = View.GONE
         })
     }

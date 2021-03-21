@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.smarttech.story.R
+import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.databinding.FragmentStoryBinding
 import com.smarttech.story.databinding.FragmentStoryListBinding
@@ -44,7 +45,7 @@ class StoryRecyclerViewAdapter(
     val cacheDir: File = File(ctx.cacheDir, "avatars")
 
     companion object {
-        val bmps: MutableMap<Int, Bitmap> = HashMap()
+        val bmps: MemoryCache = MemoryCache()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -81,7 +82,7 @@ class StoryRecyclerViewAdapter(
             if (b != null){
                 storyAvatarFile.writeBytes(b)
                 val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
-                bmps.set(storyViewInfo.story.id, bmp)
+                bmps.put(storyViewInfo.story.id, bmp)
                 withContext(Dispatchers.Main) {
                     holder.binding.imageView2.setImageBitmap(bmp)
                 }
@@ -127,8 +128,6 @@ class StoryRecyclerViewAdapter(
             binding.storyViewInfo = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
-
-
         }
 
         companion object {

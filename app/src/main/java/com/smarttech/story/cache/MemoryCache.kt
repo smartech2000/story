@@ -6,16 +6,16 @@ import java.util.*
 
 class MemoryCache {
     private val cache = Collections.synchronizedMap(
-        LinkedHashMap<String, Bitmap>(10, 1.5f, true)
-    ) //Last argument true for LRU ordering
-    private var size: Long = 0 //current allocated size
-    private var limit: Long = 1000000 //max memory in bytes
+        LinkedHashMap<Int, Bitmap>(10, 1.5f, true)
+    )
+    private var size: Long = 0
+    private var limit: Long = 1000000
     fun setLimit(new_limit: Long) {
         limit = new_limit
         Log.i(TAG, "MemoryCache will use up to " + limit / 1024.0 / 1024.0 + "MB")
     }
 
-    operator fun get(id: String?): Bitmap? {
+    operator fun get(id: Int?): Bitmap? {
         return try {
             if (!cache.containsKey(id)) null else cache[id]
         } catch (ex: NullPointerException) {
@@ -24,7 +24,7 @@ class MemoryCache {
         }
     }
 
-    fun put(id: String, bitmap: Bitmap?) {
+    fun put(id: Int, bitmap: Bitmap?) {
         try {
             if (cache.containsKey(id)) size -= getSizeInBytes(cache[id])
             cache[id] = bitmap
@@ -38,8 +38,8 @@ class MemoryCache {
     private fun checkSize() {
         Log.i(TAG, "cache size=" + size + " length=" + cache.size)
         if (size > limit) {
-            val iter: MutableIterator<Map.Entry<String, Bitmap?>> =
-                cache.entries.iterator() //least recently accessed item will be the first one iterated
+            val iter: MutableIterator<Map.Entry<Int, Bitmap?>> =
+                cache.entries.iterator()
             while (iter.hasNext()) {
                 val entry = iter.next()
                 size -= getSizeInBytes(entry.value)
@@ -52,7 +52,6 @@ class MemoryCache {
 
     fun clear() {
         try {
-            //NullPointerException sometimes happen here http://code.google.com/p/osmdroid/issues/detail?id=78
             cache.clear()
             size = 0
         } catch (ex: NullPointerException) {
@@ -69,7 +68,6 @@ class MemoryCache {
     }
 
     init {
-        //use 25% of available heap size
         setLimit(Runtime.getRuntime().maxMemory() / 4)
     }
 }

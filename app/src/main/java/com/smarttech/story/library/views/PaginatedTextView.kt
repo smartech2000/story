@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.smarttech.story.library.extension.allWordsPositions
 import com.smarttech.story.library.pagination.PaginationController
 import com.smarttech.story.library.pagination.ReadState
+import kotlin.properties.Delegates
 
 
 class PaginatedTextView @JvmOverloads constructor(
@@ -27,6 +28,7 @@ class PaginatedTextView @JvmOverloads constructor(
     private var actionListener: OnActionListener? = null
     private lateinit var controller: PaginationController
     private var isMeasured = false
+    private  var ratio: Double = 0.65
 
     init {
         initPaginatedTextView()
@@ -34,7 +36,8 @@ class PaginatedTextView @JvmOverloads constructor(
 
     override fun scrollTo(x: Int, y: Int) {}
 
-    fun setup(text: CharSequence) {
+    fun setup(text: CharSequence, ratio : Double) {
+        this.ratio = ratio
         if (isMeasured) {
             loadFirstPage(text)
         } else {
