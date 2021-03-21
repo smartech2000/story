@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DatabaseReference
+import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.*
 import com.smarttech.story.model.dto.ChapterDto
@@ -39,7 +40,7 @@ class StoryDetailViewModel(
         GlobalScope.launch(Dispatchers.IO) {
             launch { // chapter count
                 val story = storyDao.findStoryById(storyId)
-                val url = "https://www.dropbox.com/s/${story.dropboxUri}/story_chapter?dl=1"
+                val url = Constants.DROPBOX_URL.replace("{shareKey}","${story.dropboxUri}").replace("{fileName}","story_chapter")
                 var stringResponse: String?
                 val response = DropboxService.getInstance().downlload(url).execute()
                 val body = response.body()

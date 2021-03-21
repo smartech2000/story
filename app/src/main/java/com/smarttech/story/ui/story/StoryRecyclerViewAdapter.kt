@@ -1,8 +1,8 @@
 package com.smarttech.story.ui.story
 
 import android.app.Application
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +14,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.smarttech.story.R
+import com.smarttech.story.constants.Constants
 import com.smarttech.story.databinding.FragmentStoryBinding
 import com.smarttech.story.databinding.FragmentStoryListBinding
 import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.networking.DropboxService
-import com.smarttech.story.utils.UnzipUtility
 import kotlinx.android.synthetic.main.fragment_story.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
+import java.io.*
 
 
 /**
@@ -38,21 +41,42 @@ class StoryRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var storyViewInfo = getItem(position)
         holder.bind(storyViewInfo!!, clickListener)
+        if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0 ){
+            return
+        }
          // Load avatar
         GlobalScope.launch(Dispatchers.IO) {
-            val url =
-                "https://www.dropbox.com/s/${storyViewInfo.story.avatar}/${storyViewInfo.story.id}?dl=1"
+            val url = Constants.DROPBOX_URL.replace("{shareKey}", "${storyViewInfo.story.avatar}").replace(
+                "{fileName}",
+                "${storyViewInfo.story.id}"
+            )
             var stringResponse: String?
             val response = DropboxService.getInstance().downlload(url).execute()
             val body = response.body()
-            stringResponse = body?.string()
-            if (stringResponse != null) {
-                withContext(Dispatchers.Main) {
-                    //holder.itemView.textView10.text = stringResponse
+            if(body != null) {
+                val ins: InputStream = body.byteStream()
+                val input = BufferedInputStream(ins)
+                val output: ByteArrayOutputStream = ByteArrayOutputStream()
+
+                val data = ByteArray(1024)
+
+                var total: Long = 0
+                var count = 0
+
+                while (input.read(data).also({ count = it }) !== -1) {
+                    total += count
+                    output.write(data, 0, count)
                 }
 
+                output.flush()
+                output.close()
+                input.close()
+                val b = output.toByteArray()
+                val bm = BitmapFactory.decodeByteArray(b, 0, b.size)
+                withContext(Dispatchers.Main){
+                    holder.binding.imageView2.setImageBitmap(bm)
+                }
             }
-
 
         }
     }

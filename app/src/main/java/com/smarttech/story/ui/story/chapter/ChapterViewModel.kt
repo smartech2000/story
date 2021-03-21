@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.dto.ChapterDto
 import com.smarttech.story.model.dto.StoryViewInfo
@@ -27,7 +28,7 @@ class ChapterViewModel(
         GlobalScope.launch(Dispatchers.IO) {
             launch { // chapter count
                 //https://www.dropbox.com/s/qiror7fgeezcosg/341.o?dl=1%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B%E2%80%8B
-                val url = "https://www.dropbox.com/s/${chapterKey}/${chapterIndex}.o?dl=1"
+                val url = Constants.DROPBOX_URL.replace("{shareKey}","$chapterKey").replace("{fileName}","$chapterIndex")
                 var stringResponse: String?
                 val response = DropboxService.getInstance().downlload(url).execute()
                 val body = response.body()

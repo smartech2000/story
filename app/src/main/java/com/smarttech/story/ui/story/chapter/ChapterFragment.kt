@@ -85,6 +85,12 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         })
     }
 
+    override fun onDestroy() {
+        (activity as MainActivity).supportActionBar!!.show()
+        (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.VISIBLE
+        super.onDestroy()
+    }
+
     override fun onPageLoaded(state: ReadState) {
         val page = state.page as CurlPage?
         tvReadPercent.text = "${state.readPercent.toInt()}%"
@@ -118,7 +124,9 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
     }
 
     override fun updatePage(page: CurlPage, width: Int, height: Int, index: Int) {
-        tvBookContent.readPage(page, index)
+        activity?.runOnUiThread {
+            tvBookContent.readPage(page, index)
+        }
     }
 
     override fun onReady(state: ReadState) {
