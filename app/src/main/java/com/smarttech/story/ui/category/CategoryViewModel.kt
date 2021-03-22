@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.database.DescDatabase
+import com.smarttech.story.global.ApplicationState
 import com.smarttech.story.model.Category
 import com.smarttech.story.model.dto.ChapterCountDto
 import com.smarttech.story.networking.DropboxService
@@ -27,6 +28,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 class CategoryViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var db: AppDatabase
@@ -38,47 +40,14 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
         if (!FileUtil.databaseFileExists(application, "story_desc.db")) {
             GlobalScope.launch(Dispatchers.IO) {
                 FileUtil.attachDbFromDropBox(application, "uyjrl187170adjr", "story_desc")
+                ApplicationState.storyDescDbDone = AtomicBoolean(true)
                 val x = 0
-/*            launch { // chapter count
-                val url = "https://www.dropbox.com/s/ztw2jimk6duitv4/story_chapter?dl=1"
-                var stringResponse:String?
-                val response = DropboxService.getInstance().downlload(url).execute()
-                val body = response.body()
-                stringResponse = body?.bytes()?.let { UnzipUtility.ungzip(it) }
-                val moshi = Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
-                    .build()
-                val type = Types.newParameterizedType(List::class.java, ChapterCountDto::class.java)
-                val adapter = moshi.adapter<List<ChapterCountDto>>(type);
-                val chapterCountDtos = adapter.fromJson(stringResponse)
-
-          *//*      chapterCountDtos.forEach {
-
-                }*//*
-                val x = 0;
-
-            }*/
-/*            launch {//story desc
-                val url = Constants.DROPBOX_URL.replace("{shareKey}","adk0s9vgcznfch0").replace("{fileName}","story_desc")
-                var stringResponse:String?
-                val response = DropboxService.getInstance().downlload(url).execute()
-                val body = response.body()
-                stringResponse = body?.bytes()?.let { UnzipUtility.ungzip(it) }
-                var type = Types.newParameterizedType(MutableMap::class.java, String::class.java, String::class.java)
-
-                val moshi = Moshi.Builder()
-                    //.add(JsonAdapter<t>)
-                    .build()
-
-                val adapter = moshi.adapter<MutableMap<String, String>>(type);
-
-                var map = adapter.fromJson(stringResponse);
-                val x = 0
-
-            }*/
-
             }
+
+        } else {
+            ApplicationState.storyDescDbDone = AtomicBoolean(true)
         }
+
 
         var x = 0;
     }

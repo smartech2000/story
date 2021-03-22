@@ -10,6 +10,7 @@ import com.smarttech.story.constants.Constants
 import com.smarttech.story.constants.Repo
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.database.DescDatabase
+import com.smarttech.story.global.ApplicationState
 import com.smarttech.story.model.*
 import com.smarttech.story.model.dto.ChapterDto
 import com.smarttech.story.model.dto.StoryViewInfo
@@ -82,21 +83,19 @@ class StoryDetailViewModel(
 
     private val _storyDesc = MutableLiveData<String>().apply {
         GlobalScope.launch(Dispatchers.IO) {
-            var checkTime = 0L;
+            var timeOut = 0L;
             var dbExist = false;
-            while (!dbExist && checkTime < 20000) {
-                if (!FileUtil.databaseFileExists(context, "story_desc.db")) {
-                    //descDb = DescDatabase(context)
-                    delay(1000L)
-                } else {
-                    dbExist = true
-                    withContext(Dispatchers.Main) {
-                        val storyDescDao = DescDatabase(application).storyDescDao()
-
-                        value = storyDescDao.findStoryDescById(storyId).description
-                    }
-                }
+            while (!ApplicationState.storyDescDbDone.get() && timeOut < 20000) {
+                   timeOut += 1000L
+                   delay(1000L)
             }
+            withContext(Dispatchers.Main) {
+                val storyDescDao = DescDatabase(application).storyDescDao()
+
+                value = storyDescDao.findStoryDescById(storyId).description
+            }
+
+
 
         }
     }
