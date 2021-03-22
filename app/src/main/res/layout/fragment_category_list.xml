@@ -4,48 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="categoryViewModel"
             type="com.smarttech.story.ui.category.CategoryViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_list"
+        android:name="com.smarttech.story.ui.category.CategoryFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/filter_category_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sắp xếp theo" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/category_list"
-                android:name="com.smarttech.story.ui.category.CategoryFragment"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="60dp"
-                android:layout_weight="1"
-                app:layoutManager="LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:context=".ui.category.CategoryFragment"
-                tools:listitem="@layout/fragment_category" />
-
-        </LinearLayout>
-        <ProgressBar
-            android:id="@+id/progress_bar_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="@dimen/height_of_app_bar"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.category.CategoryFragment"
+        tools:listitem="@layout/fragment_category" />
 </layout>
