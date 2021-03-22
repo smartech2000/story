@@ -1,6 +1,7 @@
 package com.smarttech.story.ui.story.detail
 
 import android.app.Application
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.smarttech.story.R
+import com.smarttech.story.constants.Repo
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.databinding.FragmentStorydetailListBinding
@@ -29,6 +31,7 @@ import com.smarttech.story.ui.category.CategoryViewModel
 import com.smarttech.story.ui.story.StoryFragmentArgs
 import com.smarttech.story.ui.story.StoryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_storydetail_list.*
+import java.io.File
 
 /**
  * A fragment representing a list of Items.
@@ -76,6 +79,12 @@ class StoryDetailFragment : Fragment() {
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
+        val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir),"$storyId")
+        if (avatarFile.exists()){
+            val b = avatarFile.readBytes()
+            val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+            binding.imageView2.setImageBitmap(bmp)
+        }
 
         val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
