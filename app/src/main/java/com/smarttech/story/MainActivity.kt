@@ -7,6 +7,7 @@ import android.widget.ListView
 import android.widget.SearchView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         searchView.queryHint = "Tìm theo tên hoặc tác giả"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val action = query?.let {
+/*                val action = query?.let {
                     CategoryFragmentDirections
                         .actionCategoryFragmentToStoryFragment(-1, it)
                 }
@@ -85,7 +86,10 @@ class MainActivity : AppCompatActivity() {
                     val id = navController.currentDestination?.id
                     navController.popBackStack(id!!,true)
                     action?.let { navController.navigate(it) }
-                }
+
+                }*/
+                val bundle = bundleOf("categoryName" to query, "categoryId"  to -1)
+                navController.navigate(R.id.story_fragment, bundle)
                 return false
             }
 
