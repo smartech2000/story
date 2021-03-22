@@ -3,6 +3,7 @@ package com.smarttech.story.ui.story.detail
 import android.app.Application
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.smarttech.story.ui.category.CategoryRecyclerViewAdapter
 import com.smarttech.story.ui.category.CategoryViewModel
 import com.smarttech.story.ui.story.StoryFragmentArgs
 import com.smarttech.story.ui.story.StoryViewModelFactory
+import kotlinx.android.synthetic.main.fragment_storydetail_list.*
 
 /**
  * A fragment representing a list of Items.
@@ -90,6 +92,11 @@ class StoryDetailFragment : Fragment() {
                 this.findNavController().navigate(action)
                 storyDetailViewModel.onChapterNavigated()
             }
+        })
+
+
+        storyDetailViewModel.storyDesc.observe(viewLifecycleOwner, Observer {
+            desc_tv.text = it
         })
  /*       val manager = GridLayoutManager(activity, 2)
         binding.categoryList.layoutManager = manager*/

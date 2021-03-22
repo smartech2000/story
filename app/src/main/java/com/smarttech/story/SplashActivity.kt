@@ -10,6 +10,7 @@ import android.view.View
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.*
@@ -37,97 +38,21 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         hideSystemUI();
         setContentView(R.layout.activity_splash)
 
-        if (!databaseFileExists()) {
+        if (!FileUtil.databaseFileExists(this, "story.db")) {
 
             activityScope.launch {
-                //delay(3000)
-
                 //Start directly from the IO thread here
                 launch(Dispatchers.IO) {
-                    //Switch back to the IO thread to create the downloaded file
-                    val url =  Constants.DROPBOX_URL.replace("{shareKey}","fb5m5sdillbs4my").replace("{fileName}","story.db.zip")
-                    val response = DropboxService.getInstance().downlload(url).execute()
-                    val body = response.body()
-                    if (response.isSuccessful && body != null) {
-                        var inStream: InputStream? = null
-                        var outStream: OutputStream? = null
-                        /*Note that there are no checked exceptions in Kotlin,
-                                         If try catch is not written here, the compiler will not report an error.
-                                         But we need to ensure that the stream is closed, so we need to operate finally*/
-                        try {
-                            //The following operations to read and write files are similar to java
-                            inStream = body.byteStream()
-                            //outStream = file.outputStream()
-                            outStream = openFileOutput("story.zip", Context.MODE_PRIVATE)
-                            //Total file length
-                            val contentLength = body.contentLength()
-                            //Currently downloaded length
-                            var currentLength = 0L
-                            //Buffer
-                            val buff = ByteArray(1024)
-                            var len = inStream.read(buff)
-                            var percent = 0
-                            while (len != -1) {
-                                outStream.write(buff, 0, len)
-                                currentLength += len
-                                /*Don't call the switch thread frequently, otherwise some mobile phones may cause stalls due to frequent thread switching.
-                             Here is a restriction. Only when the download percentage is updated, will the thread be switched to update the UI*/
-                                if ((currentLength * 100 / contentLength).toInt() > percent) {
-                                    percent = (currentLength / contentLength * 100).toInt()
-                                    //Switch to the main thread to update the UI
-                                    /*                    withContext(Dispatchers.Main) {
-                                    tv_download_state.text = "downloading:$currentLength / $contentLength"
-                                }*/
-                                    //Switch back to the IO thread immediately after updating the UI
-                                }
-
-                                len = inStream.read(buff)
-                            }
-/*                        //After the download is complete, switch to the main thread to update the UI
-                        withContext(Dispatchers.Main) {
-                            tv_download_state.text = "Download completed"
-                            btn_down.visibility = View.VISIBLE
-                        }*/
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        } finally {
-                            inStream?.close()
-                            outStream?.close()
-
-                            val unzip = UnzipUtility()
-                            applicationContext.deleteDatabase("story.db")
-                            UnzipUtility.unzip(
-                                getFileStreamPath("story.zip").path,
-                                getFileStreamPath("story.zip").parentFile.parent + File.separator + "databases"
-                            )
-                            getFileStreamPath("story.zip").delete()
-/*                            //After the download is complete, switch to the main thread to update the UI
-                            withContext(Dispatchers.Main) {
-                                progressBar.visibility =View.GONE
-                            }*/
-                            var intent = Intent(this@SplashActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                    }
-
+                    FileUtil.attachDbFromDropBox(applicationContext, "fb5m5sdillbs4my", "story")
+                    var intent = Intent(this@SplashActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
-
-
             }
         } else {
             var intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }
-    }
-
-    private fun databaseFileExists(): Boolean {
-        return try {
-            File(getDatabasePath("story.db").absolutePath).exists()
-        } catch (e: Exception) {
-            false
         }
     }
 

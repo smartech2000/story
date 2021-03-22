@@ -14,9 +14,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
+import com.smarttech.story.database.DescDatabase
 import com.smarttech.story.model.Category
 import com.smarttech.story.model.dto.ChapterCountDto
 import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -30,10 +32,13 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     private lateinit var db: AppDatabase
     private val _categories = MutableLiveData<List<Category>>().apply {
         val storyDao = AppDatabase(application).storyDao()
+        val storyDescDao = DescDatabase(application).storyDescDao()
         value = storyDao.getAllCategory()
 
-
-        GlobalScope.launch (Dispatchers.IO){
+        if (!FileUtil.databaseFileExists(application, "story_desc.db")) {
+            GlobalScope.launch(Dispatchers.IO) {
+                FileUtil.attachDbFromDropBox(application, "uyjrl187170adjr", "story_desc")
+                val x = 0
 /*            launch { // chapter count
                 val url = "https://www.dropbox.com/s/ztw2jimk6duitv4/story_chapter?dl=1"
                 var stringResponse:String?
@@ -53,7 +58,7 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 val x = 0;
 
             }*/
-            launch {//story desc
+/*            launch {//story desc
                 val url = Constants.DROPBOX_URL.replace("{shareKey}","adk0s9vgcznfch0").replace("{fileName}","story_desc")
                 var stringResponse:String?
                 val response = DropboxService.getInstance().downlload(url).execute()
@@ -70,8 +75,9 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 var map = adapter.fromJson(stringResponse);
                 val x = 0
 
-            }
+            }*/
 
+            }
         }
 
         var x = 0;
