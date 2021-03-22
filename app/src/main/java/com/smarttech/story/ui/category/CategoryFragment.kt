@@ -51,6 +51,7 @@ class CategoryFragment : Fragment() {
         categoryViewModel.categories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.progressBarLoading.visibility = View.GONE
                 //binding.categoryList.adapter = adapter
 
             }

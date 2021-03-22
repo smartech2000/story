@@ -1,7 +1,11 @@
 package com.smarttech.story.ui.story.detail
 
 import android.app.Application
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableString
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -16,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.smarttech.story.R
+import com.smarttech.story.constants.Repo
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.databinding.FragmentStorydetailListBinding
@@ -26,6 +31,7 @@ import com.smarttech.story.ui.category.CategoryViewModel
 import com.smarttech.story.ui.story.StoryFragmentArgs
 import com.smarttech.story.ui.story.StoryViewModelFactory
 import kotlinx.android.synthetic.main.fragment_storydetail_list.*
+import java.io.File
 
 /**
  * A fragment representing a list of Items.
@@ -34,7 +40,7 @@ class StoryDetailFragment : Fragment() {
     private lateinit var storyDetailViewModel: StoryDetailViewModel
     private var columnCount = 1
     var storyId: Int = 0
-    var storyName : String=""
+    var storyName: String = ""
     val args: StoryDetailFragmentArgs by navArgs()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +54,14 @@ class StoryDetailFragment : Fragment() {
         //notify the fragment that it should participate in options menu handling.
         setHasOptionsMenu(true)
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO Add your menu entries here
-       // menu?.findItem(R.id.download_menu)?.isVisible = true
+        // menu?.findItem(R.id.download_menu)?.isVisible = true
         menu?.findItem(R.id.bookmark_menu)?.isVisible = true
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,14 +71,20 @@ class StoryDetailFragment : Fragment() {
         val binding: FragmentStorydetailListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_storydetail_list, container, false
         )
-        val viewModelFactory = StoryDetailViewModelFactory(Application() , context!! ,storyId, storyName)
+        val viewModelFactory =
+            StoryDetailViewModelFactory(Application(), context!!, storyId, storyName)
         storyDetailViewModel =
-            ViewModelProvider(this,viewModelFactory).get(StoryDetailViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(StoryDetailViewModel::class.java)
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
-
+        val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir),"$storyId")
+        if (avatarFile.exists()){
+            val b = avatarFile.readBytes()
+            val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+            binding.imageView2.setImageBitmap(bmp)
+        }
 
         val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
@@ -81,6 +95,7 @@ class StoryDetailFragment : Fragment() {
         storyDetailViewModel.chapterDtos.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.progressBarLoading.visibility = View.GONE
                 //binding.categoryList.adapter = adapter
 
             }
@@ -96,10 +111,14 @@ class StoryDetailFragment : Fragment() {
 
 
         storyDetailViewModel.storyDesc.observe(viewLifecycleOwner, Observer {
-            desc_tv.text = it
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                desc_tv.text = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY);
+            } else {
+                desc_tv.text = Html.fromHtml(it);
+            }
         })
- /*       val manager = GridLayoutManager(activity, 2)
-        binding.categoryList.layoutManager = manager*/
+        /*       val manager = GridLayoutManager(activity, 2)
+               binding.categoryList.layoutManager = manager*/
 
         return binding.root
     }
