@@ -21,7 +21,8 @@ import java.io.File
 
 class ChapterViewModel(
     application: Application,
-    context : Context,
+    context: Context,
+    private val storyId: Int,
     private val chapterKey: String,
     private val chapterIndex: Int
 ) : AndroidViewModel(application) {
@@ -29,7 +30,11 @@ class ChapterViewModel(
         val repo: Repo = Repo.CHAPTER
         GlobalScope.launch(Dispatchers.IO) {
             launch {
-                val dataFile = File(repo.getRepo(context.cacheDir), "$chapterIndex")
+                val storyDir = File(repo.getRepo(context.cacheDir),"$storyId")
+                if (!storyDir.exists()){
+                    storyDir.mkdirs()
+                }
+                val dataFile = File(storyDir, "$chapterIndex")
                 var b: ByteArray?
                 if (dataFile.exists()) {
                     b = dataFile.readBytes()
@@ -38,7 +43,6 @@ class ChapterViewModel(
                         "$chapterKey",
                         "$chapterIndex"
                     )
-                    var stringResponse: String?
                     val response = DropboxService.getInstance().downlload(url).execute()
                     val body = response.body()
                     b = body?.bytes()

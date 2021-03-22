@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 class ChapterViewModelFactory(
     private val application: Application,
     private val context: Context,
+    private val storyId : Int,
     private val chapterKey: String,
     private val chapterIndex: Int
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ChapterViewModel::class.java)) {
-            return ChapterViewModel(application, context, chapterKey, chapterIndex) as T
+            return ChapterViewModel(application, context, storyId, chapterKey, chapterIndex) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

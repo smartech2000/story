@@ -79,7 +79,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val viewModelFactory =
-            ChapterViewModelFactory(Application(), context!!, chapterKey, chapterIndex)
+            ChapterViewModelFactory(Application(), context!!,storyId, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
             binding.tvBookText.setup(it, 0.65)
