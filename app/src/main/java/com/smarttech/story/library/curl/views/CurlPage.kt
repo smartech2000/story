@@ -88,16 +88,14 @@ class CurlPage(
     fun setTexture(texture: Bitmap, side: Int) {
         when (side) {
             SIDE_FRONT -> {
-                //if (mTextureFront != null) mTextureFront!!.recycle()
                 mTextureFront = texture
             }
             SIDE_BACK -> {
-               // if (mTextureBack != null) mTextureBack!!.recycle()
                 mTextureBack = texture
             }
             SIDE_BOTH -> {
-                if (mTextureFront != null) mTextureFront!!.recycle()
-                if (mTextureBack != null) mTextureBack!!.recycle()
+                if (mTextureFront != null ) mTextureFront!!.recycle()
+                if (mTextureBack != null ) mTextureBack!!.recycle()
                 run {
                     mTextureBack = texture
                     mTextureFront = mTextureBack

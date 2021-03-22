@@ -1,10 +1,12 @@
 package com.smarttech.story.library.curl.views
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PointF
 import android.graphics.RectF
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
+import android.opengl.GLUtils
 import com.smarttech.story.library.curl.interfaces.IObserver
 import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
@@ -12,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10
 
 class CurlRenderer(private val mObserver: IObserver) : GLSurfaceView.Renderer {
     private var mBackgroundColor = 0
+    private var mBackgroundBitmap : Bitmap? = null
     private val mCurlMeshes: Vector<CurlMesh> = Vector()
     private val mMargins = RectF()
 
@@ -49,6 +52,12 @@ class CurlRenderer(private val mObserver: IObserver) : GLSurfaceView.Renderer {
         )
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT)
         gl.glLoadIdentity()
+
+        if(mBackgroundBitmap != null){
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, 1)
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBackgroundBitmap, 0)
+        }
+
         if (USE_PERSPECTIVE_PROJECTION) {
             gl.glTranslatef(0f, 0f, -6f)
         }
@@ -101,7 +110,9 @@ class CurlRenderer(private val mObserver: IObserver) : GLSurfaceView.Renderer {
     fun setBackgroundColor(color: Int) {
         mBackgroundColor = color
     }
-
+    fun setBackgroundImage(bmp : Bitmap){
+        mBackgroundBitmap = bmp
+    }
     @Synchronized
     fun setMargins(
         left: Float, top: Float, right: Float,

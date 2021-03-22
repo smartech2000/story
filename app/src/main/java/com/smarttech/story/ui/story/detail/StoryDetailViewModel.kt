@@ -113,7 +113,6 @@ class StoryDetailViewModel(
 
     fun onChapterClicked(chapterDto: ChapterDto) {
         _navigateToChapter.value = chapterDto
-
     }
 
     fun onChapterNavigated() {

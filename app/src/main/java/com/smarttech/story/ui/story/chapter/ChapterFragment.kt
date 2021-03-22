@@ -1,21 +1,23 @@
 package com.smarttech.story.ui.story.chapter
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.smarttech.story.MainActivity
 import com.smarttech.story.R
+import com.smarttech.story.cache.MemoryCache
+import com.smarttech.story.constants.Repo
+import com.smarttech.story.databinding.ChapterFragmentBinding
 import com.smarttech.story.library.curl.implementations.SizeChangedObserver
 import com.smarttech.story.library.curl.interfaces.IPageProvider
 import com.smarttech.story.library.curl.views.CurlPage
@@ -24,6 +26,9 @@ import com.smarttech.story.library.extension.getBitmap
 import com.smarttech.story.library.pagination.ReadState
 import com.smarttech.story.library.views.OnActionListener
 import com.smarttech.story.library.views.PaginatedTextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
@@ -32,18 +37,17 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         fun newInstance() = ChapterFragment()
     }
 
-    private lateinit var mCurlView: CurlView
-    private lateinit var tvBookContent: PaginatedTextView
-    private var pagesCount : Int = 0
-
-    private lateinit var linearBook : View
-    private lateinit var tvPageNum : TextView
-    private lateinit var tvReadPercent : TextView
-    private lateinit var pProgressBar : ProgressBar
-
+    private var pagesCount: Int = 0
     private lateinit var viewModel: ChapterViewModel
-    var chapterKey : String=""
+    var chapterKey: String = ""
     var chapterIndex: Int = 0
+    var chapterTitle: String = ""
+    var storyId: Int = 0
+    var storyName: String = ""
+
+    private lateinit var binding: ChapterFragmentBinding
+    private var background: Bitmap? = null
+
     val args: ChapterFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,36 +56,34 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         arguments?.let {
             chapterKey = args.chapterKey
             chapterIndex = args.chapterIndex
+            storyId = args.storyId
+            storyName = args.storyName
+            chapterTitle = args.chapterTitle
         }
-
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.chapter_fragment, container, false)
-        tvBookContent = view.findViewById<View>(R.id.tv_book_text) as PaginatedTextView
-        tvBookContent.setup("", 0.65)
-        tvBookContent.setOnActionListener(this)
-        linearBook = view.findViewById(R.id.linearBook)
-        tvPageNum = view.findViewById(R.id.tvPageNum)
-        tvReadPercent = view.findViewById<TextView>(R.id.tvReadPercent)
-        mCurlView = view.findViewById<View>(R.id.curl) as CurlView
-        pProgressBar = view.findViewById<View>(R.id.progress_bar) as ProgressBar
-        return view
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.chapter_fragment, container, false
+        )
+        binding.tvBookText.setup("", 0.65)
+        binding.tvBookText.setOnActionListener(this)
+
+        binding.tvBookName.text = storyName + " - " + chapterTitle
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as MainActivity).supportActionBar!!.hide()
-        (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
-        val viewModelFactory = ChapterViewModelFactory(Application(), context!!, chapterKey, chapterIndex)
+        val viewModelFactory =
+            ChapterViewModelFactory(Application(), context!!, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
-            tvBookContent.setup(it, 0.65)
-            pProgressBar.visibility = View.GONE
+            binding.tvBookText.setup(it, 0.65)
+            binding.progressBar.visibility = View.GONE
         })
     }
 
@@ -93,13 +95,30 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
     override fun onPageLoaded(state: ReadState) {
         val page = state.page as CurlPage?
-        tvReadPercent.text = "${state.readPercent.toInt()}%"
-        tvPageNum.text = "${state.currentIndex} / ${state.pagesCount}"
-
-        val bitmap = linearBook.getBitmap()
+        binding.tvReadPercent.text = "${state.readPercent.toInt()}%"
+        binding.tvPageNum.text = "${state.currentIndex} / ${state.pagesCount}"
+        val bitmap = binding.linearBook.getBitmap()
         page?.setTexture(bitmap, CurlPage.SIDE_FRONT)
-        val background = BitmapFactory.decodeResource(resources, R.drawable.anhnen)
-        page?.setTexture(background, CurlPage.SIDE_BACK)
+        if (page != null) {
+            setBackgroundBitmap(page)
+        }
+
+    }
+
+    fun setBackgroundBitmap(page: CurlPage) {
+        background = MemoryCache.getInstance().get(storyId)
+        if (background != null) {
+            val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir), "$storyId")
+            if (avatarFile.exists()) {
+                val b = avatarFile.readBytes()
+                background = BitmapFactory.decodeByteArray(b, 0, b.size)
+                MemoryCache.getInstance().put(storyId, background)
+            }
+        }
+        if (background != null) {
+            val cloneBm = background!!.copy(background!!.config, true)
+            page.setTexture(cloneBm, CurlPage.SIDE_BACK)
+        }
     }
 
     override fun onClick(paragraph: String) {
@@ -111,29 +130,35 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
     public override fun onPause() {
         super.onPause()
-        mCurlView.onPause()
+        binding.curl.onPause()
     }
 
     public override fun onResume() {
         super.onResume()
-        mCurlView.onResume()
+        binding.curl.onResume()
     }
 
     override fun getPageCount(): Int {
-        return pagesCount
+        return pagesCount + 1
     }
 
     override fun updatePage(page: CurlPage, width: Int, height: Int, index: Int) {
+        if (index >= pagesCount) {
+            binding.tvLastPage.text = "Hết chương " + chapterTitle + "( Truyện " + storyName + ")"
+            page.setTexture(binding.linearLastPage.getBitmap(), CurlPage.SIDE_FRONT)
+            setBackgroundBitmap(page)
+            return
+        }
         activity?.runOnUiThread {
-            tvBookContent.readPage(page, index)
+            binding.tvBookText.readPage(page, index)
         }
     }
 
     override fun onReady(state: ReadState) {
         pagesCount = state.pagesCount
-        mCurlView.setPageProvider(this)
-        mCurlView.setSizeChangedObserver(SizeChangedObserver(mCurlView!!))
-        mCurlView.currentIndex = 0
-        mCurlView.setBackgroundColor(Color.rgb(180, 180, 180))
+        binding.curl.setPageProvider(this)
+        binding.curl.setSizeChangedObserver(SizeChangedObserver(binding.curl!!))
+        binding.curl.currentIndex = 0
+        binding.curl.setBackgroundColor(Color.rgb(180, 180, 180))
     }
 }

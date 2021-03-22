@@ -43,7 +43,6 @@ class StoryRecyclerViewAdapter(
     val clickListener: StoryListener
 ) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
     val repo: Repo = Repo.AVATAR
-    val bmps: MemoryCache = MemoryCache()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var storyViewInfo = getItem(position)
@@ -52,8 +51,8 @@ class StoryRecyclerViewAdapter(
         if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0) {
             return
         }
-        if (bmps.get(storyViewInfo.story.id) != null) {
-            holder.binding.imageView2.setImageBitmap(bmps.get(storyViewInfo.story.id))
+        if (MemoryCache.getInstance().get(storyViewInfo.story.id) != null) {
+            holder.binding.imageView2.setImageBitmap(MemoryCache.getInstance().get(storyViewInfo.story.id))
             return
         }
         // Load avatar
@@ -71,7 +70,7 @@ class StoryRecyclerViewAdapter(
             }
             if (b != null) {
                 val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
-                bmps.put(storyViewInfo.story.id, bmp)
+                MemoryCache.getInstance().put(storyViewInfo.story.id, bmp)
                 withContext(Dispatchers.Main) {
                     holder.binding.imageView2.setImageBitmap(bmp)
                 }

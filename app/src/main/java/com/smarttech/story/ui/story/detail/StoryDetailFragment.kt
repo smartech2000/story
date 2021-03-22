@@ -19,7 +19,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.smarttech.story.MainActivity
 import com.smarttech.story.R
+import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Repo
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentStorydetailBinding
@@ -79,10 +81,15 @@ class StoryDetailFragment : Fragment() {
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
-        val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir),"$storyId")
-        if (avatarFile.exists()){
-            val b = avatarFile.readBytes()
-            val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+        var bmp = MemoryCache.getInstance().get(storyId)
+        if (bmp == null) {
+            val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir), "$storyId")
+            if (avatarFile.exists()) {
+                val b = avatarFile.readBytes()
+                bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+            }
+        }
+        if (bmp != null) {
             binding.imageView2.setImageBitmap(bmp)
         }
 
@@ -103,8 +110,14 @@ class StoryDetailFragment : Fragment() {
         storyDetailViewModel.navigateToChapter.observe(viewLifecycleOwner, Observer { chapterDto ->
             chapterDto?.let {
                 val action = StoryDetailFragmentDirections
-                    .actionStoryDetailFragmentToChapterFragment(chapterDto.key, chapterDto.index)
+                    .actionStoryDetailFragmentToChapterFragment(chapterDto.key,
+                        chapterDto.index,
+                        storyId = storyId,
+                        storyName = storyName,
+                        chapterTitle = chapterDto.title)
                 this.findNavController().navigate(action)
+                (activity as MainActivity).supportActionBar!!.hide()
+                (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
                 storyDetailViewModel.onChapterNavigated()
             }
         })

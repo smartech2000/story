@@ -2,6 +2,8 @@ package com.smarttech.story.cache
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.smarttech.story.networking.DropboxService
+import retrofit2.Retrofit
 import java.util.*
 
 class MemoryCache {
@@ -65,6 +67,13 @@ class MemoryCache {
 
     companion object {
         private const val TAG = "MemoryCache"
+        private var instance: MemoryCache? = null
+        fun getInstance(): MemoryCache {
+            if (instance == null) {
+                instance = MemoryCache()
+            }
+            return instance!!
+        }
     }
 
     init {

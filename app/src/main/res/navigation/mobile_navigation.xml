@@ -108,6 +108,15 @@
         <argument
             android:name="chapterIndex"
             app:argType="integer" />
+        <argument
+            android:name="storyId"
+            app:argType="integer" />
+        <argument
+            android:name="storyName"
+            app:argType="string" />
+        <argument
+            android:name="chapterTitle"
+            app:argType="string" />
     </fragment>
 
 </navigation>

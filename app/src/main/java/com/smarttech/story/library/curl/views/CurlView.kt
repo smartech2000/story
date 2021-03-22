@@ -1,6 +1,7 @@
 package com.smarttech.story.library.curl.views
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.PointF
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
@@ -255,6 +256,10 @@ class CurlView : GLSurfaceView, OnTouchListener, IObserver {
 
     override fun setBackgroundColor(color: Int) {
         mRenderer.setBackgroundColor(color)
+        requestRender()
+    }
+    fun setBackgroundImage(bm: Bitmap) {
+        mRenderer.setBackgroundImage(bm)
         requestRender()
     }
 
