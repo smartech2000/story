@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentStoryChapterBinding
 import com.smarttech.story.databinding.FragmentStoryChapterListBinding
-import com.smarttech.story.ui.story.detail.ChapterListener
+import com.smarttech.story.ui.story.detail.StoryDetailFragmentDirections
+import com.smarttech.story.ui.story.detail.chapter.ChapterListener
 import com.smarttech.story.ui.story.detail.StoryDetailRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_storydetail_list.*
 
@@ -24,7 +27,7 @@ class ChapterListFragment : Fragment() {
     var storyId: Int = 0
     var storyName: String = ""
     private lateinit var viewModel: ChapterListViewModel
-    private lateinit var adapter: StoryDetailRecyclerViewAdapter
+    private lateinit var adapter: ChapterRecyclerViewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,7 +52,7 @@ class ChapterListFragment : Fragment() {
             ViewModelProvider(this,viewModelFactory).get(ChapterListViewModel::class.java)
 
 
-        adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
+        adapter = ChapterRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             viewModel.onChapterClicked(chapterDto)
         })
@@ -62,6 +65,21 @@ class ChapterListFragment : Fragment() {
                 //binding.progressBarLoading.visibility = View.GONE
                 //binding.categoryList.adapter = adapter
 
+            }
+        })
+
+        viewModel.navigateToChapter.observe(viewLifecycleOwner, Observer { chapterDto ->
+            chapterDto?.let {
+                val action = StoryDetailFragmentDirections
+                    .actionStoryDetailFragmentToChapterFragment(chapterDto.key,
+                        chapterDto.index,
+                        storyId = storyId,
+                        storyName = storyName,
+                        chapterTitle = chapterDto.title)
+                this.findNavController().navigate(action)
+                (activity as MainActivity).supportActionBar!!.hide()
+                (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
+                viewModel.onChapterNavigated()
             }
         })
         return binding.root
