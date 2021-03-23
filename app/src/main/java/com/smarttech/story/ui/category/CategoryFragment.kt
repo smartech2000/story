@@ -41,21 +41,20 @@ class CategoryFragment : Fragment() {
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.categoryViewModel = categoryViewModel
-
+        //Create adapter: Onclick item listener, change item property value
         val adapter = CategoryRecyclerViewAdapter(CategoryListener { categoryId ->
-            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             categoryViewModel.onCategoryClicked(categoryId)
         })
+        //Bind adapter to list
         binding.categoryList.adapter = adapter
-        ///binding.categoryList.adapter = adapter
+        //Observe list data
         categoryViewModel.categories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
-                //binding.progressBarLoading.visibility = View.GONE
-                //binding.categoryList.adapter = adapter
-
+                binding.progressBarLoading.visibility = View.GONE
             }
         })
+        //Observe item clicked
         categoryViewModel.navigateToCategory.observe(viewLifecycleOwner, Observer { category ->
             category?.let {
                 val action = CategoryFragmentDirections
@@ -64,6 +63,7 @@ class CategoryFragment : Fragment() {
                 categoryViewModel.onCategoryNavigated()
             }
         })
+        //Change layout manager
         val manager = GridLayoutManager(activity, 2)
         binding.categoryList.layoutManager = manager
 
