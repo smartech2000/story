@@ -30,13 +30,13 @@
             app:layout_constraintTop_toBottomOf="@id/storyDetailCardView">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/downloadStory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tải về" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/readStoryBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -173,6 +173,15 @@
                     app:layout_constraintStart_toEndOf="@+id/textView8"
                     tools:text="1000" />
 
+                <ProgressBar
+                    android:id="@+id/progress_bar_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>

@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Repo
@@ -19,6 +22,7 @@ import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
+import kotlinx.android.synthetic.main.fragment_storydetail.*
 import java.io.File
 
 /**
@@ -136,6 +140,25 @@ class StoryDetailFragment : Fragment() {
         if (bmp != null) {
             binding.imageView2.setImageBitmap(bmp)
         }
+        storyDetailViewModel.story.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.progressBarLoading.visibility = View.GONE
+                //binding.categoryList.adapter = adapter
+
+            }
+        })
+/*        readStoryBtn.setOnClickListener(View.OnClickListener {
+            val action = StoryDetailFragmentDirections
+                .actionStoryDetailFragmentToChapterFragment(chapterDto.key,
+                    chapterDto.index,
+                    storyId = storyId,
+                    storyName = storyName,
+                    chapterTitle = chapterDto.title)
+            this.findNavController().navigate(action)
+            (activity as MainActivity).supportActionBar!!.hide()
+            (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
+            viewModel.onChapterNavigated()
+        })*/
 
         return binding.root
     }

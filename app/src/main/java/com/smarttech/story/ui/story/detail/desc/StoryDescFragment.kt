@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.smarttech.story.R
@@ -52,6 +53,8 @@ class StoryDescFragment : Fragment() {
             } else {
                 Html.fromHtml(it)
             }
+            var loading:ProgressBar = root.findViewById(R.id.progress_bar_loading)
+            loading.visibility = View.GONE
         })
         return root
     }
