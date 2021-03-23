@@ -5,33 +5,26 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.text.SpannableString
 import android.view.*
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Repo
-import com.smarttech.story.databinding.FragmentCategoryListBinding
-import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.databinding.FragmentStorydetailListBinding
-import com.smarttech.story.ui.category.CategoryFragmentDirections
-import com.smarttech.story.ui.category.CategoryListener
-import com.smarttech.story.ui.category.CategoryRecyclerViewAdapter
-import com.smarttech.story.ui.category.CategoryViewModel
-import com.smarttech.story.ui.story.StoryFragmentArgs
-import com.smarttech.story.ui.story.StoryViewModelFactory
+import com.smarttech.story.ui.category.*
+import com.smarttech.story.ui.setting.SettingFragment
+import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
+import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
 import kotlinx.android.synthetic.main.fragment_storydetail_list.*
 import java.io.File
 
@@ -44,6 +37,9 @@ class StoryDetailFragment : Fragment() {
     var storyId: Int = 0
     var storyName: String = ""
     val args: StoryDetailFragmentArgs by navArgs()
+    private lateinit var viewPager: ViewPager2
+    private lateinit var adapter: StoryDetailRecyclerViewAdapter
+    private lateinit var tabLayout: TabLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,6 +59,62 @@ class StoryDetailFragment : Fragment() {
         menu?.findItem(R.id.bookmark_menu)?.isVisible = true
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewPager = view.findViewById(R.id.chap_list_vp)
+        var tabAdapter = TabAdapter(storyId,this)
+        viewPager.adapter = tabAdapter
+        tabLayout = view.findViewById(R.id.chap_list_tl)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text ="Mô tả"
+                1 -> tab.text ="Danh sách chương"
+            }
+        }.attach()
+        var x = 0
+    }
+
+
+    class TabAdapter(
+        storyId: Int,
+        fragment: Fragment
+    ) : FragmentStateAdapter(fragment) {
+        private var storyId: Int = storyId
+
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment {
+            // Return a NEW fragment instance in createFragment(int)
+            var fragment: Fragment
+
+            when (position) {
+                0 -> {
+                    fragment = StoryDescFragment.newInstance()
+                    fragment.arguments = Bundle().apply {
+                        // Our object is just an integer :-P
+                        putInt("storyId", storyId)
+                    }
+                }
+                1 -> {
+                    fragment = ChapterListFragment.newInstance()
+                    fragment.arguments = Bundle().apply {
+                        // Our object is just an integer :-P
+                        putInt("storyId", storyId)
+                    }
+                }
+                else -> {
+                    fragment = StoryDescFragment.newInstance()
+                    fragment.arguments = Bundle().apply {
+                        // Our object is just an integer :-P
+                        putInt("storyId", storyId)
+                    }
+                }
+            }
+
+            return fragment
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,7 +145,7 @@ class StoryDetailFragment : Fragment() {
             binding.imageView2.setImageBitmap(bmp)
         }
 
-        val adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
+/*        adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             storyDetailViewModel.onChapterClicked(chapterDto)
         })
@@ -106,7 +158,7 @@ class StoryDetailFragment : Fragment() {
                 //binding.categoryList.adapter = adapter
 
             }
-        })
+        })*/
         storyDetailViewModel.navigateToChapter.observe(viewLifecycleOwner, Observer { chapterDto ->
             chapterDto?.let {
                 val action = StoryDetailFragmentDirections
@@ -123,20 +175,22 @@ class StoryDetailFragment : Fragment() {
         })
 
 
-        storyDetailViewModel.storyDesc.observe(viewLifecycleOwner, Observer {
+/*        storyDetailViewModel.storyDesc.observe(viewLifecycleOwner, Observer {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 desc_tv.text = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY);
             } else {
                 desc_tv.text = Html.fromHtml(it);
             }
-        })
+        })*/
         /*       val manager = GridLayoutManager(activity, 2)
                binding.categoryList.layoutManager = manager*/
 
         return binding.root
     }
 
+
     companion object {
+        private const val ARG_OBJECT = "object"
 
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"

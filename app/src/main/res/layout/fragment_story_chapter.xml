@@ -9,13 +9,12 @@
 
         <variable
             name="clickListener"
-            type="com.smarttech.story.ui.story.detail.ChapterListener" />
+            type="com.smarttech.story.ui.story.detail.chapter.ChapterListener" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:onClick="@{() -> clickListener.onClick(chapterDto)}">
 
         <TextView

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.smarttech.story.R
-import com.smarttech.story.ui.notifications.NotificationsViewModel
 
 class SettingFragment : Fragment() {
 
@@ -26,7 +25,7 @@ class SettingFragment : Fragment() {
         viewModel =
             ViewModelProvider(this).get(SettingViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_setting, container, false)
-        val textView: TextView = root.findViewById(R.id.text_setting)
+        val textView: TextView = root.findViewById(R.id.story_desc_tv)
         viewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
