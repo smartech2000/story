@@ -2,30 +2,23 @@ package com.smarttech.story.ui.story.detail
 
 import android.app.Application
 import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Repo
-import com.smarttech.story.databinding.FragmentStorydetailListBinding
+import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.ui.category.*
-import com.smarttech.story.ui.setting.SettingFragment
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
-import kotlinx.android.synthetic.main.fragment_storydetail_list.*
 import java.io.File
 
 /**
@@ -38,7 +31,6 @@ class StoryDetailFragment : Fragment() {
     var storyName: String = ""
     val args: StoryDetailFragmentArgs by navArgs()
     private lateinit var viewPager: ViewPager2
-    private lateinit var adapter: StoryDetailRecyclerViewAdapter
     private lateinit var tabLayout: TabLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,8 +114,8 @@ class StoryDetailFragment : Fragment() {
     ): View? {
         this.requireActivity().invalidateOptionsMenu()
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentStorydetailListBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_storydetail_list, container, false
+        val binding: FragmentStorydetailBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_storydetail, container, false
         )
         val viewModelFactory =
             StoryDetailViewModelFactory(Application(), context!!, storyId, storyName)
@@ -145,49 +137,8 @@ class StoryDetailFragment : Fragment() {
             binding.imageView2.setImageBitmap(bmp)
         }
 
-/*        adapter = StoryDetailRecyclerViewAdapter(ChapterListener { chapterDto ->
-            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            storyDetailViewModel.onChapterClicked(chapterDto)
-        })
-        binding.chapterList.adapter = adapter
-        ///binding.categoryList.adapter = adapter
-        storyDetailViewModel.chapterDtos.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.submitList(it)
-                binding.progressBarLoading.visibility = View.GONE
-                //binding.categoryList.adapter = adapter
-
-            }
-        })*/
-        storyDetailViewModel.navigateToChapter.observe(viewLifecycleOwner, Observer { chapterDto ->
-            chapterDto?.let {
-                val action = StoryDetailFragmentDirections
-                    .actionStoryDetailFragmentToChapterFragment(chapterDto.key,
-                        chapterDto.index,
-                        storyId = storyId,
-                        storyName = storyName,
-                        chapterTitle = chapterDto.title)
-                this.findNavController().navigate(action)
-                (activity as MainActivity).supportActionBar!!.hide()
-                (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
-                storyDetailViewModel.onChapterNavigated()
-            }
-        })
-
-
-/*        storyDetailViewModel.storyDesc.observe(viewLifecycleOwner, Observer {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                desc_tv.text = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY);
-            } else {
-                desc_tv.text = Html.fromHtml(it);
-            }
-        })*/
-        /*       val manager = GridLayoutManager(activity, 2)
-               binding.categoryList.layoutManager = manager*/
-
         return binding.root
     }
-
 
     companion object {
         private const val ARG_OBJECT = "object"

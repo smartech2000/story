@@ -81,7 +81,7 @@
         android:id="@+id/storyDetailFragment"
         android:name="com.smarttech.story.ui.story.detail.StoryDetailFragment"
         android:label="Chi tiết truyện"
-        tools:layout="@layout/fragment_storydetail_list">
+        tools:layout="@layout/fragment_storydetail">
         <argument
             android:name="storyId"
             app:argType="integer" />

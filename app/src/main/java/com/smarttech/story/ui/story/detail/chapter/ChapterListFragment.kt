@@ -16,8 +16,6 @@ import com.smarttech.story.databinding.FragmentStoryChapterBinding
 import com.smarttech.story.databinding.FragmentStoryChapterListBinding
 import com.smarttech.story.ui.story.detail.StoryDetailFragmentDirections
 import com.smarttech.story.ui.story.detail.chapter.ChapterListener
-import com.smarttech.story.ui.story.detail.StoryDetailRecyclerViewAdapter
-import kotlinx.android.synthetic.main.fragment_storydetail_list.*
 
 class ChapterListFragment : Fragment() {
 

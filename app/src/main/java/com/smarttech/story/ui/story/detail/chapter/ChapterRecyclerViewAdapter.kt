@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.databinding.FragmentStoryChapterBinding
-import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.model.Chapter
 import com.smarttech.story.model.dto.ChapterDto
 
