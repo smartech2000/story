@@ -38,7 +38,7 @@ class Paginator(
         spacingAdd: Float
     ): List<CharSequence> {
 
-        val layout =
+        var layout =
             when (Build.VERSION.SDK_INT) {
                 in Int.MIN_VALUE..Build.VERSION_CODES.M -> StaticLayout(
                     content,

@@ -69,7 +69,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.chapter_fragment, container, false
         )
-        binding.tvBookText.setup("", 0.65)
+        binding.tvBookText.setup("", 1.0)
         binding.tvBookText.setOnActionListener(this)
 
         binding.tvBookName.text = storyName + " - " + chapterTitle
@@ -79,10 +79,10 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val viewModelFactory =
-            ChapterViewModelFactory(Application(), context!!,storyId, chapterKey, chapterIndex)
+            ChapterViewModelFactory(Application(), context!!, storyId, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
-            binding.tvBookText.setup(it, 0.65)
+            binding.tvBookText.setup(it, 0.6)
             binding.progressBar.visibility = View.GONE
         })
     }
@@ -98,7 +98,9 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         binding.tvReadPercent.text = "${state.readPercent.toInt()}%"
         binding.tvPageNum.text = "${state.currentIndex} / ${state.pagesCount}"
         val bitmap = binding.linearBook.getBitmap()
-        page?.setTexture(bitmap, CurlPage.SIDE_FRONT)
+        if (bitmap != null) {
+            page?.setTexture(bitmap, CurlPage.SIDE_FRONT)
+        }
         if (page != null) {
             setBackgroundBitmap(page)
         }
@@ -144,8 +146,11 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
     override fun updatePage(page: CurlPage, width: Int, height: Int, index: Int) {
         if (index >= pagesCount) {
-            binding.tvLastPage.text = "Hết chương " + chapterTitle + "( Truyện " + storyName + ")"
-            page.setTexture(binding.linearLastPage.getBitmap(), CurlPage.SIDE_FRONT)
+          //  binding.tvLastPage.text = "Hết chương " // + chapterTitle + "( Truyện " + storyName + ")"
+            val bmp = binding.tvLastPage.getBitmap(binding.linearBook.width, binding.linearBook.height)
+            if (bmp != null) {
+                page.setTexture(bmp, CurlPage.SIDE_FRONT)
+            }
             setBackgroundBitmap(page)
             return
         }
