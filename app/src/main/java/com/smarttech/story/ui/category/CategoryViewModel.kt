@@ -62,10 +62,6 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
 
     fun onCategoryClicked(id: Int) {
         _category.value = _categories.value?.filter { category -> category.id == id }?.last()
-/*        db.collection("category").whereEqualTo("id", id).get()
-            .addOnSuccessListener { docs ->
-                _category.value = docs.documents.get(0).toObject(Category::class.java)
-            }*/
     }
 
     fun onCategoryNavigated() {
