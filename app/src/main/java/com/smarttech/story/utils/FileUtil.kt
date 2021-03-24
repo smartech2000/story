@@ -5,9 +5,7 @@ import android.content.Intent
 import com.smarttech.story.MainActivity
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.networking.DropboxService
-import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 
 class FileUtil {
     companion object {
@@ -17,6 +15,30 @@ class FileUtil {
             } catch (e: Exception) {
                 false
             }
+        }
+
+        fun loadFromUrlToBytes(url: String): ByteArray? {
+            val response = DropboxService.getInstance().downlload(url).execute()
+            val body = response.body()
+            if (body == null) {
+                return null
+            }
+            val ins: InputStream = body.byteStream()
+            val input = BufferedInputStream(ins)
+            val output: ByteArrayOutputStream = ByteArrayOutputStream()
+
+            val data = ByteArray(1024)
+
+            var count = 0
+            while (input.read(data).also({ count = it }) !== -1) {
+                output.write(data, 0, count)
+            }
+
+            output.flush()
+            output.close()
+            input.close()
+
+            return output.toByteArray()
         }
 
         fun attachDbFromDropBox(context: Context, shareKey: String, fileName: String) {

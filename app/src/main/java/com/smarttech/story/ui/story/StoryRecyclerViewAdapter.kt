@@ -1,36 +1,18 @@
 package com.smarttech.story.ui.story
 
-import android.app.Application
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.smarttech.story.R
-import com.smarttech.story.cache.FileCache
-import com.smarttech.story.cache.MemoryCache
-import com.smarttech.story.constants.Constants
-import com.smarttech.story.constants.Repo
 import com.smarttech.story.databinding.FragmentStoryBinding
-import com.smarttech.story.databinding.FragmentStoryListBinding
 import com.smarttech.story.model.dto.StoryViewInfo
-import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.AvatarUtil
 import kotlinx.android.synthetic.main.fragment_story.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.*
 
 
@@ -42,66 +24,18 @@ class StoryRecyclerViewAdapter(
     val ctx: Context,
     val clickListener: StoryListener
 ) : ListAdapter<StoryViewInfo, StoryRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
-    val repo: Repo = Repo.AVATAR
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var storyViewInfo = getItem(position)
         holder.bind(storyViewInfo!!, clickListener)
 
-        if (storyViewInfo.story.avatar == null || storyViewInfo.story.avatar?.length == 0) {
-            return
-        }
-        if (MemoryCache.getInstance().get(storyViewInfo.story.id) != null) {
-            holder.binding.avatar.setImageBitmap(MemoryCache.getInstance().get(storyViewInfo.story.id))
-            return
-        }
-        // Load avatar
-        GlobalScope.launch (Dispatchers.IO) {
-            val storyAvatarFile = File(repo.getRepo(ctx.cacheDir), "${storyViewInfo.story.avatar}")
-            var b: ByteArray?
-            if (storyAvatarFile.exists()) {
-                b = storyAvatarFile.readBytes()
-            } else {
-                val url = repo.getUri("${storyViewInfo.story.avatar}", "${storyViewInfo.story.id}")
-                b = LoadFromUrl(url)
-                if (b != null) {
-                    storyAvatarFile.writeBytes(b)
-                }
-            }
-            if (b != null) {
-                val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
-                MemoryCache.getInstance().put(storyViewInfo.story.id, bmp)
-                withContext(Dispatchers.Main) {
-                    holder.binding.avatar.setImageBitmap(bmp)
-                }
+        if (storyViewInfo.story.avatar != null && storyViewInfo.story.avatar?.length != 0) {
+            // Load avatar
+            GlobalScope.launch (Dispatchers.IO) {
+                AvatarUtil.bindFromServer(ctx,holder.binding.avatar, storyViewInfo.story.id, storyViewInfo.story.avatar)
             }
         }
     }
-
-    fun LoadFromUrl(url: String): ByteArray? {
-        val response = DropboxService.getInstance().downlload(url).execute()
-        val body = response.body()
-        if (body == null) {
-            return null
-        }
-        val ins: InputStream = body.byteStream()
-        val input = BufferedInputStream(ins)
-        val output: ByteArrayOutputStream = ByteArrayOutputStream()
-
-        val data = ByteArray(1024)
-
-        var count = 0
-        while (input.read(data).also({ count = it }) !== -1) {
-            output.write(data, 0, count)
-        }
-
-        output.flush()
-        output.close()
-        input.close()
-
-        return output.toByteArray()
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)

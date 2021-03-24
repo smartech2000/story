@@ -1,9 +1,11 @@
 package com.smarttech.story.ui.story.detail
 
 import android.app.Application
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,6 +24,7 @@ import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
+import com.smarttech.story.utils.AvatarUtil
 import kotlinx.android.synthetic.main.fragment_storydetail.*
 import java.io.File
 
@@ -122,24 +125,14 @@ class StoryDetailFragment : Fragment() {
             inflater, R.layout.fragment_storydetail, container, false
         )
         val viewModelFactory =
-            StoryDetailViewModelFactory(Application(), context!!, storyId, storyName)
+            StoryDetailViewModelFactory(Application(), requireContext(), storyId, storyName)
         storyDetailViewModel =
             ViewModelProvider(this, viewModelFactory).get(StoryDetailViewModel::class.java)
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
-        var bmp = MemoryCache.getInstance().get(storyId)
-        if (bmp == null) {
-            val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir), "$storyId")
-            if (avatarFile.exists()) {
-                val b = avatarFile.readBytes()
-                bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
-            }
-        }
-        if (bmp != null) {
-            binding.avatar.setImageBitmap(bmp)
-        }
+        AvatarUtil.bindFromLocal(requireContext(), binding.avatar, storyId)
         storyDetailViewModel.story.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.progressBarLoading.visibility = View.GONE
@@ -162,6 +155,8 @@ class StoryDetailFragment : Fragment() {
 
         return binding.root
     }
+
+
 
     companion object {
         private const val ARG_OBJECT = "object"

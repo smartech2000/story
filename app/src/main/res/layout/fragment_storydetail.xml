@@ -75,10 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:text="@{storyDetailViewModel.story.statusTitle.toString()}"
                     android:textColor="@color/purple_200"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/avatar"
                     app:layout_constraintTop_toBottomOf="@+id/author"
                     tools:text="Full" />
@@ -98,10 +96,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="@{storyDetailViewModel.story.story.rate.toString()}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/chapIV"
+                    app:layout_constraintStart_toEndOf="@+id/avatar"
+                    app:layout_constraintTop_toBottomOf="@id/statusTV"
                     tools:text="9" />
 
                 <TextView
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@{storyDetailViewModel.story.story.view.toString()}"
+                    android:text="@{@string/number_format(Integer.parseInt(storyDetailViewModel.story.story.view))}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/rateIV"
                     tools:text="1000" />
@@ -130,10 +130,12 @@
 
                 <ImageView
                     android:id="@+id/avatar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="72dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
@@ -154,25 +156,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/value_margin"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="Chương"
                     android:textColor="@color/purple_200"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/chapTV"
-                    tools:text="chương" />
+                    app:layout_constraintTop_toBottomOf="@+id/author" />
 
                 <TextView
                     android:id="@+id/chapTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="@{storyDetailViewModel.story.story.chapNum.toString()}"
                     android:textColor="@color/purple_200"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/statusTV"
+                    app:layout_constraintTop_toBottomOf="@+id/author"
                     tools:text="1000" />
-
                 <ProgressBar
                     android:id="@+id/progress_bar_loading"
                     android:layout_width="wrap_content"
@@ -185,7 +185,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/storySubDetailCardView"
             android:layout_width="match_parent"

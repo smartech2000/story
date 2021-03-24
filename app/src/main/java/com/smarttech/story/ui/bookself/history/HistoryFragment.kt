@@ -47,7 +47,7 @@ class HistoryFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = HistoryRecyclerViewAdapter(HistoryListener { storyViewInfo ->
+        val adapter = HistoryRecyclerViewAdapter(requireContext(),HistoryListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             viewModel.onHistoryClicked(storyViewInfo)
         })
@@ -56,6 +56,7 @@ class HistoryFragment : Fragment() {
         viewModel.histories.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.progressBarLoading.visibility = View.GONE
             }
         })
         return binding.root
