@@ -41,10 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@{storyViewInfo.statusTitle.toString()}"
                 android:textColor="@color/purple_200"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/avatar"
                 app:layout_constraintTop_toBottomOf="@+id/author"
                 tools:text="Full" />
@@ -64,10 +62,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{storyViewInfo.story.rate.toString()}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/statusTV"
                 tools:text="9" />
 
             <TextView
@@ -96,10 +96,12 @@
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="wrap_content"
+                android:layout_width="72dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
@@ -115,25 +117,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 tools:text="Kim Dung" />
 
-            <ImageView
-                android:id="@+id/textView13"
+            <TextView
+                android:id="@+id/chapIV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/value_margin"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                android:text="Chương"
+                android:textColor="@color/purple_200"
                 app:layout_constraintStart_toEndOf="@+id/chapTV"
-                app:srcCompat="@drawable/ic_baseline_list_24" />
+                app:layout_constraintTop_toBottomOf="@+id/author" />
 
             <TextView
                 android:id="@+id/chapTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@{storyViewInfo.story.chapNum.toString()}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/purple_200"
                 app:layout_constraintStart_toEndOf="@+id/statusTV"
+                app:layout_constraintTop_toBottomOf="@+id/author"
                 tools:text="1000" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
