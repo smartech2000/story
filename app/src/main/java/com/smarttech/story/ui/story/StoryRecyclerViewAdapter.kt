@@ -52,7 +52,7 @@ class StoryRecyclerViewAdapter(
             return
         }
         if (MemoryCache.getInstance().get(storyViewInfo.story.id) != null) {
-            holder.binding.imageView2.setImageBitmap(MemoryCache.getInstance().get(storyViewInfo.story.id))
+            holder.binding.avatar.setImageBitmap(MemoryCache.getInstance().get(storyViewInfo.story.id))
             return
         }
         // Load avatar
@@ -72,7 +72,7 @@ class StoryRecyclerViewAdapter(
                 val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
                 MemoryCache.getInstance().put(storyViewInfo.story.id, bmp)
                 withContext(Dispatchers.Main) {
-                    holder.binding.imageView2.setImageBitmap(bmp)
+                    holder.binding.avatar.setImageBitmap(bmp)
                 }
             }
         }

@@ -138,7 +138,7 @@ class StoryDetailFragment : Fragment() {
             }
         }
         if (bmp != null) {
-            binding.imageView2.setImageBitmap(bmp)
+            binding.avatar.setImageBitmap(bmp)
         }
         storyDetailViewModel.story.observe(viewLifecycleOwner, Observer {
             it?.let {

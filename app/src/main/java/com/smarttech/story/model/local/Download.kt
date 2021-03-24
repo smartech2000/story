@@ -1,11 +1,14 @@
 package com.smarttech.story.model.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName= "download")
 data class Download(
-    @PrimaryKey val id: Int,
-    val story_id: Int?,
-    val create_time: String?
+    @PrimaryKey(autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "story_id") val storyId: Int?,
+    @ColumnInfo(name = "chap_index") val chapterIndex: Int?,
+    @ColumnInfo(name = "page") val page: Int?,
+    @ColumnInfo(name = "create_time") val createTime: String?
 )

@@ -14,7 +14,9 @@ import com.smarttech.story.global.ApplicationState
 import com.smarttech.story.model.*
 import com.smarttech.story.model.dto.ChapterDto
 import com.smarttech.story.model.dto.StoryViewInfo
+import com.smarttech.story.model.local.History
 import com.smarttech.story.networking.DropboxService
+import com.smarttech.story.utils.DateTimeUtil
 import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
 import com.squareup.moshi.Moshi
@@ -33,6 +35,11 @@ class StoryDetailViewModel(
     private val _story = MutableLiveData<StoryViewInfo>().apply {
         val storyDao = AppDatabase(application).storyDao()
         value = storyDao.getStoryById(storyId)
+
+        // add history
+        var history =History(storyId)
+        storyDao.insertHistoryLocal(history)
+        var x = 0
     }
     var story: LiveData<StoryViewInfo> = _story
 }

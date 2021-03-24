@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
             activityScope.launch {
                 //Start directly from the IO thread here
                 launch(Dispatchers.IO) {
-                    FileUtil.attachDbFromDropBox(applicationContext, "fb5m5sdillbs4my", "story")
+                    FileUtil.attachDbFromDropBox(applicationContext, "uczd5fxz2c74lfn", "story")
                     var intent = Intent(this@SplashActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()

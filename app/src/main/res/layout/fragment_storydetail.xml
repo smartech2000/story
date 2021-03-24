@@ -60,17 +60,17 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/viewIV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/value_margin"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView12"
+                    app:layout_constraintStart_toEndOf="@+id/viewTV"
                     app:srcCompat="@drawable/ic_baseline_remove_red_eye_24" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/statusTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -79,22 +79,22 @@
                     android:text="@{storyDetailViewModel.story.statusTitle.toString()}"
                     android:textColor="@color/purple_200"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10"
+                    app:layout_constraintStart_toEndOf="@+id/avatar"
+                    app:layout_constraintTop_toBottomOf="@+id/author"
                     tools:text="Full" />
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/rateIV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/value_margin"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView11"
+                    app:layout_constraintStart_toEndOf="@+id/rateTV"
                     app:srcCompat="@drawable/ic_baseline_star_rate_24" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/rateTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -105,14 +105,14 @@
                     tools:text="9" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/viewTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="@{storyDetailViewModel.story.story.view.toString()}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/rateIV"
                     tools:text="1000" />
 
                 <TextView
@@ -124,12 +124,12 @@
                     android:text="@{storyDetailViewModel.story.story.title}"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintStart_toEndOf="@+id/avatar"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Tên truyện" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/avatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -139,13 +139,13 @@
                     app:srcCompat="@drawable/ic_baseline_cloud_download_24" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@{storyDetailViewModel.story.authorTitle.toString()}"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintStart_toEndOf="@+id/avatar"
                     app:layout_constraintTop_toBottomOf="@+id/title"
                     tools:text="Kim Dung" />
 
@@ -158,11 +158,11 @@
                     android:text="Chương"
                     android:textColor="@color/purple_200"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView14"
+                    app:layout_constraintStart_toEndOf="@+id/chapTV"
                     tools:text="chương" />
 
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/chapTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -170,7 +170,7 @@
                     android:text="@{storyDetailViewModel.story.story.chapNum.toString()}"
                     android:textColor="@color/purple_200"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView8"
+                    app:layout_constraintStart_toEndOf="@+id/statusTV"
                     tools:text="1000" />
 
                 <ProgressBar

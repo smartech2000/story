@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ab9c714c21252fd162a86fdb004c1cc0",
+    "identityHash": "50cf241c1919421c1b70888648540922",
     "entities": [
       {
         "tableName": "category",
@@ -220,7 +220,7 @@
       },
       {
         "tableName": "history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `story_id` INTEGER, `chap_index` INTEGER, `page` INTEGER, `create_time` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -229,13 +229,25 @@
             "notNull": true
           },
           {
-            "fieldPath": "story_id",
+            "fieldPath": "storyId",
             "columnName": "story_id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "create_time",
+            "fieldPath": "chapterIndex",
+            "columnName": "chap_index",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "page",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createTime",
             "columnName": "create_time",
             "affinity": "TEXT",
             "notNull": false
@@ -245,14 +257,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "download",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `story_id` INTEGER, `chap_index` INTEGER, `page` INTEGER, `create_time` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -261,13 +273,25 @@
             "notNull": true
           },
           {
-            "fieldPath": "story_id",
+            "fieldPath": "storyId",
             "columnName": "story_id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "create_time",
+            "fieldPath": "chapterIndex",
+            "columnName": "chap_index",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "page",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createTime",
             "columnName": "create_time",
             "affinity": "TEXT",
             "notNull": false
@@ -277,14 +301,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "bookmark",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `story_id` INTEGER, `create_time` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `story_id` INTEGER, `chap_index` INTEGER, `page` INTEGER, `create_time` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -293,13 +317,25 @@
             "notNull": true
           },
           {
-            "fieldPath": "story_id",
+            "fieldPath": "storyId",
             "columnName": "story_id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "create_time",
+            "fieldPath": "chapterIndex",
+            "columnName": "chap_index",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "page",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createTime",
             "columnName": "create_time",
             "affinity": "TEXT",
             "notNull": false
@@ -309,7 +345,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -318,7 +354,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ab9c714c21252fd162a86fdb004c1cc0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50cf241c1919421c1b70888648540922')"
     ]
   }
 }
