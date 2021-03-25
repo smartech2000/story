@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_story.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.*
 
 
@@ -32,7 +33,10 @@ class StoryRecyclerViewAdapter(
         if (storyViewInfo.story.avatar != null && storyViewInfo.story.avatar?.length != 0) {
             // Load avatar
             GlobalScope.launch (Dispatchers.IO) {
-                AvatarUtil.bindFromServer(ctx,holder.binding.avatar, storyViewInfo.story.id, storyViewInfo.story.avatar)
+                val bmp = AvatarUtil.getBmpFromServer(ctx, storyViewInfo.story.id, storyViewInfo.story.avatar)
+                withContext(Dispatchers.Main) {
+                    holder.binding.avatar.setImageBitmap(bmp)
+                }
             }
         }
     }

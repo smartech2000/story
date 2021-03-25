@@ -2,6 +2,7 @@ package com.smarttech.story.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.ImageView
 import com.smarttech.story.MainActivity
@@ -32,14 +33,11 @@ class AvatarUtil {
             }
         }
 
-        fun bindFromServer(ctx: Context, imageView : ImageView, storyId: Int, key: String?) {
+        fun getBmpFromServer(ctx: Context,  storyId: Int, key: String?): Bitmap? {
             val repo: Repo = Repo.AVATAR
-            if (MemoryCache.getInstance().get(storyId) != null) {
-                imageView.setImageBitmap(MemoryCache.getInstance().get(storyId))
-                return
-            }
-            // Load avatar
-            GlobalScope.launch (Dispatchers.IO) {
+            var bmp = MemoryCache.getInstance().get(storyId)
+            if (bmp==null) {
+                // Load avatar
                 val storyAvatarFile = File(repo.getRepo(ctx.cacheDir), "${key}")
                 var b: ByteArray?
                 if (storyAvatarFile.exists()) {
@@ -52,13 +50,12 @@ class AvatarUtil {
                     }
                 }
                 if (b != null) {
-                    val bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+                    bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
                     MemoryCache.getInstance().put(storyId, bmp)
-                    withContext(Dispatchers.Main) {
-                        imageView.setImageBitmap(bmp)
-                    }
                 }
             }
+            return bmp
         }
+
     }
 }

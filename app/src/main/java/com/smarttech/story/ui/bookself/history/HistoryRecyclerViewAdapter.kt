@@ -13,6 +13,7 @@ import com.smarttech.story.utils.AvatarUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -29,7 +30,10 @@ class HistoryRecyclerViewAdapter(
         if (storyViewInfo.story.avatar != null && storyViewInfo.story.avatar?.length != 0) {
             // Load avatar
             GlobalScope.launch (Dispatchers.IO) {
-                AvatarUtil.bindFromServer(ctx,holder.binding.avatar, storyViewInfo.story.id, storyViewInfo.story.avatar)
+                val bmp = AvatarUtil.getBmpFromServer(ctx, storyViewInfo.story.id, storyViewInfo.story.avatar)
+                withContext(Dispatchers.Main) {
+                    holder.binding.avatar.setImageBitmap(bmp)
+                }
             }
         }
     }
