@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         //Initialize job in onCreate
         job = Job()
-        hideSystemUI();
+        //hideSystemUI();
         setContentView(R.layout.activity_splash)
 
         if (!FileUtil.databaseFileExists(this, "story.db")) {
