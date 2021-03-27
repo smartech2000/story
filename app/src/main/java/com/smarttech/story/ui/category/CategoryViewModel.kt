@@ -21,10 +21,6 @@ import com.smarttech.story.model.dto.ChapterCountDto
 import com.smarttech.story.networking.DropboxService
 import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

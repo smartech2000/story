@@ -25,7 +25,7 @@ class ChapterListFragment : Fragment() {
     var storyId: Int = 0
     var storyName: String = ""
     private lateinit var viewModel: ChapterListViewModel
-    private lateinit var adapter: ChapterRecyclerViewAdapter
+    private lateinit var adapter: ChapterListRecyclerViewAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,7 +50,7 @@ class ChapterListFragment : Fragment() {
             ViewModelProvider(this,viewModelFactory).get(ChapterListViewModel::class.java)
 
 
-        adapter = ChapterRecyclerViewAdapter(ChapterListener { chapterDto ->
+        adapter = ChapterListRecyclerViewAdapter(ChapterListener { chapterDto ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             viewModel.onChapterClicked(chapterDto)
         })

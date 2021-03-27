@@ -15,9 +15,9 @@ import com.smarttech.story.model.dto.ChapterDto
  * [RecyclerView.Adapter] that can display a [DummyItem].
  * TODO: Replace the implementation with code for your data type.
  */
-class ChapterRecyclerViewAdapter(
+class ChapterListRecyclerViewAdapter(
     val clickListener: ChapterListener
-) : ListAdapter<ChapterDto, ChapterRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
+) : ListAdapter<ChapterDto, ChapterListRecyclerViewAdapter.ViewHolder>(StoryDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)

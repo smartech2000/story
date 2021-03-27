@@ -19,9 +19,6 @@ import com.smarttech.story.networking.DropboxService
 import com.smarttech.story.utils.DateTimeUtil
 import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.*
 import java.io.File
 
