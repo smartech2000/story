@@ -32,11 +32,9 @@ class StoryDetailViewModel(
     private val _story = MutableLiveData<StoryViewInfo>().apply {
         val storyDao = AppDatabase(application).storyDao()
         value = storyDao.getStoryById(storyId)
-
         // add history
         var history =History(storyId)
         storyDao.insertHistoryLocal(history)
-        var x = 0
     }
     var story: LiveData<StoryViewInfo> = _story
 }

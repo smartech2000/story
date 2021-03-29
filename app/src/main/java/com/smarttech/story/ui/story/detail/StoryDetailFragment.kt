@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.SearchView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,7 +23,9 @@ import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
 import com.smarttech.story.constants.Repo
+import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.databinding.FragmentStorydetailBinding
+import com.smarttech.story.model.local.Bookmark
 import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
@@ -58,7 +63,18 @@ class StoryDetailFragment : Fragment() {
         menu?.findItem(R.id.bookmark_menu)?.isVisible = true
         super.onCreateOptionsMenu(menu, inflater)
     }
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.bookmark_menu ->{
+                Toast.makeText(context, "Đang thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT).show()
+                // add history
+                var bookmark = Bookmark(storyId)
+                AppDatabase(requireContext()).storyDao().insertBookmarkLocal(bookmark)
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewPager = view.findViewById(R.id.chap_list_vp)
         var tabAdapter = TabAdapter(storyId,this)

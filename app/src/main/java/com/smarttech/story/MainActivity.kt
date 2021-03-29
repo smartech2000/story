@@ -2,9 +2,11 @@ package com.smarttech.story
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SearchView
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -16,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.smarttech.story.database.AppDatabase
+import com.smarttech.story.model.local.History
 import com.smarttech.story.ui.category.CategoryFragmentDirections
 import com.smarttech.story.ui.story.StoryFragment
 import com.smarttech.story.utils.InitData
@@ -64,42 +67,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-        val search = menu.findItem(R.id.appSearchBar)
-        val searchView = search.actionView as SearchView
-        searchView.setMaxWidth(Integer.MAX_VALUE)
-        searchView.queryHint = "Tìm theo tên hoặc tác giả"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-/*                val action = query?.let {
-                    CategoryFragmentDirections
-                        .actionCategoryFragmentToStoryFragment(-1, it)
-                }
-                var navHostFragmentCheck =
-                    navHostFragment.getChildFragmentManager().getFragments().get(0);
-                if (navHostFragmentCheck is StoryFragment == false) {
-                    action?.let { navController.navigate(it) }
-                } else {
-                    val action = query?.let {
-                        CategoryFragmentDirections
-                            .actionCategoryFragmentToStoryFragment(-1, it)
-                    }
-                    val id = navController.currentDestination?.id
-                    navController.popBackStack(id!!,true)
-                    action?.let { navController.navigate(it) }
 
-                }*/
-                val bundle = bundleOf("categoryName" to query, "categoryId"  to -1)
-                navController.navigate(R.id.story_fragment, bundle)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
-                return true
-            }
-        })
         return super.onCreateOptionsMenu(menu)
     }
-    private fun refreshCurrentFragment(query:String){
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.appSearchBar -> {
+                val searchView = item.actionView as SearchView
+                searchView.setMaxWidth(Integer.MAX_VALUE)
+                searchView.queryHint = "Tìm theo tên hoặc tác giả"
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        val bundle = bundleOf("categoryName" to query, "categoryId"  to -1)
+                        navController.navigate(R.id.story_fragment, bundle)
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        adapter.filter.filter(newText)
+                        return true
+                    }
+                })
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

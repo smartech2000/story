@@ -10,10 +10,9 @@ import com.smarttech.story.model.dto.StoryViewInfo
 class BookmarkViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var db: AppDatabase;
     private val _bookmarks = MutableLiveData<List<StoryViewInfo>>().apply {
-        // Access a Cloud Firestore instance from your Activity
-/*        db = AppDatabase(application)
-        val bookmarks =  db.storyDao().getAllBookmarkLocal()
-        value = bookmarks*/
+        db = AppDatabase(application)
+        val bookmarks =  db.storyDao().findAllBookmark()
+        value = bookmarks
     }
     var bookmarks: LiveData<List<StoryViewInfo>> = _bookmarks
 

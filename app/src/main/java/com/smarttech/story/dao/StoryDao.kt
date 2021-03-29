@@ -47,8 +47,10 @@ interface StoryDao {
     @Query("SELECT * FROM Download")
     fun getAllDownloadLocal(): List<Download>
 
-    @Query("SELECT * FROM Bookmark")
-    fun getAllBookmarkLocal(): List<Bookmark>
+    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
+            "FROM Story , Bookmark, Status, Author " +
+            "where Story.id = Bookmark.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+    fun findAllBookmark(): List<StoryViewInfo>
 
     @Insert
     fun insertHistoryLocal(vararg historyLocal: History)
