@@ -38,7 +38,6 @@ class BookmarkFragment : Fragment() {
             ViewModelProvider(this).get(BookmarkViewModel::class.java)
         // To use the View Model with data binding, you have to explicitly
         // give the binding object a reference to it.
-        binding.viewModel = viewModel
 
         val adapter = BookmarkRecyclerViewAdapter(requireContext(),BookmarkListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
@@ -49,6 +48,7 @@ class BookmarkFragment : Fragment() {
         viewModel.bookmarks.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.progressBarLoading.visibility = View.GONE
             }
         })
         return binding.root
