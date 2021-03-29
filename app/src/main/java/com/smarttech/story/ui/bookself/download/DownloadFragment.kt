@@ -37,11 +37,8 @@ class DownloadFragment : Fragment() {
         )
         viewModel =
             ViewModelProvider(this).get(DownloadViewModel::class.java)
-        // To use the View Model with data binding, you have to explicitly
-        // give the binding object a reference to it.
-        binding.viewModel = viewModel
 
-        val adapter = DownloadRecyclerViewAdapter(DownloadListener { storyViewInfo ->
+        val adapter = DownloadRecyclerViewAdapter(requireContext(),DownloadListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
             viewModel.onDownloadClicked(storyViewInfo)
         })
@@ -50,6 +47,7 @@ class DownloadFragment : Fragment() {
         viewModel.downloads.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                binding.progressBarLoading.visibility = View.GONE
             }
         })
         return binding.root

@@ -10,10 +10,9 @@ import com.smarttech.story.model.dto.StoryViewInfo
 class DownloadViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var db: AppDatabase;
     private val _downloads = MutableLiveData<List<StoryViewInfo>>().apply {
-        // Access a Cloud Firestore instance from your Activity
-/*        db = AppDatabase(application)
-        val downloads =  db.storyDao().getAllDownloadLocal()
-        value = downloads*/
+        db = AppDatabase(application)
+        val downloads =  db.storyDao().findAllDownload()
+        value = downloads
     }
     var downloads: LiveData<List<StoryViewInfo>> = _downloads
 

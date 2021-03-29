@@ -26,6 +26,7 @@ import com.smarttech.story.constants.Repo
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.model.local.Bookmark
+import com.smarttech.story.model.local.Download
 import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
@@ -57,6 +58,7 @@ class StoryDetailFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // TODO Add your menu entries here
         // menu?.findItem(R.id.download_menu)?.isVisible = true
@@ -86,7 +88,13 @@ class StoryDetailFragment : Fragment() {
                 1 -> tab.text ="Danh sách chương"
             }
         }.attach()
-        var x = 0
+        downloadStory.setOnClickListener(View.OnClickListener {
+            Toast.makeText(context, "Đang tải về offline...", Toast.LENGTH_SHORT).show()
+            // add history
+            var donwnload = Download(storyId)
+            AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
+        })
+
     }
 
 
@@ -189,4 +197,5 @@ class StoryDetailFragment : Fragment() {
                 }
             }
     }
+
 }

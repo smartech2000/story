@@ -3,20 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.smarttech.story.ui.bookself.download.DownloadViewModel" />
-    </data>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/download_list"
-        android:name="com.smarttech.story.ui.bookself.download.DownloadFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.bookself.history.HistoryFragment"
-        tools:listitem="@layout/download_history" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/download_list"
+            android:name="com.smarttech.story.ui.bookself.download.DownloadFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/height_of_app_bar"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".ui.bookself.download.DownloadFragment"
+            tools:listitem="@layout/fragment_download" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/height_of_app_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

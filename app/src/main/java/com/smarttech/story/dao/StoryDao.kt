@@ -44,8 +44,10 @@ interface StoryDao {
     @Query("SELECT * FROM History")
     fun getAllHistoryLocal(): List<History>
 
-    @Query("SELECT * FROM Download")
-    fun getAllDownloadLocal(): List<Download>
+    @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
+            "FROM Story , Download, Status, Author " +
+            "where Story.id = Download.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+    fun findAllDownload(): List<StoryViewInfo>
 
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
             "FROM Story , Bookmark, Status, Author " +

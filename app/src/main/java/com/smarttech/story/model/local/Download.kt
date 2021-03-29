@@ -3,6 +3,7 @@ package com.smarttech.story.model.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.smarttech.story.utils.DateTimeUtil
 
 @Entity(tableName= "download")
 data class Download(
@@ -11,4 +12,10 @@ data class Download(
     @ColumnInfo(name = "chap_index") val chapterIndex: Int?,
     @ColumnInfo(name = "page") val page: Int?,
     @ColumnInfo(name = "create_time") val createTime: String?
-)
+) {
+    constructor(storyId: Int?) : this(0,
+        storyId,
+        0,
+        0,
+        createTime = DateTimeUtil.getCurrentTime())
+}
