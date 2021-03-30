@@ -11,12 +11,23 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryListBinding
 import com.smarttech.story.databinding.FragmentHistoryListBinding
 import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.ui.category.*
+import com.smarttech.story.ui.home.HomeFragment
+import com.smarttech.story.ui.story.detail.StoryDetailFragmentDirections
+import com.smarttech.story.utils.ChapterUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * A fragment representing a list of Items.
@@ -49,7 +60,7 @@ class HistoryFragment : Fragment() {
 
         val adapter = HistoryRecyclerViewAdapter(requireContext(),HistoryListener { storyViewInfo ->
             //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            viewModel.onHistoryClicked(storyViewInfo)
+            viewModel.onStoryClicked(storyViewInfo)
         })
         binding.historyList.adapter = adapter
         ///binding.categoryList.adapter = adapter
@@ -57,6 +68,35 @@ class HistoryFragment : Fragment() {
             it?.let {
                 adapter.submitList(it)
                 binding.progressBarLoading.visibility = View.GONE
+            }
+        })
+        viewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
+
+            storyViewInfo?.let {
+                GlobalScope.launch(Dispatchers.IO) {
+                    val chapterDtos =
+                        context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1,it.story.id) }
+                    val chapterDto = chapterDtos?.get(0)
+                    withContext(Dispatchers.Main) {
+                        val action = chapterDto?.let { it1 ->
+                            HistoryFragmentDirections
+                                .actionHistoryFragmentToChapterFragment(chapterDto.key,
+                                    it1.index,
+                                    storyId = it.story.id,
+                                    storyName = it.story.title!!,
+                                    chapterTitle = chapterDto.title)
+                        }
+                        if (container != null) {
+                            if (action != null) {
+                                container.findNavController().navigate(action)
+                            }
+                        }
+                        (activity as MainActivity).supportActionBar!!.hide()
+                        (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
+
+                    }
+                }
+                //viewModel.onChapterNavigated()
             }
         })
         return binding.root

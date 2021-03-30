@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.smarttech.story.database.AppDatabase
+import com.smarttech.story.model.dto.ChapterDto
 import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.model.local.History
 
@@ -21,14 +22,20 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _history = MutableLiveData<History?>()
-    val navigateToHistory
-        get() = _history
 
-    fun onHistoryClicked(storyViewInfo: StoryViewInfo) {
+
+    /**
+     * Navigation for the SleepDetail fragment.
+     */
+    private val _navigateToStoryDetail = MutableLiveData<StoryViewInfo?>()
+    val navigateToStoryDetail
+        get() = _navigateToStoryDetail
+
+    fun onStoryClicked(storyViewInfo: StoryViewInfo) {
+        _navigateToStoryDetail.value = storyViewInfo
     }
 
-    fun onHistoryNavigated() {
-        _history.value = null
+    fun onStoryNavigated() {
+        _navigateToStoryDetail.value = null
     }
 }
