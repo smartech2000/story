@@ -23,6 +23,10 @@ import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
 import com.smarttech.story.utils.AvatarUtil
 import com.smarttech.story.utils.ChapterUtil
 import kotlinx.android.synthetic.main.fragment_storydetail.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 /**
  * A fragment representing a list of Items.
@@ -81,11 +85,20 @@ class StoryDetailFragment : Fragment() {
         downloadStory.setOnClickListener(View.OnClickListener {
             Toast.makeText(context, "Đang tải về offline...", Toast.LENGTH_SHORT).show()
             // add history
-            val chapterDtos =
-                context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
-            chapterDtos?.forEach({
-
-            })
+            GlobalScope.launch(Dispatchers.IO) {
+                val chapterDtos =
+                    context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
+                chapterDtos?.forEach {
+                    GlobalScope.async(Dispatchers.IO) {
+                        context?.let { it1 ->
+                            ChapterUtil.downloadChapterFromServer(it1,
+                                storyId,
+                                it.index,
+                                it.key)
+                        }
+                    }
+                }
+            }
             var donwnload = Download(storyId)
             AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
         })
