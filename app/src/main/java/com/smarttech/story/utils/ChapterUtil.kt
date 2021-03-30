@@ -21,21 +21,32 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.*
 
-class ChapterListUtil {
+class ChapterUtil {
     companion object {
 
-        fun bindFromLocal(ctx: Context, imgView: ImageView, storyId: Int) {
-            var bmp = MemoryCache.getInstance().get(storyId)
-            if (bmp == null) {
-                val avatarFile = File(Repo.AVATAR.getRepo(ctx.cacheDir), "$storyId")
-                if (avatarFile.exists()) {
-                    val b = avatarFile.readBytes()
-                    bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+        fun downloadChapterFromServer(context: Context, storyId:Int, chapterIndex: Int, chapterKey:String): ByteArray?{
+            val repo: Repo = Repo.CHAPTER
+            val storyDir = File(repo.getRepo(context.cacheDir),"$storyId")
+            if (!storyDir.exists()){
+                storyDir.mkdirs()
+            }
+            val dataFile = File(storyDir, "$chapterIndex")
+            var b: ByteArray?
+            if (dataFile.exists()) {
+                b = dataFile.readBytes()
+            } else {
+                val url = repo.getUri(
+                    "$chapterKey",
+                    "$chapterIndex"
+                )
+                val response = DropboxService.getInstance().downlload(url).execute()
+                val body = response.body()
+                b = body?.bytes()
+                if (b != null) {
+                    dataFile.writeBytes(b)
                 }
             }
-            if (bmp != null) {
-                imgView.setImageBitmap(bmp)
-            }
+            return  b
         }
 
         fun getChapterListFromServer(context: Context, storyId: Int): List<ChapterDto> {

@@ -1,38 +1,28 @@
 package com.smarttech.story.ui.story.detail
 
 import android.app.Application
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.smarttech.story.MainActivity
 import com.smarttech.story.R
-import com.smarttech.story.cache.MemoryCache
-import com.smarttech.story.constants.Repo
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.databinding.FragmentStorydetailBinding
 import com.smarttech.story.model.local.Bookmark
 import com.smarttech.story.model.local.Download
-import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.story.detail.chapter.ChapterListFragment
 import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
 import com.smarttech.story.utils.AvatarUtil
+import com.smarttech.story.utils.ChapterUtil
 import kotlinx.android.synthetic.main.fragment_storydetail.*
-import java.io.File
 
 /**
  * A fragment representing a list of Items.
@@ -91,6 +81,11 @@ class StoryDetailFragment : Fragment() {
         downloadStory.setOnClickListener(View.OnClickListener {
             Toast.makeText(context, "Đang tải về offline...", Toast.LENGTH_SHORT).show()
             // add history
+            val chapterDtos =
+                context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
+            chapterDtos?.forEach({
+
+            })
             var donwnload = Download(storyId)
             AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
         })

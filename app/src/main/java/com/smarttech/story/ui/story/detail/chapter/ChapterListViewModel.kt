@@ -9,7 +9,7 @@ import com.smarttech.story.constants.Repo
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.database.DescDatabase
 import com.smarttech.story.model.dto.ChapterDto
-import com.smarttech.story.utils.ChapterListUtil
+import com.smarttech.story.utils.ChapterUtil
 import kotlinx.coroutines.*
 
 class ChapterListViewModel(
@@ -23,7 +23,7 @@ class ChapterListViewModel(
         val storyDao = AppDatabase(application).storyDao()
         val repo: Repo = Repo.STORY
         GlobalScope.launch(Dispatchers.IO) {
-            val chapterDtos = ChapterListUtil.getChapterListFromServer(context, storyId)
+            val chapterDtos = ChapterUtil.getChapterListFromServer(context, storyId)
             withContext(Dispatchers.Main) {
                 value = chapterDtos
             }
