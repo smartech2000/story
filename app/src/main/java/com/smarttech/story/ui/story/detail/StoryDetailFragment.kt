@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.databinding.FragmentStorydetailBinding
@@ -23,10 +25,7 @@ import com.smarttech.story.ui.story.detail.desc.StoryDescFragment
 import com.smarttech.story.utils.AvatarUtil
 import com.smarttech.story.utils.ChapterUtil
 import kotlinx.android.synthetic.main.fragment_storydetail.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a list of Items.
@@ -101,6 +100,27 @@ class StoryDetailFragment : Fragment() {
             }
             var donwnload = Download(storyId)
             AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
+        })
+        readStoryBtn.setOnClickListener(View.OnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                val chapterDtos =
+                    context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
+                val chapterDto = chapterDtos?.get(0)
+                withContext(Dispatchers.Main) {
+                    val action = chapterDto?.let { it1 ->
+                        StoryDetailFragmentDirections
+                            .actionStoryDetailFragmentToChapterFragment(it1.key,
+                                chapterDto.index,
+                                storyId = storyId,
+                                storyName = storyName,
+                                chapterTitle = chapterDto.title)
+                    }
+                    action?.let { it1 -> it.findNavController().navigate(it1) }
+                    (activity as MainActivity).supportActionBar!!.hide()
+                    (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
+                        View.GONE
+                }
+            }
         })
 
     }
