@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentAccountListBinding
+import com.smarttech.story.ui.bookself.BookSelfFragmentDirections
+import com.smarttech.story.utils.CommonUtils
 
 /**
  * A fragment representing a list of Items.
@@ -51,7 +55,17 @@ class AccountFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
-
+        viewModel.navigateToFunction.observe(viewLifecycleOwner, Observer { function ->
+            function?.let {
+                var action: NavDirections = BookSelfFragmentDirections
+                    .actionNavigationBookselfToHistoryFragment()
+                when (function.id) {
+                    2->CommonUtils.ratingApp(requireContext())
+                    3->CommonUtils.shareApp(requireContext())
+                    4->CommonUtils.goToMyStore(requireContext())
+                }
+            }
+        })
 
         return binding.root
     }
