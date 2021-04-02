@@ -3,6 +3,7 @@ package com.smarttech.story
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SearchView
@@ -24,7 +25,6 @@ import com.smarttech.story.ui.story.StoryFragment
 import com.smarttech.story.utils.InitData
 
 class MainActivity : AppCompatActivity() {
-    lateinit var adapter: ArrayAdapter<*>
     lateinit var navController: NavController
     lateinit var navHostFragment: NavHostFragment
     private lateinit var db: AppDatabase;
@@ -47,15 +47,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        adapter = ArrayAdapter<Any?>(
-            this, android.R.layout.simple_list_item_1,
-            resources.getStringArray(R.array.months_array)
-        )
-
-        //db = AppDatabase(this);
-       // val storyDao = db.storyDao();
-        //InitData().InitData(storyDao)
-       // val historyLocals = storyDao.getAllHistoryLocal();
 
     }
 
@@ -67,31 +58,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
-
-        return super.onCreateOptionsMenu(menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.appSearchBar -> {
-                val searchView = item.actionView as SearchView
-                searchView.setMaxWidth(Integer.MAX_VALUE)
-                searchView.queryHint = "Tìm theo tên hoặc tác giả"
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        val bundle = bundleOf("categoryName" to query, "categoryId"  to -1)
-                        navController.navigate(R.id.story_fragment, bundle)
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        adapter.filter.filter(newText)
-                        return true
-                    }
-                })
-                true
+        val search = menu.findItem(R.id.appSearchBar)
+        val searchView = search.actionView as SearchView
+        searchView.setMaxWidth(Integer.MAX_VALUE)
+        searchView.queryHint = "Tìm theo tên hoặc tác giả"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val bundle = bundleOf("categoryName" to query, "categoryId" to -1)
+                navController.navigate(R.id.story_fragment, bundle)
+                return false
             }
 
-            else -> super.onOptionsItemSelected(item)
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 }
