@@ -1,5 +1,7 @@
 package com.smarttech.story.ui.account
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -63,6 +65,15 @@ class AccountFragment : Fragment() {
                     2->CommonUtils.ratingApp(requireContext())
                     3->CommonUtils.shareApp(requireContext())
                     4->CommonUtils.goToMyStore(requireContext())
+                    5->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/terms-conditions.html")
+                        startActivity(defaultBrowser)}
+                    6->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/privacy-policy.html")
+                        startActivity(defaultBrowser)}
+                    7->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/index.html#contact")
+                        startActivity(defaultBrowser)}
                 }
             }
         })

@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="@dimen/height_of_app_bar"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.account.AccountFragment"
         tools:listitem="@layout/fragment_account" />

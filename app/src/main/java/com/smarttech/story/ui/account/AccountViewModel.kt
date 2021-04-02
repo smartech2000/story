@@ -16,7 +16,7 @@ class AccountViewModel() : ViewModel() {
         functions.add(Function(3, "Chia sẻ", "Chia sẻ ứng dụng cho bạn bè", R.drawable.ic_baseline_share_24))
         functions.add(Function(4, "Kho ứng dụng", "Kho ứng dụng của smart tech", R.drawable.ic_baseline_share_24))
         functions.add(Function(5, "Điều khoản sử dụng", "Điều khoản sử dụng", R.drawable.ic_baseline_security_24))
-        functions.add(Function(6, "Về chúng tôi", "Về chúng tôi", R.drawable.ic_baseline_info_24))
+        functions.add(Function(6, "Chính sách bảo mật", "Chính sách bảo mật", R.drawable.ic_baseline_info_24))
         functions.add(Function(7, "Thông tin liên hệ", "Thông tin liên hệ", R.drawable.ic_baseline_contact_phone_24))
         value = functions
     }
