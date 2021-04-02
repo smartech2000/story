@@ -52,9 +52,9 @@ class BookSelfFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = BookSelfRecyclerViewAdapter(FunctionListener { itemId ->
+        val adapter = BookSelfRecyclerViewAdapter(FunctionListener { function ->
             //Toast.makeText(context, "${itemId}", Toast.LENGTH_LONG).show()
-            viewModel.onFunctionClicked(itemId)
+            viewModel.onFunctionClicked(function)
         })
         binding.bookselfList.adapter = adapter
         ///binding.categoryList.adapter = adapter

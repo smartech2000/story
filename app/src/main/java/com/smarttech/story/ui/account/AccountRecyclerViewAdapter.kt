@@ -65,6 +65,6 @@ class FunctionDiffCallback : DiffUtil.ItemCallback<Function>() {
     }
 }
 
-class FunctionListener(val clickListener: (functionId: Int) -> Unit) {
-    fun onClick(function: Function) = clickListener(function.id)
+class FunctionListener(val clickListener: (function: Function) -> Unit) {
+    fun onClick(function: Function) = clickListener(function)
 }

@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Kho Sách</string>
 
-    <string name="share_app_title">Vietnam News - Top News App</string>
+    <string name="share_app_title">Kho truyện hàng đầu Việt Nam</string>
 
     <string name="app_url">https://play.google.com/store/apps/details?id=com.smarttech.story</string>
-    <string name="store_url">https://play.google.com/store/apps/developer?id=World+News,+Inc.</string>
+    <string name="store_url">https://play.google.com/store/apps/developer?id=Smart Tech</string>
     <string name="share_message">Kho truyện hàng đầu Việt Nam\n\n </string>
     <string name="action_share">Chia sẻ</string>
 

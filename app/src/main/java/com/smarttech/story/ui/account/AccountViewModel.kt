@@ -29,8 +29,8 @@ class AccountViewModel() : ViewModel() {
     val navigateToFunction
         get() = _function
 
-    fun onFunctionClicked(id: Int) {
-        _function.value =this.functions.value?.get(index = id-1)
+    fun onFunctionClicked(function: Function) {
+        _function.value =function
     }
 
     fun onFunctionNavigated() {
