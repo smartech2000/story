@@ -63,7 +63,7 @@ class StoryDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.bookmark_menu -> {
-                Toast.makeText(context, "Đang thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT)
+                Toast.makeText(context, "Đã thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT)
                     .show()
                 // add history
                 val storyDao = AppDatabase(requireContext()).storyDao()
@@ -89,7 +89,7 @@ class StoryDetailFragment : Fragment() {
             }
         }.attach()
         downloadStory.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context, "Đang tải về offline...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Đã tải về offline...", Toast.LENGTH_SHORT).show()
             // add download
             GlobalScope.launch(Dispatchers.IO) {
                 val chapterDtos =
