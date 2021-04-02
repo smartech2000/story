@@ -14,6 +14,6 @@ import com.smarttech.story.model.local.History
 @Dao
 interface StoryDescDao {
     @Query("SELECT * FROM story_desc where id=:storyId ")
-    fun findStoryDescById(storyId: Int): StoryDesc
+    fun findStoryDescById(storyId: Int): StoryDesc?
 
 }

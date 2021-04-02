@@ -24,8 +24,12 @@ class StoryDescViewModel(
             }
             withContext(Dispatchers.Main) {
                 val storyDescDao = DescDatabase(application).storyDescDao()
-
-                value = storyDescDao.findStoryDescById(storyId).description
+                val storyDesc = storyDescDao.findStoryDescById(storyId)
+                if (storyDesc != null) {
+                    value = storyDesc.description
+                } else {
+                    value=""
+                }
             }
         }
     }

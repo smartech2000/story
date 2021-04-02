@@ -68,6 +68,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(
             inflater, R.layout.chapter_fragment, container, false
         )

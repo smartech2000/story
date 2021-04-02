@@ -6,7 +6,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
 import android.view.View
+import android.widget.Toast
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.networking.DropboxService
@@ -37,16 +39,23 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
         job = Job()
         //hideSystemUI();
         setContentView(R.layout.activity_splash)
-
+        val threadPolicy = StrictMode.ThreadPolicy.Builder()
+            .permitDiskReads()
+            .permitDiskWrites() // If you also want to ignore DiskWrites, Set this line too.
+            .build();
         if (!FileUtil.databaseFileExists(this, "story.db")) {
 
             activityScope.launch {
                 //Start directly from the IO thread here
                 launch(Dispatchers.IO) {
-                    FileUtil.attachDbFromDropBox(applicationContext, "uczd5fxz2c74lfn", "story")
-                    var intent = Intent(this@SplashActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    val result = FileUtil.attachDbFromDropBox(applicationContext, "uczd5fxz2c74lfn", "story")
+                    if (result) {
+                        var intent = Intent(this@SplashActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, "Có lỗi xẩy ra, vui lòng kiểm tra kết nối mạng và thử lại...", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         } else {

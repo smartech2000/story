@@ -25,56 +25,64 @@ class ChapterUtil {
     companion object {
 
         fun downloadChapterFromServer(context: Context, storyId:Int, chapterIndex: Int, chapterKey:String): ByteArray?{
-            val repo: Repo = Repo.CHAPTER
-            val storyDir = File(repo.getRepo(context.cacheDir),"$storyId")
-            if (!storyDir.exists()){
-                storyDir.mkdirs()
-            }
-            val dataFile = File(storyDir, "$chapterIndex")
-            var b: ByteArray?
-            if (dataFile.exists()) {
-                b = dataFile.readBytes()
-            } else {
-                val url = repo.getUri(
-                    "$chapterKey",
-                    "$chapterIndex"
-                )
-                val response = DropboxService.getInstance().downlload(url).execute()
-                val body = response.body()
-                b = body?.bytes()
-                if (b != null) {
-                    dataFile.writeBytes(b)
+            var b: ByteArray?=null
+            try {
+                val repo: Repo = Repo.CHAPTER
+                val storyDir = File(repo.getRepo(context.cacheDir),"$storyId")
+                if (!storyDir.exists()){
+                    storyDir.mkdirs()
                 }
+                val dataFile = File(storyDir, "$chapterIndex")
+
+                if (dataFile.exists()) {
+                    b = dataFile.readBytes()
+                } else {
+                    val url = repo.getUri(
+                        "$chapterKey",
+                        "$chapterIndex"
+                    )
+                    val response = DropboxService.getInstance().downlload(url).execute()
+                    val body = response.body()
+                    b = body?.bytes()
+                    if (b != null) {
+                        dataFile.writeBytes(b)
+                    }
+                }
+            } catch (e: Exception) {
             }
             return  b
         }
 
         fun getChapterListFromServer(context: Context, storyId: Int): List<ChapterDto> {
-            val storyDao = AppDatabase(context).storyDao()
-            val story = storyDao.findStoryById(storyId)
             var chapterDtos: List<ChapterDto> = emptyList()
-            val repo: Repo = Repo.STORY
-            val dataFile =
-                File(repo.getRepo(context.cacheDir), story.id.toString())
+            try {
+                val storyDao = AppDatabase(context).storyDao()
+                val story = storyDao.findStoryById(storyId)
 
-            var b: ByteArray?
-            if (dataFile.exists()) {
-                b = dataFile.readBytes()
-            } else {
-                val url = repo.getUri("${story.dropboxUri}", "story.o3")
-                val response = DropboxService.getInstance().downlload(url).execute()
-                val body = response.body()
-                b = body?.bytes()
-                if (b != null) {
-                    dataFile.writeBytes(b)
+                val repo: Repo = Repo.STORY
+                val dataFile =
+                    File(repo.getRepo(context.cacheDir), story.id.toString())
+
+                var b: ByteArray?
+                if (dataFile.exists()) {
+                    b = dataFile.readBytes()
+                } else {
+                    val url = repo.getUri("${story.dropboxUri}", "story.o3")
+                    val response = DropboxService.getInstance().downlload(url).execute()
+                    val body = response.body()
+                    b = body?.bytes()
+                    if (b != null) {
+                        dataFile.writeBytes(b)
+                    }
                 }
-            }
-            if (b != null) {
-                val stringResponse = b.let { UnzipUtility.ungzip(it) }
+                if (b != null) {
+                    val stringResponse = b.let { UnzipUtility.ungzip(it) }
 
-                chapterDtos =
-                    Gson().fromJson(stringResponse, Array<ChapterDto>::class.java).asList()
-                chapterDtos = chapterDtos?.sortedBy { it.index }
+                    chapterDtos =
+                        Gson().fromJson(stringResponse, Array<ChapterDto>::class.java).asList()
+                    chapterDtos = chapterDtos?.sortedBy { it.index }
+                }
+            } catch (e: Exception) {
             }
             return chapterDtos
         }
