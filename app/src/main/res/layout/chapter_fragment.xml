@@ -142,9 +142,13 @@
                 android:layout_gravity="center" />
         </FrameLayout>
 
-        <TextView
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Quang cao here" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:adSize="BANNER"
+            app:adUnitId="@string/ads_unit_id"></com.google.android.gms.ads.AdView>
     </LinearLayout>
 </layout>

@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.ads.MobileAds
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.local.History
 import com.smarttech.story.ui.category.CategoryFragmentDirections
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MobileAds.initialize(this) {}
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         //val navController = findNavController(R.id.nav_host_fragment)

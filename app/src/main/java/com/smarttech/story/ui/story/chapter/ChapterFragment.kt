@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.ads.AdRequest
 import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
@@ -26,6 +27,7 @@ import com.smarttech.story.library.extension.getBitmap
 import com.smarttech.story.library.pagination.ReadState
 import com.smarttech.story.library.views.OnActionListener
 import com.smarttech.story.library.views.PaginatedTextView
+import kotlinx.android.synthetic.main.chapter_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -78,6 +80,8 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
         val viewModelFactory =
             ChapterViewModelFactory(Application(), context!!, storyId, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)

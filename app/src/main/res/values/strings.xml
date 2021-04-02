@@ -14,6 +14,11 @@
     <string name="title_setting">Tài khoản</string>
     <string name="number_format">%,d</string>
 
+    <string name="ads_app_id">ca-app-pub-1663310704687812~2472061962</string>
+    <!--<string name="ads_unit_id">ca-app-pub-1663310704687812/7612708006</string>-->
+    <string name="ads_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+
     <string-array name="category">
         <item>Thể loại</item>
         <item>Ngôn tình</item>
