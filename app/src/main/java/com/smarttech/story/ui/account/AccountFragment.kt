@@ -66,13 +66,13 @@ class AccountFragment : Fragment() {
                     3->CommonUtils.shareApp(requireContext())
                     4->CommonUtils.goToMyStore(requireContext())
                     5->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/terms-conditions.html")
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/index.html#contact")
                         startActivity(defaultBrowser)}
                     6->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/privacy-policy.html")
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/terms-conditions.html")
                         startActivity(defaultBrowser)}
                     7->  {val defaultBrowser = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/index.html#contact")
+                        defaultBrowser.data = Uri.parse("https://khosach.firebaseapp.com/privacy-policy.html")
                         startActivity(defaultBrowser)}
                 }
             }

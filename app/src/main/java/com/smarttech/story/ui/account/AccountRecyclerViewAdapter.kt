@@ -1,5 +1,6 @@
 package com.smarttech.story.ui.account
 
+import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentAccountBinding
 import com.smarttech.story.model.Function
+import kotlinx.android.synthetic.main.fragment_account.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem].
@@ -21,6 +23,9 @@ class BookSelfRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
+        if (position == 0) {
+            holder.itemView.description.setTextColor(Color.RED)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

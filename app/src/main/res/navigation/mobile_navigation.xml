@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.smarttech.story.ui.bookself.history.HistoryFragment"
-        android:label="HistoryFragment"
+        android:label="Lịch sử"
         tools:layout="@layout/fragment_history">
         <action
             android:id="@+id/action_historyFragment_to_chapterFragment"
@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/downloadFragment"
         android:name="com.smarttech.story.ui.bookself.download.DownloadFragment"
-        android:label="DownloadFragment"
+        android:label="Tải về"
         tools:layout="@layout/fragment_download">
         <action
             android:id="@+id/action_downloadFragment_to_chapterFragment"
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/bookmarkFragment"
         android:name="com.smarttech.story.ui.bookself.bookmark.BookmarkFragment"
-        android:label="BookmarkFragment"
+        android:label="Đánh dấu"
         tools:layout="@layout/fragment_bookmark">
         <action
             android:id="@+id/action_bookmarkFragment_to_chapterFragment"
@@ -107,7 +107,7 @@
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.smarttech.story.ui.account.AccountFragment"
-        android:label="Cài đặt"
+        android:label="Tài khoản"
         tools:layout="@layout/fragment_account_list"/>
     <fragment
         android:id="@+id/chapterFragment"

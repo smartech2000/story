@@ -93,7 +93,6 @@
                 android:singleLine="true"
                 android:text="@{storyViewInfo.story.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/avatar"
