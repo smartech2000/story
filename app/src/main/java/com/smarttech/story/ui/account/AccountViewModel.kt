@@ -11,7 +11,7 @@ class AccountViewModel() : ViewModel() {
     private lateinit var db: AppDatabase;
     private val _functions = MutableLiveData<List<Function>>().apply {
         var functions = ArrayList<Function>()
-        functions.add(Function(1, "Cài đặt", "Cài đặt cấu hình ứng dụng", R.drawable.ic_baseline_settings_24))
+        //functions.add(Function(1, "Cài đặt", "Cài đặt cấu hình ứng dụng", R.drawable.ic_baseline_settings_24))
         functions.add(Function(2, "Dánh giá ứng dụng", "Đánh giá ứng dụng trên Google Play", R.drawable.ic_baseline_star_rate_24))
         functions.add(Function(3, "Chia sẻ", "Chia sẻ ứng dụng cho bạn bè", R.drawable.ic_baseline_share_24))
         functions.add(Function(4, "Kho ứng dụng", "Kho ứng dụng của smart tech", R.drawable.ic_baseline_share_24))
