@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentCategoryListBinding
+import com.smarttech.story.ui.story.StoryFilterEnum
 
 /**
  * A fragment representing a list of Items.
@@ -57,6 +58,9 @@ class CategoryFragment : Fragment() {
         //Observe item clicked
         categoryViewModel.navigateToCategory.observe(viewLifecycleOwner, Observer { category ->
             category?.let {
+                val navController = findNavController();
+                val saveSate = navController.previousBackStackEntry?.savedStateHandle
+                saveSate?.set("key", StoryFilterEnum.UPDATE.filter.toString())
                 val action = CategoryFragmentDirections
                     .actionCategoryFragmentToStoryFragment(category.id, category.title!!)
                 this.findNavController().navigate(action)

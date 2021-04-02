@@ -83,7 +83,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
         val viewModelFactory =
-            ChapterViewModelFactory(Application(), context!!, storyId, chapterKey, chapterIndex)
+            ChapterViewModelFactory(Application(), requireContext(), storyId, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
         viewModel.chapterContent.observe(viewLifecycleOwner, Observer {
             binding.tvBookText.setup(it, 0.6)
@@ -114,7 +114,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
     fun setBackgroundBitmap(page: CurlPage) {
         background = MemoryCache.getInstance().get(storyId)
         if (background != null) {
-            val avatarFile = File(Repo.AVATAR.getRepo(context!!.cacheDir), "$storyId")
+            val avatarFile = File(Repo.AVATAR.getRepo(requireContext().cacheDir), "$storyId")
             if (avatarFile.exists()) {
                 val b = avatarFile.readBytes()
                 background = BitmapFactory.decodeByteArray(b, 0, b.size)

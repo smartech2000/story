@@ -130,5 +130,10 @@
             android:name="chapterTitle"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/storyBottomDialogFragment"
+        android:name="com.smarttech.story.ui.story.StoryBottomDialogFragment"
+        android:label="StoryBottomDialogFragment"
+        tools:layout="@layout/bottom_sheet_story"/>
 
 </navigation>
