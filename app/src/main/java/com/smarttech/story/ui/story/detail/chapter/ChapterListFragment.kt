@@ -14,8 +14,12 @@ import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.databinding.FragmentStoryChapterBinding
 import com.smarttech.story.databinding.FragmentStoryChapterListBinding
+import com.smarttech.story.model.dto.ChapterDto
+import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.ui.story.detail.StoryDetailFragmentDirections
 import com.smarttech.story.ui.story.detail.chapter.ChapterListener
+import kotlinx.android.synthetic.main.fragment_story_chapter_list.*
+import kotlinx.android.synthetic.main.fragment_story_list.*
 
 class ChapterListFragment : Fragment() {
 
@@ -45,7 +49,7 @@ class ChapterListFragment : Fragment() {
             inflater, R.layout.fragment_story_chapter_list, container, false
         )
         val viewModelFactory =
-            ChapterListViewModelFactory(Application(), context!!, storyId)
+            ChapterListViewModelFactory(Application(), requireContext(), storyId)
         viewModel =
             ViewModelProvider(this,viewModelFactory).get(ChapterListViewModel::class.java)
 
@@ -79,6 +83,25 @@ class ChapterListFragment : Fragment() {
                 (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
                 viewModel.onChapterNavigated()
             }
+        })
+
+        binding.filterLL.setOnClickListener(View.OnClickListener {
+            var data:List<ChapterDto> = ArrayList<ChapterDto>(adapter.currentList)
+            data =data.reversed()
+            adapter.submitList(data)
+            if (binding.textViewFilterType.text.equals("Thứ tự tăng dần")) {
+                binding.textViewFilterType.text = "Thứ tự giảm dần"
+            } else {
+                binding.textViewFilterType.text = "Thứ tự tăng dần"
+            }
+
+
+            chapter_list.postDelayed(Runnable {
+                // or use other API
+                chapter_list.smoothScrollToPosition(0)
+
+                // give a delay of one second
+            }, 1000)
         })
         return binding.root
     }

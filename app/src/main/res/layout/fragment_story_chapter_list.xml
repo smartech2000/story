@@ -11,18 +11,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.setting.SettingFragment">
+        <LinearLayout
+            android:id="@+id/filterLL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/textViewFilterHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sắp xếp theo: " />
+
+            <TextView
+                android:id="@+id/textViewFilterType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thứ tự tăng dần" />
+
+            <ImageView
+                android:id="@+id/imageViewFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:srcCompat="@drawable/ic_baseline_sort_24" />
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chapter_list"
             android:name="com.smarttech.story.story.ui.story.story.detail.StoryDetailFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/height_of_app_bar"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filterLL"
             tools:context=".ui.story.story.detail.StoryDetailFragment"
             tools:listitem="@layout/fragment_story_chapter" />
 
