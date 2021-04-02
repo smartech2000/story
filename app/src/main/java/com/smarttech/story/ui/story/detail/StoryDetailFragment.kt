@@ -187,27 +187,22 @@ class StoryDetailFragment : Fragment() {
         // give the binding object a reference to it.
         binding.storyDetailViewModel = storyDetailViewModel
 
-        AvatarUtil.bindFromLocal(requireContext(), binding.avatar, storyId)
+        //AvatarUtil.bindFromLocal(requireContext(), binding.avatar, storyId)
+
+            // Load avatar
+
         storyDetailViewModel.story.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.progressBarLoading.visibility = View.GONE
                 //binding.categoryList.adapter = adapter
-
+                GlobalScope.launch (Dispatchers.IO) {
+                    val bmp = AvatarUtil.getBmpFromServer(requireContext(), storyId, it.story.avatar)
+                    withContext(Dispatchers.Main) {
+                        binding.avatar.setImageBitmap(bmp)
+                    }
+                }
             }
         })
-/*        readStoryBtn.setOnClickListener(View.OnClickListener {
-            val action = StoryDetailFragmentDirections
-                .actionStoryDetailFragmentToChapterFragment(chapterDto.key,
-                    chapterDto.index,
-                    storyId = storyId,
-                    storyName = storyName,
-                    chapterTitle = chapterDto.title)
-            this.findNavController().navigate(action)
-            (activity as MainActivity).supportActionBar!!.hide()
-            (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
-            viewModel.onChapterNavigated()
-        })*/
-
         return binding.root
     }
 
