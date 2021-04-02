@@ -112,7 +112,7 @@
     <fragment
         android:id="@+id/chapterFragment"
         android:name="com.smarttech.story.ui.story.chapter.ChapterFragment"
-        android:label="chapter_fragment"
+        android:label="Đọc truyện"
         tools:layout="@layout/chapter_fragment" >
         <argument
             android:name="chapterKey"

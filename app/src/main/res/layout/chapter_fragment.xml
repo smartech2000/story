@@ -47,7 +47,6 @@
                     android:paddingEnd="10sp"
                     android:scrollHorizontally="true"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
                     android:typeface="serif"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
