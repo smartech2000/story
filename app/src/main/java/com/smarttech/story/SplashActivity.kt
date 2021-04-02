@@ -16,6 +16,7 @@ import com.smarttech.story.utils.FileUtil
 import com.smarttech.story.utils.UnzipUtility
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
@@ -54,7 +55,10 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(applicationContext, "Có lỗi xẩy ra, vui lòng kiểm tra kết nối mạng và thử lại...", Toast.LENGTH_SHORT).show()
+                        withContext(Main) {
+                            Toast.makeText(applicationContext, "Có lỗi xẩy ra, vui lòng kiểm tra kết nối mạng và chạy lại...", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
                     }
                 }
             }
