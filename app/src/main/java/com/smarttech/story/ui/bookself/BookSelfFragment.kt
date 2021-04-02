@@ -70,9 +70,9 @@ class BookSelfFragment : Fragment() {
                     .actionNavigationBookselfToHistoryFragment()
                 when (function.id) {
                     1->action = BookSelfFragmentDirections
-                        .actionNavigationBookselfToHistoryFragment()
-                    2-> action = BookSelfFragmentDirections
                         .actionNavigationBookselfToDownloadFragment()
+                    2-> action = BookSelfFragmentDirections
+                        .actionNavigationBookselfToHistoryFragment()
                     3-> action = BookSelfFragmentDirections
                         .actionNavigationBookselfToBookmarkFragment()
                 }

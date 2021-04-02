@@ -11,8 +11,8 @@ class BookSelfViewModel() : ViewModel() {
     private lateinit var db: AppDatabase;
     private val _functions = MutableLiveData<List<Function>>().apply {
         var functions = ArrayList<Function>()
-        functions.add(Function(1, "Lịch sử", "Lịch sử đọc truyện gần đây", R.drawable.ic_baseline_history_24))
-        functions.add(Function(2, "Tải về", "Truyện đã được tải về máy. Bạn có thể đọc không cần mạng", R.drawable.ic_baseline_cloud_download_24))
+        functions.add(Function(1, "Tải về", "Truyện đã được tải về máy. Bạn có thể đọc không cần mạng", R.drawable.ic_baseline_cloud_download_24))
+        functions.add(Function(2, "Lịch sử", "Lịch sử đọc truyện gần đây", R.drawable.ic_baseline_history_24))
         functions.add(Function(3, "Đánh dấu", "Truyện đã được đánh dấu", R.drawable.ic_baseline_bookmark_24))
         value = functions
     }

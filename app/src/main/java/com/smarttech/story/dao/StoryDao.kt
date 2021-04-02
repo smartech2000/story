@@ -38,7 +38,7 @@ interface StoryDao {
 
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
             "FROM Story , History, Status, Author " +
-            "where Story.id = History.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+            "where Story.id = History.story_id and Story.author_id = Author.id and Story.status = Status.id  order by history.id desc")
     fun findAllHistory(): List<StoryViewInfo>
 
     @Query("SELECT * FROM History")
@@ -46,13 +46,20 @@ interface StoryDao {
 
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
             "FROM Story , Download, Status, Author " +
-            "where Story.id = Download.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+            "where Story.id = Download.story_id and Story.author_id = Author.id and Story.status = Status.id order by download.id desc")
     fun findAllDownload(): List<StoryViewInfo>
 
     @Query("SELECT Story.*, Status.title as statusTitle, Author.name as authorTitle " +
             "FROM Story , Bookmark, Status, Author " +
-            "where Story.id = Bookmark.story_id and Story.author_id = Author.id and Story.status = Status.id ")
+            "where Story.id = Bookmark.story_id and Story.author_id = Author.id and Story.status = Status.id order by bookmark.id desc")
     fun findAllBookmark(): List<StoryViewInfo>
+
+    @Query("SELECT EXISTS(SELECT * FROM History WHERE story_id = :id)")
+    fun historyExist(id : Int) : Boolean
+    @Query("SELECT EXISTS(SELECT * FROM download WHERE story_id = :id)")
+    fun downloadExist(id : Int) : Boolean
+    @Query("SELECT EXISTS(SELECT * FROM bookmark WHERE story_id = :id)")
+    fun bookmarkExist(id : Int) : Boolean
 
     @Insert
     fun insertHistoryLocal(vararg historyLocal: History)

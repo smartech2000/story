@@ -23,7 +23,7 @@ class BookSelfRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!, clickListener)
-        if (position == 1) {
+        if (position == 0) {
             holder.itemView.description.setTextColor(Color.RED)
         }
     }

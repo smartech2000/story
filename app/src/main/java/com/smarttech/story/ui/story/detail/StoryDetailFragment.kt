@@ -66,8 +66,11 @@ class StoryDetailFragment : Fragment() {
                 Toast.makeText(context, "Đang thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT)
                     .show()
                 // add history
-                var bookmark = Bookmark(storyId)
-                AppDatabase(requireContext()).storyDao().insertBookmarkLocal(bookmark)
+                val storyDao = AppDatabase(requireContext()).storyDao()
+                if (!storyDao.bookmarkExist(storyId)) {
+                    var bookmark = Bookmark(storyId)
+                    storyDao.insertBookmarkLocal(bookmark)
+                }
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -87,7 +90,7 @@ class StoryDetailFragment : Fragment() {
         }.attach()
         downloadStory.setOnClickListener(View.OnClickListener {
             Toast.makeText(context, "Đang tải về offline...", Toast.LENGTH_SHORT).show()
-            // add history
+            // add download
             GlobalScope.launch(Dispatchers.IO) {
                 val chapterDtos =
                     context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
@@ -102,8 +105,11 @@ class StoryDetailFragment : Fragment() {
                     }
                 }
             }
-            var donwnload = Download(storyId)
-            AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
+            val storyDao = AppDatabase(requireContext()).storyDao()
+            if (!storyDao.downloadExist(storyId)) {
+                var donwnload = Download(storyId)
+                AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
+            }
         })
         readStoryBtn.setOnClickListener(View.OnClickListener {
             val action =

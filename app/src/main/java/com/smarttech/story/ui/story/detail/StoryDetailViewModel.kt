@@ -33,8 +33,10 @@ class StoryDetailViewModel(
         val storyDao = AppDatabase(application).storyDao()
         value = storyDao.getStoryById(storyId)
         // add history
-        var history =History(storyId)
-        storyDao.insertHistoryLocal(history)
+        if (!storyDao.historyExist(storyId)) {
+            var history = History(storyId)
+            storyDao.insertHistoryLocal(history)
+        }
     }
     var story: LiveData<StoryViewInfo> = _story
 }
