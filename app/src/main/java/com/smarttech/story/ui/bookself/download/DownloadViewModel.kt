@@ -19,14 +19,15 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _download = MutableLiveData<StoryViewInfo?>()
-    val navigateToDownload
-        get() = _download
+    private val _navigateToStoryDetail = MutableLiveData<StoryViewInfo?>()
+    val navigateToStoryDetail
+        get() = _navigateToStoryDetail
 
-    fun onDownloadClicked(storyViewInfo: StoryViewInfo) {
+    fun onStoryClicked(storyViewInfo: StoryViewInfo) {
+        _navigateToStoryDetail.value = storyViewInfo
     }
 
-    fun onDownloadNavigated() {
-        _download.value = null
+    fun onStoryNavigated() {
+        _navigateToStoryDetail.value = null
     }
 }

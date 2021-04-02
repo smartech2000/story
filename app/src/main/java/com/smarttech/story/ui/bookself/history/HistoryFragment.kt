@@ -58,10 +58,11 @@ class HistoryFragment : Fragment() {
         // give the binding object a reference to it.
         binding.viewModel = viewModel
 
-        val adapter = HistoryRecyclerViewAdapter(requireContext(),HistoryListener { storyViewInfo ->
-            //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
-            viewModel.onStoryClicked(storyViewInfo)
-        })
+        val adapter =
+            HistoryRecyclerViewAdapter(requireContext(), HistoryListener { storyViewInfo ->
+                //Toast.makeText(context, "${categoryId}", Toast.LENGTH_LONG).show()
+                viewModel.onStoryClicked(storyViewInfo)
+            })
         binding.historyList.adapter = adapter
         ///binding.categoryList.adapter = adapter
         viewModel.histories.observe(viewLifecycleOwner, Observer {
@@ -71,18 +72,20 @@ class HistoryFragment : Fragment() {
             }
         })
         viewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
-
-            val action =
-                HistoryFragmentDirections
-                    .actionHistoryFragmentToChapterFragment("",
-                        -1,
-                        storyId = storyViewInfo!!.story.id!!,
-                        storyName = storyViewInfo!!.story.title!!,
-                        chapterTitle = "")
-            findNavController().navigate(action)
-            (activity as MainActivity).supportActionBar!!.hide()
-            (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
-                View.GONE
+            storyViewInfo?.let {
+                val action =
+                    HistoryFragmentDirections
+                        .actionHistoryFragmentToChapterFragment("",
+                            -1,
+                            storyId = storyViewInfo.story.id!!,
+                            storyName = storyViewInfo.story.title!!,
+                            chapterTitle = "")
+                findNavController().navigate(action)
+                (activity as MainActivity).supportActionBar!!.hide()
+                (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
+                    View.GONE
+                viewModel.onStoryNavigated()
+            }
         })
         return binding.root
     }

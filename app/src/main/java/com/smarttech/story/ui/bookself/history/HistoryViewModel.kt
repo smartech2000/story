@@ -27,6 +27,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     /**
      * Navigation for the SleepDetail fragment.
      */
+
     private val _navigateToStoryDetail = MutableLiveData<StoryViewInfo?>()
     val navigateToStoryDetail
         get() = _navigateToStoryDetail

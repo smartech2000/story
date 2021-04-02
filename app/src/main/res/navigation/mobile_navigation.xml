@@ -75,12 +75,20 @@
         android:id="@+id/downloadFragment"
         android:name="com.smarttech.story.ui.bookself.download.DownloadFragment"
         android:label="DownloadFragment"
-        tools:layout="@layout/fragment_download"/>
+        tools:layout="@layout/fragment_download">
+        <action
+            android:id="@+id/action_downloadFragment_to_chapterFragment"
+            app:destination="@id/chapterFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
         android:name="com.smarttech.story.ui.bookself.bookmark.BookmarkFragment"
         android:label="BookmarkFragment"
-        tools:layout="@layout/fragment_bookmark"/>
+        tools:layout="@layout/fragment_bookmark">
+        <action
+            android:id="@+id/action_bookmarkFragment_to_chapterFragment"
+            app:destination="@id/chapterFragment" />
+    </fragment>
     <fragment
         android:id="@+id/storyDetailFragment"
         android:name="com.smarttech.story.ui.story.detail.StoryDetailFragment"

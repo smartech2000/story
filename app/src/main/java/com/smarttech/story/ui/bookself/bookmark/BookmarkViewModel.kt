@@ -19,14 +19,15 @@ class BookmarkViewModel(application: Application) : AndroidViewModel(application
     /**
      * Navigation for the SleepDetail fragment.
      */
-    private val _bookmark = MutableLiveData<StoryViewInfo?>()
-    val navigateToBookmark
-        get() = _bookmark
+    private val _navigateToStoryDetail = MutableLiveData<StoryViewInfo?>()
+    val navigateToStoryDetail
+        get() = _navigateToStoryDetail
 
-    fun onBookmarkClicked(storyViewInfo: StoryViewInfo) {
+    fun onStoryClicked(storyViewInfo: StoryViewInfo) {
+        _navigateToStoryDetail.value = storyViewInfo
     }
 
-    fun onBookmarkNavigated() {
-        _bookmark.value = null
+    fun onStoryNavigated() {
+        _navigateToStoryDetail.value = null
     }
 }

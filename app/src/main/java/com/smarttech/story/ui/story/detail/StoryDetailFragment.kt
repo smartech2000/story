@@ -117,6 +117,7 @@ class StoryDetailFragment : Fragment() {
             (activity as MainActivity).supportActionBar!!.hide()
             (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
                 View.GONE
+
         })
 
     }
