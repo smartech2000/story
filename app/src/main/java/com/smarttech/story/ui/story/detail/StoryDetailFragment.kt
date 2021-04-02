@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -58,10 +59,12 @@ class StoryDetailFragment : Fragment() {
         menu?.findItem(R.id.bookmark_menu)?.isVisible = true
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.bookmark_menu ->{
-                Toast.makeText(context, "Đang thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT).show()
+            R.id.bookmark_menu -> {
+                Toast.makeText(context, "Đang thêm vào danh sách đánh dấu...", Toast.LENGTH_SHORT)
+                    .show()
                 // add history
                 var bookmark = Bookmark(storyId)
                 AppDatabase(requireContext()).storyDao().insertBookmarkLocal(bookmark)
@@ -70,15 +73,16 @@ class StoryDetailFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewPager = view.findViewById(R.id.chap_list_vp)
-        var tabAdapter = TabAdapter(storyId,this)
+        var tabAdapter = TabAdapter(storyId, this)
         viewPager.adapter = tabAdapter
         tabLayout = view.findViewById(R.id.chap_list_tl)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text ="Mô tả"
-                1 -> tab.text ="Danh sách chương"
+                0 -> tab.text = "Mô tả"
+                1 -> tab.text = "Danh sách chương"
             }
         }.attach()
         downloadStory.setOnClickListener(View.OnClickListener {
@@ -102,25 +106,17 @@ class StoryDetailFragment : Fragment() {
             AppDatabase(requireContext()).storyDao().insertDownloadLocal(donwnload)
         })
         readStoryBtn.setOnClickListener(View.OnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                val chapterDtos =
-                    context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
-                val chapterDto = chapterDtos?.get(0)
-                withContext(Dispatchers.Main) {
-                    val action = chapterDto?.let { it1 ->
-                        StoryDetailFragmentDirections
-                            .actionStoryDetailFragmentToChapterFragment(it1.key,
-                                chapterDto.index,
-                                storyId = storyId,
-                                storyName = storyName,
-                                chapterTitle = chapterDto.title)
-                    }
-                    action?.let { it1 -> it.findNavController().navigate(it1) }
-                    (activity as MainActivity).supportActionBar!!.hide()
-                    (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
-                        View.GONE
-                }
-            }
+            val action =
+                StoryDetailFragmentDirections
+                    .actionStoryDetailFragmentToChapterFragment("",
+                        -1,
+                        storyId = storyId,
+                        storyName = storyName,
+                        chapterTitle = "")
+            findNavController().navigate(action)
+            (activity as MainActivity).supportActionBar!!.hide()
+            (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
+                View.GONE
         })
 
     }
@@ -207,7 +203,6 @@ class StoryDetailFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     companion object {

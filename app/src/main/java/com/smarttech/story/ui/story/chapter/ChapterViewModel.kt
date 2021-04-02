@@ -22,18 +22,40 @@ class ChapterViewModel(
 ) : AndroidViewModel(application) {
     private val _chapterContent = MutableLiveData<String>().apply {
         val repo: Repo = Repo.CHAPTER
-        GlobalScope.launch(Dispatchers.IO) {
-            val b = ChapterUtil.downloadChapterFromServer(context,
-                storyId,
-                chapterIndex,
-                chapterKey)
+        if (chapterIndex !=-1) {
+            GlobalScope.launch(Dispatchers.IO) {
+                val b = ChapterUtil.downloadChapterFromServer(context,
+                    storyId,
+                    chapterIndex,
+                    chapterKey)
 
-            val stringResponse = b?.let { UnzipUtility.ungzip(it) }
-            withContext(Dispatchers.Main) {
-                value = stringResponse
+                val stringResponse = b?.let { UnzipUtility.ungzip(it) }
+                withContext(Dispatchers.Main) {
+                    value = stringResponse
+                }
+
+                val x = 0;
+            }
+        } else {
+
+            GlobalScope.launch(Dispatchers.IO) {
+                val chapterDtos =
+                    context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
+                val chapterDto = chapterDtos?.get(0)
+                val b = ChapterUtil.downloadChapterFromServer(context,
+                    storyId,
+                    chapterDto.index,
+                    chapterDto.key)
+
+                val stringResponse = b?.let { UnzipUtility.ungzip(it) }
+                withContext(Dispatchers.Main) {
+                    value = stringResponse
+                }
+
+                val x = 0;
             }
 
-            val x = 0;
+
         }
     }
     var chapterContent: LiveData<String> = _chapterContent

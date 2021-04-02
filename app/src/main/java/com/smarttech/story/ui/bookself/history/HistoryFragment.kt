@@ -72,32 +72,17 @@ class HistoryFragment : Fragment() {
         })
         viewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
 
-            storyViewInfo?.let {
-                GlobalScope.launch(Dispatchers.IO) {
-                    val chapterDtos =
-                        context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1,it.story.id) }
-                    val chapterDto = chapterDtos?.get(0)
-                    withContext(Dispatchers.Main) {
-                        val action = chapterDto?.let { it1 ->
-                            HistoryFragmentDirections
-                                .actionHistoryFragmentToChapterFragment(chapterDto.key,
-                                    it1.index,
-                                    storyId = it.story.id,
-                                    storyName = it.story.title!!,
-                                    chapterTitle = chapterDto.title)
-                        }
-                        if (container != null) {
-                            if (action != null) {
-                                container.findNavController().navigate(action)
-                            }
-                        }
-                        (activity as MainActivity).supportActionBar!!.hide()
-                        (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility = View.GONE
-
-                    }
-                }
-                //viewModel.onChapterNavigated()
-            }
+            val action =
+                HistoryFragmentDirections
+                    .actionHistoryFragmentToChapterFragment("",
+                        -1,
+                        storyId = storyViewInfo!!.story.id!!,
+                        storyName = storyViewInfo!!.story.title!!,
+                        chapterTitle = "")
+            findNavController().navigate(action)
+            (activity as MainActivity).supportActionBar!!.hide()
+            (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
+                View.GONE
         })
         return binding.root
     }

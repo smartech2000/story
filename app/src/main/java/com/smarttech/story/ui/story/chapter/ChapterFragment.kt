@@ -33,9 +33,9 @@ import java.io.File
 
 class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
-    companion object {
+/*    companion object {
         fun newInstance() = ChapterFragment()
-    }
+    }*/
 
     private var pagesCount: Int = 0
     private lateinit var viewModel: ChapterViewModel
