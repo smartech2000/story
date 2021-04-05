@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3
+            minimumFetchIntervalInSeconds = 3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         // [END enable_dev_mode]
