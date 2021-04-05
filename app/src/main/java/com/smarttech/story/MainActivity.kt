@@ -1,6 +1,7 @@
 package com.smarttech.story
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +20,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.smarttech.story.database.AppDatabase
 import com.smarttech.story.model.local.History
 import com.smarttech.story.ui.category.CategoryFragmentDirections
@@ -26,6 +31,7 @@ import com.smarttech.story.ui.story.StoryFragment
 import com.smarttech.story.utils.InitData
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var remoteConfig: FirebaseRemoteConfig
     lateinit var navController: NavController
     lateinit var navHostFragment: NavHostFragment
     private lateinit var db: AppDatabase;
@@ -49,7 +55,39 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Get Remote Config instance.
+        // [START get_remote_config_instance]
+        remoteConfig = Firebase.remoteConfig
+        // [END get_remote_config_instance]
 
+        // Create a Remote Config Setting to enable developer mode, which you can use to increase
+        // the number of fetches available per hour during development. Also use Remote Config
+        // Setting to set the minimum fetch interval.
+        // [START enable_dev_mode]
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        // [END enable_dev_mode]
+
+        // Set default Remote Config parameter values. An app uses the in-app default values, and
+        // when you need to adjust those defaults, you set an updated value for only the values you
+        // want to change in the Firebase console. See Best Practices in the README for more
+        // information.
+        // [START set_default_values]
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        // [END set_default_values]
+        // [START fetch_config_with_callback]
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d("MainActivity", "Config params updated: $updated")
+                } else {
+                    Log.d("MainActivity", "Fetch failed")
+                }
+            }
+        // [END fetch_config_with_callback]
     }
 
     @Override

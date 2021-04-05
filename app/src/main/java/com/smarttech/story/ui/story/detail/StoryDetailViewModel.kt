@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.DatabaseReference
 import com.smarttech.story.constants.Constants
 import com.smarttech.story.constants.Repo
 import com.smarttech.story.database.AppDatabase

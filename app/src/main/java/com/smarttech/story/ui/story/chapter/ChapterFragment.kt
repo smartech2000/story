@@ -8,12 +8,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.ads.AdRequest
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.get
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.smarttech.story.MainActivity
 import com.smarttech.story.R
 import com.smarttech.story.cache.MemoryCache
@@ -38,7 +44,7 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 /*    companion object {
         fun newInstance() = ChapterFragment()
     }*/
-
+    private lateinit var remoteConfig: FirebaseRemoteConfig
     private var pagesCount: Int = 0
     private lateinit var viewModel: ChapterViewModel
     var chapterKey: String = ""
@@ -81,8 +87,16 @@ class ChapterFragment : Fragment(), OnActionListener, IPageProvider {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+        remoteConfig = Firebase.remoteConfig
+        val adsEnable = remoteConfig["ads_enable"].asBoolean()
+        if (adsEnable) {
+            val adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
+            adView.isGone = false
+            adView.isVisible = true
+        } else {
+            adView.isGone = true
+        }
         val viewModelFactory =
             ChapterViewModelFactory(Application(), requireContext(), storyId, chapterKey, chapterIndex)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ChapterViewModel::class.java)
