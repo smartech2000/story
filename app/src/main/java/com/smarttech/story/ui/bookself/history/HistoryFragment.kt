@@ -22,6 +22,7 @@ import com.smarttech.story.databinding.FragmentHistoryListBinding
 import com.smarttech.story.model.dto.StoryViewInfo
 import com.smarttech.story.ui.category.*
 import com.smarttech.story.ui.home.HomeFragment
+import com.smarttech.story.ui.story.StoryFragmentDirections
 import com.smarttech.story.ui.story.detail.StoryDetailFragmentDirections
 import com.smarttech.story.utils.ChapterUtil
 import kotlinx.coroutines.Dispatchers
@@ -72,18 +73,13 @@ class HistoryFragment : Fragment() {
             }
         })
         viewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
+
             storyViewInfo?.let {
-                val action =
-                    HistoryFragmentDirections
-                        .actionHistoryFragmentToChapterFragment("",
-                            -1,
-                            storyId = storyViewInfo.story.id!!,
-                            storyName = storyViewInfo.story.title!!,
-                            chapterTitle = "")
+                val action = HistoryFragmentDirections.actionHistoryFragmentToStoryDetailFragment(
+                    storyViewInfo.story.id,
+                    storyViewInfo.story.title!!
+                )
                 findNavController().navigate(action)
-                (activity as MainActivity).supportActionBar!!.hide()
-                (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
-                    View.GONE
                 viewModel.onStoryNavigated()
             }
         })

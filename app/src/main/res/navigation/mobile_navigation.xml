@@ -68,8 +68,8 @@
         android:label="Lịch sử"
         tools:layout="@layout/fragment_history">
         <action
-            android:id="@+id/action_historyFragment_to_chapterFragment"
-            app:destination="@id/chapterFragment" />
+            android:id="@+id/action_historyFragment_to_storyDetailFragment"
+            app:destination="@id/storyDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/downloadFragment"
@@ -77,8 +77,8 @@
         android:label="Tải về"
         tools:layout="@layout/fragment_download">
         <action
-            android:id="@+id/action_downloadFragment_to_chapterFragment"
-            app:destination="@id/chapterFragment" />
+            android:id="@+id/action_downloadFragment_to_storyDetailFragment"
+            app:destination="@id/storyDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
@@ -86,8 +86,8 @@
         android:label="Đánh dấu"
         tools:layout="@layout/fragment_bookmark">
         <action
-            android:id="@+id/action_bookmarkFragment_to_chapterFragment"
-            app:destination="@id/chapterFragment" />
+            android:id="@+id/action_bookmarkFragment_to_storyDetailFragment"
+            app:destination="@id/storyDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/storyDetailFragment"

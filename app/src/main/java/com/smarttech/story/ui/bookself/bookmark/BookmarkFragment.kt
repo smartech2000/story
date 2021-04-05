@@ -57,6 +57,14 @@ class BookmarkFragment : Fragment() {
 
         viewModel.navigateToStoryDetail.observe(viewLifecycleOwner, Observer { storyViewInfo ->
             storyViewInfo?.let {
+                val action = BookmarkFragmentDirections.actionBookmarkFragmentToStoryDetailFragment(
+                    storyViewInfo.story.id,
+                    storyViewInfo.story.title!!
+                )
+                findNavController().navigate(action)
+                viewModel.onStoryNavigated()
+            }
+/*            storyViewInfo?.let {
                 val action =
                     BookmarkFragmentDirections
                         .actionBookmarkFragmentToChapterFragment("",
@@ -69,7 +77,7 @@ class BookmarkFragment : Fragment() {
                 (activity as MainActivity).findViewById<View>(R.id.nav_view).visibility =
                     View.GONE
                 viewModel.onStoryNavigated()
-            }
+            }*/
         })
         return binding.root
     }
