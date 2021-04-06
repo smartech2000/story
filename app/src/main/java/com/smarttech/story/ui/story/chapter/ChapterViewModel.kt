@@ -41,18 +41,18 @@ class ChapterViewModel(
             GlobalScope.launch(Dispatchers.IO) {
                 val chapterDtos =
                     context?.let { it1 -> ChapterUtil.getChapterListFromServer(it1, storyId) }
-                val chapterDto = chapterDtos?.get(0)
-                val b = ChapterUtil.downloadChapterFromServer(context,
-                    storyId,
-                    chapterDto.index,
-                    chapterDto.key)
+                if (chapterDtos.isNotEmpty()) {
+                    val chapterDto = chapterDtos.get(0)
+                    val b = ChapterUtil.downloadChapterFromServer(context,
+                        storyId,
+                        chapterDto.index,
+                        chapterDto.key)
 
-                val stringResponse = b?.let { UnzipUtility.ungzip(it) }
-                withContext(Dispatchers.Main) {
-                    value = stringResponse
+                    val stringResponse = b?.let { UnzipUtility.ungzip(it) }
+                    withContext(Dispatchers.Main) {
+                        value = stringResponse
+                    }
                 }
-
-                val x = 0;
             }
 
 

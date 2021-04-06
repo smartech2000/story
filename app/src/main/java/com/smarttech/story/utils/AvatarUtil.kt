@@ -35,24 +35,28 @@ class AvatarUtil {
 
         fun getBmpFromServer(ctx: Context,  storyId: Int, key: String?): Bitmap? {
             val repo: Repo = Repo.AVATAR
-            var bmp = MemoryCache.getInstance().get(storyId)
-            if (bmp==null) {
-                // Load avatar
-                val storyAvatarFile = File(repo.getRepo(ctx.cacheDir), "${key}")
-                var b: ByteArray?
-                if (storyAvatarFile.exists()) {
-                    b = storyAvatarFile.readBytes()
-                } else {
-                    val url = repo.getUri("${key}", "${storyId}")
-                    b = FileUtil.loadFromUrlToBytes(url)
+            var bmp: Bitmap? = null
+            try {
+                bmp = MemoryCache.getInstance().get(storyId)
+                if (bmp==null) {
+                    // Load avatar
+                    val storyAvatarFile = File(repo.getRepo(ctx.cacheDir), "${key}")
+                    var b: ByteArray?
+                    if (storyAvatarFile.exists()) {
+                        b = storyAvatarFile.readBytes()
+                    } else {
+                        val url = repo.getUri("${key}", "${storyId}")
+                        b = FileUtil.loadFromUrlToBytes(url)
+                        if (b != null) {
+                            storyAvatarFile.writeBytes(b)
+                        }
+                    }
                     if (b != null) {
-                        storyAvatarFile.writeBytes(b)
+                        bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
+                        MemoryCache.getInstance().put(storyId, bmp)
                     }
                 }
-                if (b != null) {
-                    bmp = BitmapFactory.decodeByteArray(b, 0, b.size)
-                    MemoryCache.getInstance().put(storyId, bmp)
-                }
+            } catch (e: Exception) {
             }
             return bmp
         }

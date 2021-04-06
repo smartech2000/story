@@ -34,8 +34,10 @@ class StoryRecyclerViewAdapter(
             // Load avatar
             GlobalScope.launch (Dispatchers.IO) {
                 val bmp = AvatarUtil.getBmpFromServer(ctx, storyViewInfo.story.id, storyViewInfo.story.avatar)
-                withContext(Dispatchers.Main) {
-                    holder.binding.avatar.setImageBitmap(bmp)
+                if (bmp != null) {
+                    withContext(Dispatchers.Main) {
+                        holder.binding.avatar.setImageBitmap(bmp)
+                    }
                 }
             }
         }
